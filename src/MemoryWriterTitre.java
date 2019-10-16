@@ -5,10 +5,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MemoryWriterDepositaire {
+public class MemoryWriterTitre {
 	private String file;
 
-	public MemoryWriterDepositaire(String file)
+	public MemoryWriterTitre(String file)
 	{
 		this.file = file;
 		Path fichier = Paths.get(this.file);
@@ -20,11 +20,11 @@ public class MemoryWriterDepositaire {
 		}
 	}
 
-	public void writeMemoryDepositaire(ArrayList<Depositaire> dep)
+	public void writeMemoryTitre(ArrayList<Titre> titres)
 		{
 			ArrayList<String> ligne = new ArrayList<String>();
 	
-			for ( Depositaire i : dep)
+			for ( Titre i : titres)
 				{
 					StringBuilder l = new StringBuilder();
 					l.append(i.toString());

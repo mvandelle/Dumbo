@@ -4,13 +4,13 @@ public class Client {
 
 	private String name;
 	private String nCompte;
-	private ArrayList<Titre> titre;
+	private ArrayList<String> titreISIN;
 	private String depName;
 
 	public Client(String n, String c, String depName) {
 		this.name = n;
 		this.nCompte = c;
-		titre = new ArrayList<>();
+		titreISIN = new ArrayList<>();
 		this.depName = depName;
 	}
 	
@@ -18,8 +18,17 @@ public class Client {
 	{
 		this.name = s[0];
 		this.nCompte = s[1];
-		titre = new ArrayList<>();
 		this.depName = s[2];
+		titreISIN = new ArrayList<>();
+		for ( int i = 0; i< s.length-3; ++i)
+		{
+			titreISIN.add(s[3+i]);
+		}
+	}
+	
+	public void addTitre(Titre titre)
+	{
+		this.titreISIN.add(titre.getisin());
 	}
 
 	public String getName() {
@@ -38,22 +47,22 @@ public class Client {
 		this.nCompte = nC;
 	}
 
-	public ArrayList<Titre> getTitre() {
-		return titre;
+	public ArrayList<String> gettitreISIN() {
+		return titreISIN;
 	}
 
-	public void setTitre(ArrayList<Titre> titre) {
-		this.titre = titre;
+	public void settitreISIN(ArrayList<String> titreISIN) {
+		this.titreISIN = titreISIN;
 	}
 	
 	public String toString()
 	{
 		StringBuilder s = new StringBuilder();
 		s.append(name+"*"+nCompte+"*"+depName);
-		for ( int i = 0; i < titre.size(); ++i)
+		for ( int i = 0; i < titreISIN.size(); ++i)
 		{
-			s.append(titre.get(i).toString());
-			;
+			s.append("*"+titreISIN.get(i));
+			
 		}
 		return s.toString();
 	}
@@ -68,6 +77,22 @@ public class Client {
 			}
 		}
 		throw new IllegalArgumentException("Depositaire non trouvé dans la base de donné");
+	}
+	
+	public ArrayList<Titre> findTitre(ArrayList<Titre> titre)
+	{
+		ArrayList<Titre> t = new ArrayList<>();
+		for ( int i = 0; i < titre.size(); ++i)
+		{
+			for ( int j = 0; j < titreISIN.size(); ++j)
+			{
+				if ( titre.get(i).getisin().equals(titreISIN.get(j)))
+						{
+							t.add(titre.get(i));
+						}
+			}
+		}
+		return t;
 	}
 	
 

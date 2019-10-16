@@ -67,6 +67,11 @@ public class Titre {
 		this.isin = isin;
 	}
 	
+	public TypeTitre getType()
+	{
+		return type;
+	}
+	
 	public String toString()
 	{
 		switch(type)

@@ -22,15 +22,14 @@ public class MemoryWriterClient {
 		}
 	}
 	
-	public void writeMemory( RegistreClient r)
+	public void writeMemoryClient( ArrayList<Client> r)
 	{
 		ArrayList<String> ligne = new ArrayList<String>();
 		
-		for ( Client i : r.getClients().keySet())
+		for ( Client i : r)
 		{
 			StringBuilder l = new StringBuilder();
 			l.append(i.toString());
-			l.append(r.getClients().get(i).toString());
 			ligne.add(l.toString());
 		}
         Path fichier = Paths.get(file);

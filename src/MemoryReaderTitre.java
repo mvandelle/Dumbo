@@ -1,22 +1,19 @@
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class MemoryReaderClient {
-	
+public class MemoryReaderTitre {
 	private String file;
-	private ArrayList<Client> r;
+	private ArrayList<Titre> titres;
 	
-	public MemoryReaderClient(String file)
+	public MemoryReaderTitre(String file)
 	{
 		this.file = file;
-		r = new ArrayList<>();
+		titres = new ArrayList<>();
 	}
 	
-	public ArrayList<Client> readMemoryClient()
+	public ArrayList<Titre> readMemoryTitre()
 	{
 		BufferedReader in;
 		try {
@@ -24,15 +21,15 @@ public class MemoryReaderClient {
 			String line;
 			while ((line = in.readLine()) != null)
 			{
-				r.add(new Client(line.split("\\*")));
+				
+				Titre d = new Titre(line.split("\\*"));
+				titres.add(d);
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		return r;
+		return titres;
 	}
 
 }
