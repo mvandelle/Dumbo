@@ -15,13 +15,7 @@ public class MemoryWriterClient {
 	public MemoryWriterClient(String file)
 	{
 		this.file = file;
-		Path fichier = Paths.get(this.file);
-	    try {
-			Files.write(fichier, Arrays.asList(("Empty file")));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 	
 	public void writeMemoryClient( ArrayList<Client> r)
@@ -30,9 +24,8 @@ public class MemoryWriterClient {
 		
 		for ( Client i : r)
 		{
-			StringBuilder l = new StringBuilder();
-			l.append(i.toString());
-			ligne.add(l.toString());
+			MemoryClient mc = new MemoryClient();
+			ligne.addAll(mc.clientLog(i));
 		}
         Path fichier = Paths.get(file);
 		

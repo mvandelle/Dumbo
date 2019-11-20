@@ -47,7 +47,6 @@ public class Titre {
 				this.type = TypeTitre.COMMODITIES;
 				break;
 			default:
-				System.out.println(s[2]);
 				throw new IllegalArgumentException("Type mismatch in memory file");
 		}
 		this.devise = s[3];

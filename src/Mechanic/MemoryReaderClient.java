@@ -20,6 +20,7 @@ public class MemoryReaderClient {
 	
 	public ArrayList<Client> readMemoryClient()
 	{
+		r.removeAll(r);
 		BufferedReader in;
 		try {
 			in = new BufferedReader(new FileReader(file));
@@ -33,8 +34,8 @@ public class MemoryReaderClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		return r;
+		MemoryClient mc = new MemoryClient();
+		return mc.mergeClient(r);
 	}
 
 }

@@ -2,12 +2,17 @@ package application;
 import java.io.File;
 import java.net.MalformedURLException;
 
+import Mechanic.Client;
 import Mechanic.MemoryClone;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Loby {
@@ -19,6 +24,7 @@ public class Loby {
 		this.id = id;
 		this.data = new MemoryClone(this.id);
 		this.data.initialize();
+		this.data.cloneFile();
 	}
 	
 	public String getId() {
@@ -49,6 +55,39 @@ public class Loby {
         path.setScaleX(0.7);
         path.setScaleY(0.7);
         rootLoby.getChildren().add(path);
+        
+        Button actionClient = new Button();
+        actionClient.setText("Par client");
+        actionClient.setLayoutX(100);
+        actionClient.setLayoutY(200);
+        rootLoby.getChildren().add(actionClient);
+        
+        actionClient.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				ActParClient apc = new ActParClient(id);
+				try {
+					apc.showActParClient().show();
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+        	
+        	
+        
+        });
+        
+        Button actionTitre = new Button();
+        actionTitre.setText("Par titre");
+        actionTitre.setLayoutX(350);
+        actionTitre.setLayoutY(200);
+        rootLoby.getChildren().add(actionTitre);
+        
+        
+        
         
         return stageLoby;
 	}

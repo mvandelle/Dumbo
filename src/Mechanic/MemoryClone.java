@@ -12,11 +12,22 @@ import java.util.Arrays;
 public class MemoryClone {
 	private String fileClient;
 	private String id;
+	private ArrayList<Client> client;
+	MemoryReaderClient memReaderCom;
+	MemoryReaderClient memReaderPers;
+	MemoryWriterClient memWriterCom;
+	MemoryWriterClient memWriterPers;
 	
 	public MemoryClone(String id)
 	{
 		this.id = id;
 		this.fileClient = "fileClient"+id;
+		this.client = new ArrayList<>();
+		this.memReaderCom = new MemoryReaderClient("memory.txt");
+		this.memReaderPers= new MemoryReaderClient(fileClient);
+		this.memWriterCom = new MemoryWriterClient("memory.txt");
+		this.memWriterPers = new MemoryWriterClient(fileClient);
+		
 	}
 	
 	public String getFileCient()
@@ -24,53 +35,36 @@ public class MemoryClone {
 		return fileClient;
 	}
 	
+	public ArrayList<Client> getClient()
+	{
+		return client;
+	}
+	
 	public void cloneFile()
 	{
-		BufferedReader in;
-		ArrayList<String> lines = new ArrayList<>();
-		try {
-			in = new BufferedReader(new FileReader("memory.txt"));
-			String line;
-			while ((line = in.readLine()) != null)
-			{
-				lines.add(line);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		Path fichier = Paths.get(fileClient);
-	    try {
-			Files.write(fichier, lines);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		client = memReaderCom.readMemoryClient();
+		memWriterPers.writeMemoryClient(client);
 	}
 	
 	public void sync()
 	{
-		BufferedReader in;
-		ArrayList<String> lines = new ArrayList<>();
-		try {
-			in = new BufferedReader(new FileReader(fileClient));
-			String line;
-			while ((line = in.readLine()) != null)
+		ArrayList<Client> oldMem = memReaderCom.readMemoryClient();
+		for ( int i = 0; i < oldMem.size(); ++i)
+		{
+			if ( client.get(i).HasBeenChanged())
 			{
-				lines.add(line);
+				client.get(i).setHasBeenChanged(false);
+				oldMem.set(i, client.get(i));
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
-		
-		Path fichier = Paths.get("memory.txt");
-	    try {
-			Files.write(fichier, lines);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    initialize();
+		memWriterCom.writeMemoryClient(oldMem);
+		initialize();
+	   
+	}
+	
+	public void loadClient()
+	{
+		client = memReaderPers.readMemoryClient();
 	}
 	
 	public void initialize()
