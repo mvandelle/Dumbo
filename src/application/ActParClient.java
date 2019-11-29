@@ -2,10 +2,12 @@ package application;
 
 
 import Mechanic.MemoryReaderClient;
+import Mechanic.TypeTitre;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
@@ -65,11 +67,18 @@ public class ActParClient {
         rootstageActParClientWindow.getChildren().add(path);
         
         
-        ObservableList<String> options = 
+        ObservableList<String> optionsClient = 
         	    FXCollections.observableArrayList(
         	        clientID
         	        );
-        ComboBox<String> comboClient = new ComboBox<String>(options);
+        
+        ObservableList<String> optionsTitre = 
+        	    FXCollections.observableArrayList(
+        	         new ArrayList<String>(Arrays.asList(TypeTitre.ACTION.toString(),TypeTitre.COMMODITIES.toString(), TypeTitre.FOREX.toString(),TypeTitre.FUTURE.toString()
+        	        		 ,TypeTitre.OBLIGATION.toString(),TypeTitre.OPC.toString(), TypeTitre.OPTION.toString(),TypeTitre.PRODUITDERIVE.toString()))
+        	        );
+        
+        ComboBox<String> comboClient = new ComboBox<String>(optionsClient);
         comboClient.setMaxWidth(400);
         comboClient.setLayoutY(150);
         comboClient.setLayoutX(150);
@@ -91,6 +100,13 @@ public class ActParClient {
 				
 				Client selectedClient = findClientFromClientId(comboClient.getSelectionModel().getSelectedItem());
 				resumeClient.setText(selectedClient.showCLient());
+				
+				ComboBox<String> comboTitres = new ComboBox<String>(optionsTitre);
+				comboTitres.setMaxWidth(400);
+				comboTitres.setLayoutY(400);
+				comboTitres.setLayoutX(150);
+				comboTitres.setPromptText("Type de titre");
+		        rootstageActParClientWindow.getChildren().add(comboTitres);
 				
 			}
         

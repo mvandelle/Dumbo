@@ -7,6 +7,7 @@ public class test {
 	
 	public static void main(String[]args)
 	{
+		/*
 	
 		Client X = new Client("Monsieur X", "1","Athenee");
 		Client Y = new Client("Monsieur Y", "2","EPFL");
@@ -23,12 +24,13 @@ public class test {
 		c.add(Ybis);
 		c.add(Yfals);
 		
-		
+		*/
 		//MemoryWriterClient mr = new MemoryWriterClient("memory.txt");
 		//mr.writeMemoryClient(t.mergeClient(c));
 		
-		MemoryReaderClient mw = new MemoryReaderClient("memory.txt");
-		System.out.println(mw.readMemoryClient());
+		MemoryReaderTitre mt = new MemoryReaderTitre("memoryTitre.txt");
+		mt.sortTitre();
+		System.out.println(mt.getTitresForex());
 		
 		
 		
