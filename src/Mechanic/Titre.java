@@ -34,9 +34,6 @@ public class Titre {
 			case "opt":
 				this.type = TypeTitre.OPTION;
 				break;
-			case "der":
-				this.type = TypeTitre.PRODUITDERIVE;
-				break;
 			case "opc":
 				this.type = TypeTitre.OPC;
 				break;
@@ -88,9 +85,7 @@ public class Titre {
 				
 			case OPTION:
 				return name+"*"+isin+"*"+"opt"+"*"+devise;
-				
-			case PRODUITDERIVE:
-				return name+"*"+isin+"*"+"der"+"*"+devise;
+		
 				
 			case OPC:
 				return name+"*"+isin+"*"+"opc"+"*"+devise;
@@ -104,6 +99,16 @@ public class Titre {
 			default:
 				throw new IllegalArgumentException("Ce titre n'a pas de type");
 		}
+	}
+	
+	public String showTitre()
+	{
+		return name + " " + isin;
+	}
+	
+	public String resumeTitre()
+	{
+		return "Nom : " + name + "\nISIN : " + isin + "\nDevise : " + devise;
 	}
 
 }

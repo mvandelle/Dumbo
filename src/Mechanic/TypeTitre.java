@@ -6,7 +6,6 @@ public enum TypeTitre {
 	OBLIGATION,
 	FUTURE,
 	OPTION,
-	PRODUITDERIVE,
 	OPC,
 	FOREX,
 	COMMODITIES

@@ -30,7 +30,8 @@ public class test {
 		
 		MemoryReaderTitre mt = new MemoryReaderTitre("memoryTitre.txt");
 		mt.sortTitre();
-		System.out.println(mt.getTitresForex());
+		mt.getTitresAction().forEach(x->x.showTitre());
+		System.out.println(mt.getTitresAction());
 		
 		
 		

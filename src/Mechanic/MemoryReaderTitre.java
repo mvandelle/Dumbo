@@ -13,7 +13,6 @@ public class MemoryReaderTitre {
 	private ArrayList<Titre> titresObligation;
 	private ArrayList<Titre> titresFuture;
 	private ArrayList<Titre> titresOption;
-	private ArrayList<Titre> titresProduitDerive;
 	private ArrayList<Titre> titresOPC;
 	private ArrayList<Titre> titresForex;
 	private ArrayList<Titre> titresCommodities;
@@ -27,7 +26,6 @@ public class MemoryReaderTitre {
 		titresObligation = new ArrayList<>();
 		titresFuture = new ArrayList<>();
 		titresOption = new ArrayList<>();
-		titresProduitDerive = new ArrayList<>();
 		titresOPC = new ArrayList<>();
 		titresForex = new ArrayList<>();
 		titresCommodities = new ArrayList<>();
@@ -65,13 +63,7 @@ public class MemoryReaderTitre {
 		return titresOption;
 	}
 
-	public ArrayList<Titre> getTitresProduitDerive() {
-		if ( titresProduitDerive.isEmpty())
-		{
-			sortTitre();
-		}
-		return titresProduitDerive;
-	}
+	
 
 	public ArrayList<Titre> getTitresOPC() {
 		if ( titresOPC.isEmpty())
@@ -123,6 +115,13 @@ public class MemoryReaderTitre {
 		{
 			readMemoryTitre();
 		}
+		titresAction.removeAll(titresAction);
+		titresObligation.removeAll(titresObligation);
+		titresFuture.removeAll(titresFuture);
+		titresOption.removeAll(titresOption);
+		titresOPC.removeAll(titresOPC);
+		titresForex.removeAll(titresForex);
+		titresCommodities.removeAll(titresCommodities);
 		for ( int i = 0; i < titres.size();++i)
 		{
 			
@@ -144,9 +143,7 @@ public class MemoryReaderTitre {
 					titresOption.add(titres.get(i));
 					break;
 					
-				case PRODUITDERIVE:
-					titresOption.add(titres.get(i));
-					break;
+				
 					
 				case OPC:
 					titresOPC.add(titres.get(i));

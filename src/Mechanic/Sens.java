@@ -6,5 +6,7 @@ public enum Sens {
 	BUYCLOSE,
 	SELLCLOSE,
 	SELLOPEN,
+	BUY,
+	SELL
 
 }
