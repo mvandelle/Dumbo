@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 
 import Mechanic.Client;
 import Mechanic.MemoryClone;
+import Mechanic.OrdreStack;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -19,12 +20,15 @@ public class Loby {
 	private String id;
 	private MemoryClone data;
 	
+	
 	public Loby(String id)
 	{
 		this.id = id;
 		this.data = new MemoryClone(this.id);
 		this.data.initialize();
 		this.data.cloneFile();
+		this.data.getStack().loadOldOrdre();
+		
 	}
 	
 	public String getId() {
@@ -66,7 +70,7 @@ public class Loby {
 
 			@Override
 			public void handle(ActionEvent event) {
-				ActParClient apc = new ActParClient(id);
+				ActParClient apc = new ActParClient(data);
 				try {
 					apc.showActParClient().show();
 				} catch (MalformedURLException e) {
@@ -85,6 +89,12 @@ public class Loby {
         actionTitre.setLayoutX(350);
         actionTitre.setLayoutY(200);
         rootLoby.getChildren().add(actionTitre);
+        
+        Text pipeline = new Text(data.getStack().toString());
+        pipeline.setLayoutX(0);
+        pipeline.setLayoutY(100);
+        rootLoby.getChildren().add(pipeline);
+        
         
         
         

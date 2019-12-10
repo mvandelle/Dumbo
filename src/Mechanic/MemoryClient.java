@@ -34,7 +34,7 @@ public class MemoryClient {
 				
 			} else
 			{
-				Client c = new Client(client.get(i).getName(),client.get(i).getnCompte(),client.get(i).getDep());
+				Client c = new Client(client.get(i).getName(),client.get(i).getnCompte(),client.get(i).getDep(), client.get(i).HasBeenChanged());
 				for ( int j = 0; j < client.size(); ++j)
 				{
 						if ( client.get(j).getnCompte().equals(c.getnCompte()))

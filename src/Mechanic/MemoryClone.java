@@ -17,6 +17,7 @@ public class MemoryClone {
 	MemoryReaderClient memReaderPers;
 	MemoryWriterClient memWriterCom;
 	MemoryWriterClient memWriterPers;
+	OrdreStack stack;
 	
 	public MemoryClone(String id)
 	{
@@ -27,9 +28,21 @@ public class MemoryClone {
 		this.memReaderPers= new MemoryReaderClient(fileClient);
 		this.memWriterCom = new MemoryWriterClient("memory.txt");
 		this.memWriterPers = new MemoryWriterClient(fileClient);
-		
+		this.stack = new OrdreStack(id);
+	
 	}
 	
+	public String getId()
+	{
+		return id;
+	}
+	
+	
+	
+	public MemoryReaderClient getMemReadPers()
+	{
+		return memReaderPers;
+	}
 	public String getFileCient()
 	{
 		return fileClient;
@@ -43,6 +56,7 @@ public class MemoryClone {
 	public void cloneFile()
 	{
 		client = memReaderCom.readMemoryClient();
+		stack.setClient(client);
 		memWriterPers.writeMemoryClient(client);
 	}
 	
@@ -62,9 +76,15 @@ public class MemoryClone {
 	   
 	}
 	
+	public OrdreStack getStack()
+	{
+		return stack;
+	}
+	
 	public void loadClient()
 	{
 		client = memReaderPers.readMemoryClient();
+		stack.setClient(client);
 	}
 	
 	public void initialize()
@@ -75,6 +95,34 @@ public class MemoryClone {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	public void passOrdre(OrdreClient ordre)
+	{
+		if (ordre.getClientNCompte().equals(""))
+		{
+			
+		} else
+		{
+			for ( int i = 0; i < client.size(); ++i)
+				{
+					if ( client.get(i).getnCompte().equals(ordre.getClientNCompte()))
+						{
+							client.get(i).setHasBeenChanged(true);
+							for ( int j = 0; j < ordre.getTitre().size(); ++j)
+								{
+									if ( client.get(i).gettitreISIN().contains(ordre.getTitre().get(j).getisin()))
+										{
+						
+										} else
+										{
+											client.get(i).addTitre(ordre.getTitre().get(j));
+										}	
+								}
+						}
+				}
+			memWriterPers.writeMemoryClient(client);
 		}
 	}
 	

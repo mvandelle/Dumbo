@@ -11,12 +11,12 @@ public class Client {
 	private String depName;
 	private boolean hasBeenChanged;
 
-	public Client(String n, String c, String depName) {
+	public Client(String n, String c, String depName, boolean b) {
 		this.name = n;
 		this.nCompte = c;
 		titreISIN = new ArrayList<>();
 		this.depName = depName;
-		this.hasBeenChanged = false;
+		this.hasBeenChanged = b;
 	}
 	
 	
