@@ -1,6 +1,7 @@
 package Mechanic;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -78,14 +79,14 @@ public class OrdreStack {
 		ordres.add(o);
 	}
 	
-	public String toString()
+	public ArrayList<String> toArrayString()
 	{
-		StringBuilder sb = new StringBuilder();
+		ArrayList<String> sb = new ArrayList<>();
 		for ( int i = 0; i < ordres.size(); ++i)
 		{
-			sb.append(ordres.get(i)+" ");
+			sb.add(ordres.get(i));
 		}
-		return sb.toString();
+		return sb;
 	}
 	
 	

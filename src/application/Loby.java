@@ -90,10 +90,26 @@ public class Loby {
         actionTitre.setLayoutY(200);
         rootLoby.getChildren().add(actionTitre);
         
-        Text pipeline = new Text(data.getStack().toString());
-        pipeline.setLayoutX(0);
-        pipeline.setLayoutY(100);
-        rootLoby.getChildren().add(pipeline);
+        Button seeStack = new Button();
+        seeStack.setText("voir les ordres en attente");
+        seeStack.setLayoutX(250);
+        seeStack.setLayoutY(150);
+        rootLoby.getChildren().add(seeStack);
+        
+        seeStack.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+		public void handle(ActionEvent event) {
+			StackVisu sv = new StackVisu(id);
+			try {
+					sv.showStackVisu().show();
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+        });
         
         
         
