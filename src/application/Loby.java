@@ -25,9 +25,17 @@ public class Loby {
 	{
 		this.id = id;
 		this.data = new MemoryClone(this.id);
-		this.data.initialize();
-		this.data.cloneFile();
+		this.data.getStack().setClient(this.data.getClient());
 		this.data.getStack().loadOldOrdre();
+		
+		if ( data.getStack().isEmpty())
+			{
+				this.data.initialize();
+				this.data.cloneFile();
+			}else
+			{
+				
+			}
 		
 	}
 	
@@ -100,7 +108,7 @@ public class Loby {
 
 			@Override
 		public void handle(ActionEvent event) {
-			StackVisu sv = new StackVisu(id);
+			StackVisu sv = new StackVisu(id, data.getStack());
 			try {
 					sv.showStackVisu().show();
 				} catch (MalformedURLException e) {

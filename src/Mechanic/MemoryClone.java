@@ -29,6 +29,8 @@ public class MemoryClone {
 		this.memWriterCom = new MemoryWriterClient("memory.txt");
 		this.memWriterPers = new MemoryWriterClient(fileClient);
 		this.stack = new OrdreStack(id);
+		client = memReaderCom.readMemoryClient();
+		stack.setClient(client);
 	
 	}
 	

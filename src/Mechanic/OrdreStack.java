@@ -20,6 +20,7 @@ public class OrdreStack {
 		this.id = id;
 		ordres = new ArrayList<>();
 		client = new ArrayList<>();
+	
 		
 	}
 	
@@ -35,16 +36,20 @@ public class OrdreStack {
 		try {
 			in = new BufferedReader(new FileReader("stack"+id+".txt"));
 			String line;
-			while ((line = in.readLine()) != null)
+			while ((line = in.readLine()) != null )
 			{
-				String[] s = line.split("\\*");
-				int indexClient = 0;
-				while(!client.get(indexClient).getnCompte().equals(s[0]))
+				System.out.println(line);
+				if (! line.equals(""))
 				{
-					++indexClient;
-				}
+					String[] s = line.split("\\*");
+					int indexClient = 0;
+					while(!client.get(indexClient).getnCompte().equals(s[0]))
+					{
+						++indexClient;
+					}
 				
-				ordres.add(new OrdreClient(client.get(indexClient), s));
+					ordres.add(new OrdreClient(client.get(indexClient), s));
+				}
 				
 			}
 		} catch (FileNotFoundException e) {
@@ -79,14 +84,45 @@ public class OrdreStack {
 		ordres.add(o);
 	}
 	
-	public ArrayList<String> toArrayString()
+	public String toString()
 	{
-		ArrayList<String> sb = new ArrayList<>();
+		StringBuilder sb = new StringBuilder();
 		for ( int i = 0; i < ordres.size(); ++i)
 		{
-			sb.add(ordres.get(i));
+			sb.append(ordres.get(i)+" ");
 		}
-		return sb;
+		return sb.toString();
+	}
+	
+	public ArrayList<String> showOrdre()
+	{
+		ArrayList<String> o = new ArrayList<>();
+		for ( int i = 0; i < ordres.size(); ++i)
+		{
+			o.add(ordres.get(i).toString());
+		}
+		
+		return o;
+	}
+	
+	public boolean isEmpty()
+	{
+		File stack = new File("stack"+id+".txt");
+		if ( stack.length() == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
+	}
+	
+	public void removeOrdre(int index)
+	{
+		ordres.remove(index);
+		this.writeOnStack();
 	}
 	
 	
