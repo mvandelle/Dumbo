@@ -305,8 +305,8 @@ public class ActParClient {
 			@Override
 			public void handle(ActionEvent event) {
 				clone.passOrdre(ordre);
-				clone.getStack().addOrdre(ordre);
-				clone.getStack().writeOnStack();
+				
+				
 				
 			}
         	

@@ -4,6 +4,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import Mechanic.MemoryClone;
+import Mechanic.OrdreClient;
 import Mechanic.OrdreStack;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +15,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -21,14 +24,14 @@ import javafx.stage.Stage;
 public class StackVisu {
 	
 	private String id;
-	private OrdreStack stack;
+	private MemoryClone data;
 	
 	
 	
-	public StackVisu(String id, OrdreStack stack)
+	public StackVisu(String id, MemoryClone data)
 	{
 		this.id = id;
-		this.stack = stack;
+		this.data = data;
 		
 	}
 	
@@ -57,31 +60,55 @@ public class StackVisu {
         //*********************************************
         
         ListView<String> listOrdres = new ListView<String>();
-        listOrdres.setItems(FXCollections.observableArrayList(stack.showOrdre()));
+        listOrdres.setItems(FXCollections.observableArrayList(data.getStack().showOrdre()));
         rootStackVisuWindow.getChildren().add(listOrdres);
         listOrdres.setLayoutX(300);
         listOrdres.setLayoutY(50);
         listOrdres.setMinSize(600, 600);
+        listOrdres.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         
         Button remove = new Button();
         remove.setText("Supprimer ordre");
         rootStackVisuWindow.getChildren().add(remove);
+        remove.setLayoutX(100);
+        remove.setLayoutY(300);
         remove.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				if ( listOrdres.getSelectionModel().getSelectedIndex()>-1)
 				{
-					stack.removeOrdre(listOrdres.getSelectionModel().getSelectedIndex());
-					listOrdres.setItems(FXCollections.observableArrayList(stack.showOrdre()));
+					data.getStack().removeOrdre( listOrdres.getSelectionModel().getSelectedIndices());
+					listOrdres.setItems(FXCollections.observableArrayList(data.getStack().showOrdre()));
+					data.getStack().writeOnStack();
 				}
 				
 			}
         	
         });
         
-		
-		
+        Button valider = new Button();
+        valider.setText("Valider ordre");
+        rootStackVisuWindow.getChildren().add(valider);
+        valider.setLayoutX(100);
+        valider.setLayoutY(400);
+        valider.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				ArrayList<OrdreClient> interm = new ArrayList<OrdreClient>();
+				
+				interm = data.getStack().ordreToPass(listOrdres.getSelectionModel().getSelectedIndices());
+				data.getStack().removeOrdre( listOrdres.getSelectionModel().getSelectedIndices());
+				listOrdres.setItems(FXCollections.observableArrayList(data.getStack().showOrdre()));
+				data.getStack().writeOnStack();
+				data.ValidOrdre(interm);
+				
+				
+			}
+        });
+        
+        
 		return stageStackVisuWindow;
 	}
 

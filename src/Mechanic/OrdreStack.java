@@ -9,6 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
+
+import javafx.collections.ObservableList;
 
 public class OrdreStack {
 	private String id;
@@ -119,10 +122,22 @@ public class OrdreStack {
 		
 	}
 	
-	public void removeOrdre(int index)
+	public void removeOrdre(ObservableList<Integer> indices)
 	{
-		ordres.remove(index);
-		this.writeOnStack();
+		for ( int i = 0; i < indices.size(); ++i)
+		{
+			ordres.remove(indices.get(i)-i);
+		}
+	}
+	
+	public ArrayList<OrdreClient> ordreToPass(ObservableList<Integer> indices)
+	{
+		ArrayList<OrdreClient> interm = new ArrayList<OrdreClient>();
+		for ( int i = 0; i < indices.size(); ++i)
+		{
+			interm.add(ordres.get(i));
+		}
+		return interm;
 	}
 	
 	

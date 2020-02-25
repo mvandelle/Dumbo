@@ -29,7 +29,7 @@ public class MemoryClone {
 		this.memWriterCom = new MemoryWriterClient("memory.txt");
 		this.memWriterPers = new MemoryWriterClient(fileClient);
 		this.stack = new OrdreStack(id);
-		client = memReaderCom.readMemoryClient();
+		client = memReaderPers.readMemoryClient();
 		stack.setClient(client);
 	
 	}
@@ -78,6 +78,20 @@ public class MemoryClone {
 	   
 	}
 	
+	public boolean isSync()
+	{
+		boolean c = true;
+		for ( int i = 0 ;i < client.size(); ++i)
+		{
+			if ( client.get(i).HasBeenChanged())
+			{
+				c = false;
+			}
+			
+		}
+		return c;
+	}
+	
 	public OrdreStack getStack()
 	{
 		return stack;
@@ -102,28 +116,41 @@ public class MemoryClone {
 	
 	public void passOrdre(OrdreClient ordre)
 	{
-		if (ordre.getClientNCompte().equals(""))
+		
+		
+		stack.addOrdre(ordre);
+		stack.writeOnStack();
+	}
+	
+	public void ValidOrdre(ArrayList<OrdreClient> o)
+	{
+		for ( int k = 0; k < o.size(); ++k)
 		{
-			
-		} else
-		{
-			for ( int i = 0; i < client.size(); ++i)
-				{
-					if ( client.get(i).getnCompte().equals(ordre.getClientNCompte()))
-						{
-							client.get(i).setHasBeenChanged(true);
-							for ( int j = 0; j < ordre.getTitre().size(); ++j)
-								{
-									if ( client.get(i).gettitreISIN().contains(ordre.getTitre().get(j).getisin()))
-										{
-						
-										} else
-										{
-											client.get(i).addTitre(ordre.getTitre().get(j));
-										}	
-								}
-						}
-				}
+			if (o.get(k).getClientNCompte().equals(""))
+			{
+				
+			} else
+			{
+				for ( int i = 0; i < client.size(); ++i)
+					{
+						if ( client.get(i).getnCompte().equals(o.get(k).getClientNCompte()))
+							{
+								client.get(i).setHasBeenChanged(true);
+								for ( int j = 0; j < o.get(k).getTitre().size(); ++j)
+									{
+										if ( client.get(i).gettitreISIN().contains(o.get(k).getTitre().get(j).getisin()))
+											{
+							
+											} else
+											{
+												client.get(i).addTitre(o.get(k).getTitre().get(j));
+											}	
+									}
+							}
+					}
+				
+				
+			}
 			memWriterPers.writeMemoryClient(client);
 		}
 	}
