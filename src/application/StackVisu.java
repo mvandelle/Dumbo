@@ -108,6 +108,21 @@ public class StackVisu {
 			}
         });
         
+        Button clientPDF = new Button();
+        clientPDF.setText("Génerer PDF ordres par client");
+        rootStackVisuWindow.getChildren().add(clientPDF);
+        clientPDF.setLayoutX(1000);
+        clientPDF.setLayoutY(300);
+        clientPDF.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				
+				
+				
+			}
+        });
+        
         
 		return stageStackVisuWindow;
 	}

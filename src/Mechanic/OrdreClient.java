@@ -91,6 +91,11 @@ public class OrdreClient {
 		return client.getnCompte();
 	}
 	
+	public String getClientName()
+	{
+		return client.getName();
+	}
+	
 	public ArrayList<Titre> getTitre()
 	{
 		return titres;
