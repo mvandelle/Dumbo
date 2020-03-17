@@ -96,6 +96,11 @@ public class OrdreClient {
 		return client.getName();
 	}
 	
+	public String getClientDepName()
+	{
+		return client.getDep();
+	}
+	
 	public ArrayList<Titre> getTitre()
 	{
 		return titres;

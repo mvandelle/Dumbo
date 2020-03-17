@@ -1,12 +1,14 @@
 package application;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import Mechanic.MemoryClone;
 import Mechanic.OrdreClient;
 import Mechanic.OrdreStack;
+import Mechanic.PDFGenClient;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,6 +21,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class StackVisu {
@@ -113,11 +116,42 @@ public class StackVisu {
         rootStackVisuWindow.getChildren().add(clientPDF);
         clientPDF.setLayoutX(1000);
         clientPDF.setLayoutY(300);
+        Text error = new Text (200, 450, "  Des ordres pour des clients\n differents ont été selectionné");
+		error.setFill(Color.RED);
+		error.setX(1000);
+		error.setY(350);
         clientPDF.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
+				ArrayList<OrdreClient> interm = new ArrayList<OrdreClient>();
+				interm = data.getStack().ordreToPass(listOrdres.getSelectionModel().getSelectedIndices());
+				String ncompte = interm.get(0).getClientNCompte();
+				Boolean sameClient = true;
+				for ( int i = 1; i < interm.size(); ++i)
+				{
+					if ( !interm.get(i).getClientNCompte().equals(ncompte))
+					{
+						sameClient = false;
+					}
+				}
 				
+				if ( sameClient == false)
+				{
+					rootStackVisuWindow.getChildren().add(error);
+				} else
+				{
+					rootStackVisuWindow.getChildren().remove(error);
+					PDFGenClient pdf = new PDFGenClient(interm);
+					try {
+						pdf.GenPdf();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+					
 				
 				
 			}
