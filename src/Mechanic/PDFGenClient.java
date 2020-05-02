@@ -19,23 +19,24 @@ import be.quodlibet.boxable.Cell;
 import be.quodlibet.boxable.HorizontalAlignment;
 import be.quodlibet.boxable.Row;
 import be.quodlibet.boxable.VerticalAlignment;
+import be.quodlibet.boxable.line.LineStyle;
 
 public class PDFGenClient {
-	private ArrayList<OrdreClient> ordres;
+	private OrdreClient ordres;
 	private MemoryReaderDepositaire depReader;
 	private Depositaire dep1;
 	
-	public PDFGenClient(ArrayList<OrdreClient> ordres)
+	public PDFGenClient(OrdreClient ordres)
 	{
 		this.depReader= new MemoryReaderDepositaire("memoryDep.txt");
 		ArrayList<Depositaire> dep = new ArrayList<Depositaire>();
 		dep = depReader.readMemoryDepositaire();
-		this.ordres = new ArrayList<OrdreClient>();
 		this.ordres = ordres;
+		
 		
 		for ( int i = 0 ; i < dep.size(); ++i)
 		{
-			if ( dep.get(i).getName().equals(ordres.get(0).getClientDepName()))
+			if ( dep.get(i).getName().equals(ordres.getClientDepName()))
 					{
 						this.dep1 = dep.get(i);
 					}
@@ -44,9 +45,7 @@ public class PDFGenClient {
 	
 	public void GenPdf() throws IOException
 	{
-		//DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		//LocalDateTime now = LocalDateTime.now();
-		String outputFileName = ordres.get(0).getClientName()+"-"+ordres.get(0).getClientNCompte()+".pdf";
+		String outputFileName = ordres.getClientName()+"-"+ordres.getClientNCompte()+"test.pdf";
 		PDDocument document = new PDDocument();
         PDPage page = new PDPage(PDRectangle.A4);
         PDImageXObject pdImage = PDImageXObject.createFromFile("athenee.png", document);
@@ -166,11 +165,11 @@ public class PDFGenClient {
         cell2.setFillColor(Color.LIGHT_GRAY);
         
         Row<PDPage> headerRow2_1 = table2.createRow(25);
-        Cell<PDPage> cell2_1 = headerRow2_1.createCell(50, ordres.get(0).getClientName());
+        Cell<PDPage> cell2_1 = headerRow2_1.createCell(50, ordres.getClientName());
         cell2_1.setAlign(HorizontalAlignment.CENTER);
         cell2_1.setValign(VerticalAlignment.MIDDLE);
         
-        cell2_1 = headerRow2_1.createCell(50,ordres.get(0).getClientNCompte());
+        cell2_1 = headerRow2_1.createCell(50,ordres.getClientNCompte());
         cell2_1.setAlign(HorizontalAlignment.CENTER);
         cell2_1.setValign(VerticalAlignment.MIDDLE);
         
@@ -178,6 +177,119 @@ public class PDFGenClient {
         
         
         table2.draw();
+        
+        
+       //*********************TITRES***********************
+        
+        boolean drawContent3 = true;
+        
+        float bottomMargin3 = 70;
+        // y position is your coordinate of top left corner of the table
+        float yPosition3 = 550;
+        float xPosition3 = 20;
+        float tableLarge3 = 550;
+        float mystery3 = 1000;
+        
+
+        BaseTable table3 = new BaseTable(yPosition3, mystery3,
+            bottomMargin3, tableLarge3, xPosition3, document, page, true, drawContent3);
+        
+        Row<PDPage> headerRow3 = table3.createRow(25);
+        Cell<PDPage> cell3 = headerRow3.createCell((float) 12.5, "Valeur");
+        cell3.setAlign(HorizontalAlignment.CENTER);
+        cell3.setValign(VerticalAlignment.MIDDLE);
+        cell3.setFont(fontBold);
+        cell3.setFontSize(10);
+        
+        
+        cell3 = headerRow3.createCell((float) 12.5, "ISIN");
+        cell3.setAlign(HorizontalAlignment.CENTER);
+        cell3.setValign(VerticalAlignment.MIDDLE);
+        cell3.setFont(fontBold);
+        cell3.setFontSize(10);
+        
+        cell3 = headerRow3.createCell((float) 12.5, "Devise");
+        cell3.setAlign(HorizontalAlignment.CENTER);
+        cell3.setValign(VerticalAlignment.MIDDLE);
+        cell3.setFont(fontBold);
+        cell3.setFontSize(10);
+        
+        cell3 = headerRow3.createCell((float) 12.5, "Sens");
+        cell3.setAlign(HorizontalAlignment.CENTER);
+        cell3.setValign(VerticalAlignment.MIDDLE);
+        cell3.setFont(fontBold);
+        cell3.setFontSize(10);
+        
+        cell3 = headerRow3.createCell((float) 12.5, "Quantité");
+        cell3.setAlign(HorizontalAlignment.CENTER);
+        cell3.setValign(VerticalAlignment.MIDDLE);
+        cell3.setFont(fontBold);
+        cell3.setFontSize(10);
+        
+        cell3 = headerRow3.createCell((float) 12.5, "Type");
+        cell3.setAlign(HorizontalAlignment.CENTER);
+        cell3.setValign(VerticalAlignment.MIDDLE);
+        cell3.setFont(fontBold);
+        cell3.setFontSize(10);
+        
+        cell3 = headerRow3.createCell((float) 12.5, "Limite");
+        cell3.setAlign(HorizontalAlignment.CENTER);
+        cell3.setValign(VerticalAlignment.MIDDLE);
+        cell3.setFont(fontBold);
+        cell3.setFontSize(10);
+        
+        cell3 = headerRow3.createCell((float) 12.5, "Echeance");
+        cell3.setAlign(HorizontalAlignment.CENTER);
+        cell3.setValign(VerticalAlignment.MIDDLE);
+        cell3.setFont(fontBold);
+        cell3.setFontSize(10);
+        
+        for ( int i = 0; i < ordres.getTitre().size(); ++i)
+        {
+        	Row<PDPage> headerRow3_1 = table3.createRow(25);
+            Cell<PDPage> cell3_1 = headerRow3_1.createCell((float) 12.5, ordres.getTitre().get(i).getName());
+            
+            cell3_1 = headerRow3_1.createCell((float) 12.5,ordres.getTitre().get(i).getisin());
+            cell3_1 = headerRow3_1.createCell((float) 12.5,ordres.getTitre().get(i).getDevise());
+            cell3_1 = headerRow3_1.createCell((float) 12.5,ordres.getSens().get(i).toString());
+            cell3_1 = headerRow3_1.createCell((float) 12.5,ordres.getQuant().get(i).toString());
+            cell3_1 = headerRow3_1.createCell((float) 12.5,ordres.getTitre().get(i).getType().toString());
+            cell3_1 = headerRow3_1.createCell((float) 12.5,"");
+            cell3_1 = headerRow3_1.createCell((float) 12.5,"");
+        }
+        table3.draw();
+        
+        
+       //**********************INFO***********************
+        
+     
+        boolean drawContent4 = true;
+        
+        float bottomMargin4 = 70;
+        // y position is your coordinate of top left corner of the table
+        float yPosition4 = 125;
+        float xPosition4 = 20;
+        float tableLarge4 = 550;
+        float mystery4 = 1000;
+        
+
+        BaseTable table4 = new BaseTable(yPosition4, mystery4,
+            bottomMargin4, tableLarge4, xPosition4, document, page, true, drawContent4);
+        
+        Row<PDPage> headerRow4 = table4.createRow(25);
+        Cell<PDPage> cell4 = headerRow4.createCell((float) 29,"");
+        cell4.setRightBorderStyle(new LineStyle(Color.WHITE, 0));
+        cell4 = headerRow4.createCell(42, "  ATHENEE CAPITAL SA - QUAI DES BERGUES 23 - CH - GENEVE"+ "               TEL : +41 22 702 09 65 - FAX : +41 22 786 04 81"
+        		+ "              admin@athenee-capital.com - www.athenee-capital.com");
+        cell4.setAlign(HorizontalAlignment.CENTER);
+        cell4.setValign(VerticalAlignment.MIDDLE);
+        cell4.setFontSize(7);
+        cell4.setRightBorderStyle(new LineStyle(Color.WHITE, 0));
+        cell4 = headerRow4.createCell((float) 29,"");
+        
+        
+        
+        table4.draw();
         
         
         

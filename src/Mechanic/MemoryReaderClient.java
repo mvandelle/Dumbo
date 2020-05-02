@@ -23,10 +23,13 @@ public class MemoryReaderClient {
 		r.removeAll(r);
 		BufferedReader in;
 		try {
+			
 			in = new BufferedReader(new FileReader(file));
 			String line;
+			
 			while ((line = in.readLine()) != null)
 			{
+				
 				r.add(new Client(line.split("\\*")));
 			}
 		} catch (FileNotFoundException e) {

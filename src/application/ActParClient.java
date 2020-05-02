@@ -2,11 +2,14 @@ package application;
 
 
 import Mechanic.MemoryReaderClient;
+
 import Mechanic.MemoryReaderTitre;
 import Mechanic.OrdreClient;
 import Mechanic.Sens;
 import Mechanic.Titre;
 import Mechanic.TypeTitre;
+
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -166,11 +170,18 @@ public class ActParClient {
         resumeOrdre.setText("ordre : ");
         rootstageActParClientWindow.getChildren().add(resumeOrdre);
         
-        Text ErrorBuy = new Text();
-        ErrorBuy.setText("Information incomplete pour l'achat");
-        ErrorBuy.setLayoutX(500);
-        ErrorBuy.setLayoutY(600);
+        Text Error = new Text();
+        Error.setText("");
+        Error.setLayoutX(500);
+        Error.setLayoutY(600);
+        rootstageActParClientWindow.getChildren().add(Error);
         
+        TextField Qua = new TextField();
+        Qua.setPromptText("quant.");
+        Qua.setLayoutX(600);
+        Qua.setLayoutY(600);
+        rootstageActParClientWindow.getChildren().add(Qua);
+       
         
         
         //************************************************
@@ -276,24 +287,58 @@ public class ActParClient {
 
 			@Override
 			public void handle(ActionEvent event) {
+				Error.setText("");
 				if ( comboClient.getSelectionModel().getSelectedIndex() == -1 || comboTitres.getSelectionModel().getSelectedIndex() == -1 || sortTitre.getSelectionModel().getSelectedIndex() == -1)
 				{
-					if ( rootstageActParClientWindow.getChildren().contains(ErrorBuy))
-					{
-						
-					}else
-					{
-						rootstageActParClientWindow.getChildren().add(ErrorBuy);
-					}
+					Error.setText("Infromation incomplete");
+					
 				} else
 				{
-					if ( rootstageActParClientWindow.getChildren().contains(ErrorBuy))
+					if ( Qua.getCharacters().toString().isEmpty() || !isInt(Qua.getCharacters().toString()))
 					{
-						rootstageActParClientWindow.getChildren().remove(ErrorBuy);
+						Error.setText("Quantité invalide");
+					} else
+					{	
+						ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()));
+						resumeOrdre.setText("ordre : " +ordre.toString());
 					}
+				}
+				
+			}
+        	
+        });
+        
+        sell.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Error.setText("");
+				if ( comboClient.getSelectionModel().getSelectedIndex() == -1 || comboTitres.getSelectionModel().getSelectedIndex() == -1 || sortTitre.getSelectionModel().getSelectedIndex() == -1)
+				{
+					Error.setText("Information incomplète");
 					
-					ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY);
-					resumeOrdre.setText("ordre : " +ordre.toString());
+				} else
+				{
+					if ( findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).ownTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()).getisin()))
+					{
+						if ( Qua.getCharacters().toString().isEmpty() || !isInt(Qua.getCharacters().toString()))
+						{
+							Error.setText("Quantité invalide");
+						} else
+						{
+							if (findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).hasEnough(findTitre(sortTitre.getSelectionModel().getSelectedIndex(), comboTitres.getSelectionModel().getSelectedItem()).getisin(), Integer.parseInt(Qua.getText())) )
+							{
+								ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()));
+								resumeOrdre.setText("ordre : " +ordre.toString());
+							}else
+							{
+								Error.setText("Quantité insuffisiante");
+							}
+						}
+					} else
+					{
+						Error.setText("Titre non possédé");
+					}
 				}
 				
 			}
@@ -370,5 +415,27 @@ public class ActParClient {
 			}
 		}
 	}
+	
+	public boolean isInt(String a)
+	{
+		try {
+			Integer.parseInt(a);
+		} catch (NumberFormatException e){
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean clientHasEnough(Client c, String isin, int q)
+	{
+		if ( c.gettitreISIN().get(isin) > q)
+		{
+			return true;
+		} else
+		{
+			return false;
+		}
+	}
+	
 
 }

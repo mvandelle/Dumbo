@@ -7,17 +7,20 @@ public class Titre {
 	private String isin;
 	private TypeTitre type;
 	private String devise;
+	private double price;
 	
-	public Titre(String name, String isin,TypeTitre type, String devise)
+	public Titre(String name, String isin,TypeTitre type, String devise, double price)
 	{
 		this.name = name;
 		this.isin = isin;
 		this.type = type;
 		this.devise = devise;
+		this.price = price;
 	}
 	
 	public Titre(String[] s)
 	{
+		
 		this.name = s[0];
 		this.isin = s[1];
 		switch(s[2])
@@ -47,6 +50,7 @@ public class Titre {
 				throw new IllegalArgumentException("Type mismatch in memory file");
 		}
 		this.devise = s[3];
+		this.price = Double.parseDouble(s[4]);
 	}
 
 	public String getName() {
@@ -65,6 +69,11 @@ public class Titre {
 		this.isin = isin;
 	}
 	
+	public String getDevise()
+	{
+		return devise;
+	}
+	
 	public TypeTitre getType()
 	{
 		return type;
@@ -75,26 +84,26 @@ public class Titre {
 		switch(type)
 		{
 			case ACTION:
-				return name+"*"+isin+"*"+"act"+"*"+devise;
+				return name+"*"+isin+"*"+"act"+"*"+devise+"*"+String.valueOf(price);
 			
 			case OBLIGATION:
-				return name+"*"+isin+"*"+"obl"+"*"+devise;
+				return name+"*"+isin+"*"+"obl"+"*"+devise+"*"+String.valueOf(price);
 				
 			case FUTURE:
-				return name+"*"+isin+"*"+"fut"+"*"+devise;
+				return name+"*"+isin+"*"+"fut"+"*"+devise+"*"+String.valueOf(price);
 				
 			case OPTION:
-				return name+"*"+isin+"*"+"opt"+"*"+devise;
+				return name+"*"+isin+"*"+"opt"+"*"+devise+"*"+String.valueOf(price);
 		
 				
 			case OPC:
-				return name+"*"+isin+"*"+"opc"+"*"+devise;
+				return name+"*"+isin+"*"+"opc"+"*"+devise+"*"+String.valueOf(price);
 				
 			case FOREX:
-				return name+"*"+isin+"*"+"for"+"*"+devise;
+				return name+"*"+isin+"*"+"for"+"*"+devise+"*"+String.valueOf(price);
 			
 			case COMMODITIES:
-				return name+"*"+isin+"*"+"com"+"*"+devise;
+				return name+"*"+isin+"*"+"com"+"*"+devise+"*"+String.valueOf(price);
 			
 			default:
 				throw new IllegalArgumentException("Ce titre n'a pas de type");
@@ -108,7 +117,7 @@ public class Titre {
 	
 	public String resumeTitre()
 	{
-		return "Nom : " + name + "\nISIN : " + isin + "\nDevise : " + devise;
+		return "Nom : " + name + "\nISIN : " + isin + "\nPrix :" + String.valueOf(price)+ "\nDevise : " + devise;
 	}
 
 }

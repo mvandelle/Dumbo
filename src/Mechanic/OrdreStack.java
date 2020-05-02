@@ -41,7 +41,7 @@ public class OrdreStack {
 			String line;
 			while ((line = in.readLine()) != null )
 			{
-				System.out.println(line);
+			
 				if (! line.equals(""))
 				{
 					String[] s = line.split("\\*");
@@ -55,6 +55,7 @@ public class OrdreStack {
 				}
 				
 			}
+		
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -130,15 +131,41 @@ public class OrdreStack {
 		}
 	}
 	
+	public Boolean checkSameClient(ObservableList<Integer> indices)
+	{
+		String name0 = ordres.get(indices.get(0)).getClientNCompte();
+		boolean sameName = true;
+		for ( int i = 1; i < indices.size(); ++i)
+		{
+			if ( !name0.equals(ordres.get(indices.get(i)).getClientNCompte()))
+					{
+						
+						sameName = false;
+					}
+		}
+		return sameName;
+	}
 	public ArrayList<OrdreClient> ordreToPass(ObservableList<Integer> indices)
 	{
 		ArrayList<OrdreClient> interm = new ArrayList<OrdreClient>();
 		for ( int i = 0; i < indices.size(); ++i)
 		{
-			interm.add(ordres.get(i));
+			interm.add(ordres.get(indices.get(i)));
 		}
 		return interm;
 	}
+	
+	public OrdreClient createOrdreForPdf(ObservableList<Integer> indices)
+	{
+		OrdreClient newOrdre = new OrdreClient(ordres.get(indices.get(0)).getClient());
+		for ( int i = 0; i < indices.size(); ++i)
+		{
+			newOrdre.addTitre(ordres.get(indices.get(i)).getTitre().get(0), ordres.get(indices.get(i)).getSens().get(0), ordres.get(indices.get(i)).getQuant().get(0));
+		}
+		return newOrdre;
+	}
+	
+
 	
 	
 	

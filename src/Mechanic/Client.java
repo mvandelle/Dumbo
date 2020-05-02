@@ -2,19 +2,21 @@ package Mechanic;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Client {
 
 	private String name;
 	private String nCompte;
-	private ArrayList<String> titreISIN;
+	private HashMap<String,Integer> titreISIN;
 	private String depName;
 	private boolean hasBeenChanged;
 
 	public Client(String n, String c, String depName, boolean b) {
 		this.name = n;
 		this.nCompte = c;
-		titreISIN = new ArrayList<>();
+		titreISIN = new HashMap<>();
 		this.depName = depName;
 		this.hasBeenChanged = b;
 	}
@@ -26,24 +28,55 @@ public class Client {
 		this.nCompte = s[1];
 		this.depName = s[2];
 		this.hasBeenChanged = Boolean.valueOf(s[3]).booleanValue();
-		titreISIN = new ArrayList<>();
+		titreISIN = new HashMap<>();
 		for ( int i = 0; i< s.length-4; ++i)
 		{
-			titreISIN.add(s[4+i]);
+			titreISIN.put(s[4+i],new Integer(s[4+i+1]));
+			++i;
 		}
 		
 	}
 	
-	public void addTitre(Titre titre)
+	public void addTitre(Titre titre, Integer quant)
 	{
-		this.titreISIN.add(titre.getisin());
-		Collections.sort(titreISIN);
+		if ( titreISIN.containsKey(titre.getisin()))
+		{
+			titreISIN.replace(titre.getisin(),titreISIN.get(titre.getisin())+quant);
+		} else
+		{
+			this.titreISIN.put(titre.getisin(),quant);
+		}
+		 if ( titreISIN.get(titre.getisin()) == 0)
+		    {
+		    	
+		    	titreISIN.remove(titre.getisin());
+		    }
 	}
 	
-	public void addTitre(String isin)
+	public void addTitre(HashMap<String,Integer> h)
 	{
-		this.titreISIN.add(isin);
-		Collections.sort(titreISIN);
+		for ( Map.Entry<String, Integer> entry : h.entrySet())
+		{
+			this.titreISIN.put(entry.getKey(), entry.getValue());
+		}
+	}
+	
+	public void addTitre(String isin, Integer quant)
+	{
+		if ( titreISIN.containsKey(isin))
+		{
+			titreISIN.replace(isin,titreISIN.get(isin)+quant);
+		} else
+		{
+			this.titreISIN.put(isin,quant);
+		}
+		
+	    if ( titreISIN.get(isin) == 0)
+	    {
+	    	
+	    	titreISIN.remove(isin);
+	    }
+		
 	}
 
 	public String getName() {
@@ -62,11 +95,11 @@ public class Client {
 		this.nCompte = nC;
 	}
 
-	public ArrayList<String> gettitreISIN() {
+	public HashMap<String,Integer> gettitreISIN() {
 		return titreISIN;
 	}
 
-	public void settitreISIN(ArrayList<String> titreISIN) {
+	public void settitreISIN(HashMap<String,Integer> titreISIN) {
 		this.titreISIN = titreISIN;
 	}
 	
@@ -90,11 +123,9 @@ public class Client {
 	public String toString()
 	{
 		StringBuilder s = new StringBuilder();
-		s.append(name+"*"+nCompte+"*"+depName+"*"+hasBeenChanged);
-		for ( int i = 0; i < titreISIN.size(); ++i)
-		{
-			s.append("*"+titreISIN.get(i));
-			
+		s.append(name+"*"+nCompte+"*"+depName+"*"+hasBeenChanged+"*");
+		for (Map.Entry<String, Integer> entry : titreISIN.entrySet()) {
+		    s.append(entry.getKey() + "*" + entry.getValue());
 		}
 		return s.toString();
 	}
@@ -111,7 +142,7 @@ public class Client {
 		throw new IllegalArgumentException("Depositaire non trouvé dans la base de donné");
 	}
 	
-	public ArrayList<Titre> findTitre(ArrayList<Titre> titre)
+	/*public ArrayList<Titre> findTitre(ArrayList<Titre> titre)
 	{
 		ArrayList<Titre> t = new ArrayList<>();
 		for ( int i = 0; i < titre.size(); ++i)
@@ -125,16 +156,33 @@ public class Client {
 			}
 		}
 		return t;
-	}
+	}*/
 	
 	public String showCLient()
 	{
 		StringBuilder base = new StringBuilder("Nom : " + name + "\nNuméro de compte : " + nCompte + "\nBanque dépositaire : " + depName + "\nISIN possédés : ");
-		for ( int i = 0; i < titreISIN.size(); ++i)
-		{
-			base.append(titreISIN.get(i)+" ");
-		}
+		for (Map.Entry<String, Integer> entry : titreISIN.entrySet()) {
+			    base.append(entry.getKey() + " " );
+			}
+		
 		return base.toString();
+	}
+	
+	public boolean ownTitre(String isin)
+	{
+		boolean result = false;
+		for (Map.Entry<String, Integer> entry : titreISIN.entrySet()) {
+		    if ( entry.getKey().equals(isin))
+		    {
+		    	result = true;
+		    }
+		}
+		return result;
+	}
+	
+	public boolean hasEnough(String isin, int q)
+	{
+		return titreISIN.get(isin) >= q;
 	}
 	
 

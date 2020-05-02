@@ -25,6 +25,10 @@ public class Loby {
 	{
 		this.id = id;
 		this.data = new MemoryClone(this.id);
+		if ( data.getClient().isEmpty())
+		{
+			data.cloneFile();
+		}
 		this.data.getStack().setClient(this.data.getClient());
 		this.data.getStack().loadOldOrdre();
 		
@@ -108,6 +112,7 @@ public class Loby {
 
 			@Override
 		public void handle(ActionEvent event) {
+			data.getStack().loadOldOrdre();
 			StackVisu sv = new StackVisu(id, data);
 			try {
 					sv.showStackVisu().show();

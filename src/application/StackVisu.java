@@ -1,3 +1,4 @@
+
 package application;
 
 import java.io.File;
@@ -124,17 +125,8 @@ public class StackVisu {
 
 			@Override
 			public void handle(ActionEvent event) {
-				ArrayList<OrdreClient> interm = new ArrayList<OrdreClient>();
-				interm = data.getStack().ordreToPass(listOrdres.getSelectionModel().getSelectedIndices());
-				String ncompte = interm.get(0).getClientNCompte();
-				Boolean sameClient = true;
-				for ( int i = 1; i < interm.size(); ++i)
-				{
-					if ( !interm.get(i).getClientNCompte().equals(ncompte))
-					{
-						sameClient = false;
-					}
-				}
+				ObservableList<Integer> indices = listOrdres.getSelectionModel().getSelectedIndices();
+				Boolean sameClient = data.getStack().checkSameClient(indices);
 				
 				if ( sameClient == false)
 				{
@@ -142,7 +134,7 @@ public class StackVisu {
 				} else
 				{
 					rootStackVisuWindow.getChildren().remove(error);
-					PDFGenClient pdf = new PDFGenClient(interm);
+					PDFGenClient pdf = new PDFGenClient(data.getStack().createOrdreForPdf(indices));
 					try {
 						pdf.GenPdf();
 					} catch (IOException e) {

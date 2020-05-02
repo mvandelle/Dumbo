@@ -138,13 +138,8 @@ public class MemoryClone {
 								client.get(i).setHasBeenChanged(true);
 								for ( int j = 0; j < o.get(k).getTitre().size(); ++j)
 									{
-										if ( client.get(i).gettitreISIN().contains(o.get(k).getTitre().get(j).getisin()))
-											{
-							
-											} else
-											{
-												client.get(i).addTitre(o.get(k).getTitre().get(j));
-											}	
+										
+										client.get(i).addTitre(o.get(k).getTitre().get(j),o.get(k).getQuant().get(j));
 									}
 							}
 					}

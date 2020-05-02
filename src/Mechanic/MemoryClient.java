@@ -1,6 +1,7 @@
 package Mechanic;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MemoryClient {
 	
@@ -12,9 +13,9 @@ public class MemoryClient {
 	public ArrayList<String> clientLog(Client client)
 	{
 		ArrayList<String> a = new ArrayList<>();
-		for ( int i = 0; i < client.gettitreISIN().size(); ++i)
+		for ( Map.Entry<String, Integer> entry : client.gettitreISIN().entrySet())
 		{
-			a.add(client.getName()+"*"+client.getnCompte()+"*"+client.getDep()+"*"+client.HasBeenChanged()+"*"+client.gettitreISIN().get(i));
+			a.add(client.getName()+"*"+client.getnCompte()+"*"+client.getDep()+"*"+client.HasBeenChanged()+"*"+entry.getKey()+"*"+entry.getValue());
 		}
 		return a;
 	}
@@ -39,7 +40,7 @@ public class MemoryClient {
 				{
 						if ( client.get(j).getnCompte().equals(c.getnCompte()))
 						{
-							c.addTitre(client.get(j).gettitreISIN().get(0));
+							c.addTitre(client.get(j).gettitreISIN());
 						}
 				}
 				contain.add(c.getnCompte());
