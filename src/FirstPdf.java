@@ -184,24 +184,70 @@ public class FirstPdf {
             bottomMargin2, tableLarge2, xPosition2, document, page, true, drawContent2);
         
         Row<PDPage> headerRow2 = table2.createRow(25);
-        Cell<PDPage> cell2 = headerRow2.createCell(50, "Client");
+        Cell<PDPage> cell2 = headerRow2.createCell(10, "Devise");
         cell2.setAlign(HorizontalAlignment.CENTER);
         cell2.setValign(VerticalAlignment.MIDDLE);
-        cell2.setFont(fontBold);
-        cell2.setFontSize(15);
-        cell2.setFillColor(Color.LIGHT_GRAY);
         
-        cell2 = headerRow2.createCell(50, "Compte");
+        //cell2.setFillColor(Color.LIGHT_GRAY);
+        
+        cell2 = headerRow2.createCell(30, "Nom");
         cell2.setAlign(HorizontalAlignment.CENTER);
         cell2.setValign(VerticalAlignment.MIDDLE);
-        cell2.setFont(fontBold);
-        cell2.setFontSize(15);
-        cell2.setFillColor(Color.LIGHT_GRAY);
         
-        Row<PDPage> headerRow2_1 = table2.createRow(25);
+        //cell2.setFillColor(Color.LIGHT_GRAY);
+        
+        cell2 = headerRow2.createCell(20, "Code");
+        cell2.setAlign(HorizontalAlignment.CENTER);
+        cell2.setValign(VerticalAlignment.MIDDLE);
+        
+        
+        cell2 = headerRow2.createCell(20, "Quantité");
+        cell2.setAlign(HorizontalAlignment.CENTER);
+        cell2.setValign(VerticalAlignment.MIDDLE);
+        
+        
+        cell2 = headerRow2.createCell(20, "Montant");
+        cell2.setAlign(HorizontalAlignment.CENTER);
+        cell2.setValign(VerticalAlignment.MIDDLE);
+        
+        
+        Row<PDPage> headerRow03 = table2.createRow(25);
+        Cell<PDPage> cell03 = headerRow03.createCell(10, "Devise");
+        cell03.setAlign(HorizontalAlignment.CENTER);
+        cell03.setValign(VerticalAlignment.MIDDLE);
+        cell03.setFont(fontBold);
+        
+        //cell2.setFillColor(Color.LIGHT_GRAY);
+        
+        cell03 = headerRow03.createCell(30, "Nom");
+        cell03.setAlign(HorizontalAlignment.CENTER);
+        cell03.setValign(VerticalAlignment.MIDDLE);
+        cell03.setFont(fontBold);
+        
+        //cell2.setFillColor(Color.LIGHT_GRAY);
+        
+        cell03 = headerRow03.createCell(20, "Code");
+        cell03.setAlign(HorizontalAlignment.CENTER);
+        cell03.setValign(VerticalAlignment.MIDDLE);
+        cell03.setFont(fontBold);
+        
+        
+        cell03 = headerRow03.createCell(20, "Quantité");
+        cell03.setAlign(HorizontalAlignment.CENTER);
+        cell03.setValign(VerticalAlignment.MIDDLE);
+        cell03.setFont(fontBold);
+        
+        
+        cell03 = headerRow03.createCell(20, "Montant");
+        cell03.setAlign(HorizontalAlignment.CENTER);
+        cell03.setValign(VerticalAlignment.MIDDLE);
+        cell03.setFont(fontBold);
+        
+        
+        /*Row<PDPage> headerRow2_1 = table2.createRow(25);
         Cell<PDPage> cell2_1 = headerRow2_1.createCell(50, "Client");
         
-        cell2_1 = headerRow2_1.createCell(50,"Compte");
+        cell2_1 = headerRow2_1.createCell(50,"Compte");*/
         
         
         

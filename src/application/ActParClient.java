@@ -44,12 +44,14 @@ public class ActParClient {
 	private MemoryReaderTitre TitRead;
 	private OrdreClient ordre;
 	private MemoryClone clone;
+	private boolean isParClient;
 	
 	
 	
-	public ActParClient(MemoryClone m)
+	public ActParClient(MemoryClone m, boolean mode)
 	{
 		this.id = m.getId();
+	    isParClient = mode;
 		ordre = new OrdreClient();
 		clone = m;
 		clone.loadClient();
@@ -109,6 +111,8 @@ public class ActParClient {
         passOrdre.setLayoutX(700);
         passOrdre.setLayoutY(500);
         rootstageActParClientWindow.getChildren().add(passOrdre);
+        
+        
         
         //**********************************************************
         
@@ -189,6 +193,8 @@ public class ActParClient {
         
         //********** SET ON ACTION **********
         
+       
+        
         
         
         
@@ -197,11 +203,18 @@ public class ActParClient {
 			@Override
 			public void handle(ActionEvent event) {
 				
-				
-				Client selectedClient = findClientFromClientId(comboClient.getSelectionModel().getSelectedItem());
-				resumeClient.setText(selectedClient.showCLient());
-				ordre = new OrdreClient(selectedClient);
-				resumeOrdre.setText("ordre : " +ordre.toString());
+				if ( isParClient)
+				{
+					ordre.Empty();
+					Client selectedClient = findClientFromClientId(comboClient.getSelectionModel().getSelectedItem());
+					resumeClient.setText(selectedClient.showCLient());
+					ordre = new OrdreClient(selectedClient);
+					resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+				} else
+				{
+					Client selectedClient = findClientFromClientId(comboClient.getSelectionModel().getSelectedItem());
+					resumeClient.setText(selectedClient.showCLient());
+				}
 				
 				
 			}
@@ -269,12 +282,27 @@ public class ActParClient {
 			@Override
 			public void handle(ActionEvent event) {
 				
-				if (sortTitre.getSelectionModel().getSelectedIndex()>-1 )
+				if ( isParClient)
 				{
-					resumeTitre.setText(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()).resumeTitre());
+					if (sortTitre.getSelectionModel().getSelectedIndex()>-1 )
+					{
+						resumeTitre.setText(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()).resumeTitre());
+					} else
+					{
+						resumeTitre.setText("");
+					}
 				} else
 				{
-					resumeTitre.setText("");
+					if (sortTitre.getSelectionModel().getSelectedIndex()>-1 )
+					{
+						
+						Titre sTitre = findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem());
+						resumeTitre.setText(sTitre.resumeTitre());
+						ordre.setTitre(sTitre);
+					} else
+					{
+						resumeTitre.setText("");
+					}
 				}
 			}
         	
@@ -287,23 +315,45 @@ public class ActParClient {
 
 			@Override
 			public void handle(ActionEvent event) {
-				Error.setText("");
-				if ( comboClient.getSelectionModel().getSelectedIndex() == -1 || comboTitres.getSelectionModel().getSelectedIndex() == -1 || sortTitre.getSelectionModel().getSelectedIndex() == -1)
+				
+				if ( isParClient)
 				{
-					Error.setText("Infromation incomplete");
+					Error.setText("");
+					if ( comboClient.getSelectionModel().getSelectedIndex() == -1 || comboTitres.getSelectionModel().getSelectedIndex() == -1 || sortTitre.getSelectionModel().getSelectedIndex() == -1)
+					{
+						Error.setText("Infromation incomplete");
 					
+					} else
+					{
+						if ( Qua.getCharacters().toString().isEmpty() || !isInt(Qua.getCharacters().toString()))
+						{
+							Error.setText("Quantité invalide");
+						} else
+						{	
+							ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()));
+							resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+						}
+					}
+				
 				} else
 				{
-					if ( Qua.getCharacters().toString().isEmpty() || !isInt(Qua.getCharacters().toString()))
+					Error.setText("");
+					if ( comboClient.getSelectionModel().getSelectedIndex() == -1 || comboTitres.getSelectionModel().getSelectedIndex() == -1 || sortTitre.getSelectionModel().getSelectedIndex() == -1)
 					{
-						Error.setText("Quantité invalide");
+						Error.setText("Infromation incomplete");
+					
 					} else
-					{	
-						ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()));
-						resumeOrdre.setText("ordre : " +ordre.toString());
+					{
+						if ( Qua.getCharacters().toString().isEmpty() || !isInt(Qua.getCharacters().toString()))
+						{
+							Error.setText("Quantité invalide");
+						} else
+						{	
+							ordre.addClient(findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()));
+							resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+						}
 					}
 				}
-				
 			}
         	
         });
@@ -312,35 +362,68 @@ public class ActParClient {
 
 			@Override
 			public void handle(ActionEvent event) {
-				Error.setText("");
-				if ( comboClient.getSelectionModel().getSelectedIndex() == -1 || comboTitres.getSelectionModel().getSelectedIndex() == -1 || sortTitre.getSelectionModel().getSelectedIndex() == -1)
+				if ( isParClient)
 				{
-					Error.setText("Information incomplète");
-					
-				} else
-				{
-					if ( findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).ownTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()).getisin()))
+					Error.setText("");
+					if ( comboClient.getSelectionModel().getSelectedIndex() == -1 || comboTitres.getSelectionModel().getSelectedIndex() == -1 || sortTitre.getSelectionModel().getSelectedIndex() == -1)
 					{
-						if ( Qua.getCharacters().toString().isEmpty() || !isInt(Qua.getCharacters().toString()))
-						{
-							Error.setText("Quantité invalide");
-						} else
-						{
-							if (findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).hasEnough(findTitre(sortTitre.getSelectionModel().getSelectedIndex(), comboTitres.getSelectionModel().getSelectedItem()).getisin(), Integer.parseInt(Qua.getText())) )
-							{
-								ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()));
-								resumeOrdre.setText("ordre : " +ordre.toString());
-							}else
-							{
-								Error.setText("Quantité insuffisiante");
-							}
-						}
+						Error.setText("Information incomplète");
+					
 					} else
 					{
-						Error.setText("Titre non possédé");
+						if ( findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).ownTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()).getisin()))
+						{
+							if ( Qua.getCharacters().toString().isEmpty() || !isInt(Qua.getCharacters().toString()))
+							{
+								Error.setText("Quantité invalide");
+							} else
+							{
+								if (findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).hasEnough(findTitre(sortTitre.getSelectionModel().getSelectedIndex(), comboTitres.getSelectionModel().getSelectedItem()).getisin(), Integer.parseInt(Qua.getText())) )
+								{
+									ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()));
+									resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+								}else
+								{
+									Error.setText("Quantité insuffisiante");
+								}
+							}
+						} else
+						{
+							Error.setText("Titre non possédé");
+						}
+					}
+				
+				} else
+				{
+					Error.setText("");
+					if ( comboClient.getSelectionModel().getSelectedIndex() == -1 || comboTitres.getSelectionModel().getSelectedIndex() == -1 || sortTitre.getSelectionModel().getSelectedIndex() == -1)
+					{
+						Error.setText("Information incomplète");
+					
+					} else
+					{
+						if ( findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).ownTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()).getisin()))
+						{
+							if ( Qua.getCharacters().toString().isEmpty() || !isInt(Qua.getCharacters().toString()))
+							{
+								Error.setText("Quantité invalide");
+							} else
+							{
+								if (findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).hasEnough(findTitre(sortTitre.getSelectionModel().getSelectedIndex(), comboTitres.getSelectionModel().getSelectedItem()).getisin(), Integer.parseInt(Qua.getText())) )
+								{
+									ordre.addClient(findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()));
+									resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+								}else
+								{
+									Error.setText("Quantité insuffisiante");
+								}
+							}
+						} else
+						{
+							Error.setText("Titre non possédé");
+						}
 					}
 				}
-				
 			}
         	
         });
@@ -349,7 +432,7 @@ public class ActParClient {
 
 			@Override
 			public void handle(ActionEvent event) {
-				clone.passOrdre(ordre);
+				clone.passOrdre(ordre, isParClient);
 				
 				
 				

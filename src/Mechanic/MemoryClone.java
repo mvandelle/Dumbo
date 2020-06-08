@@ -114,12 +114,12 @@ public class MemoryClone {
 		}
 	}
 	
-	public void passOrdre(OrdreClient ordre)
+	public void passOrdre(OrdreClient ordre, boolean mode)
 	{
 		
 		
 		stack.addOrdre(ordre);
-		stack.writeOnStack();
+		stack.writeOnStack(mode);
 	}
 	
 	public void ValidOrdre(ArrayList<OrdreClient> o)

@@ -125,7 +125,7 @@ public class Client {
 		StringBuilder s = new StringBuilder();
 		s.append(name+"*"+nCompte+"*"+depName+"*"+hasBeenChanged+"*");
 		for (Map.Entry<String, Integer> entry : titreISIN.entrySet()) {
-		    s.append(entry.getKey() + "*" + entry.getValue());
+		    s.append(entry.getKey() + "*" + entry.getValue()+"*");
 		}
 		return s.toString();
 	}

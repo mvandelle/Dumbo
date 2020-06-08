@@ -70,7 +70,26 @@ public class OrdreStack {
 		
 		for ( OrdreClient i : ordres)
 		{
-			ligne.addAll(i.ordreLog());
+			ligne.addAll(i.ordreLog(true));
+		}
+        Path fichier = Paths.get("stack"+id+".txt");
+		
+		try {
+			Files.write(fichier, ligne);
+			} 
+		catch (IOException e)
+			{
+					e.printStackTrace();
+			}
+	}
+	
+	public void writeOnStack(boolean mode)
+	{
+		ArrayList<String> ligne = new ArrayList<String>();
+		
+		for ( OrdreClient i : ordres)
+		{
+			ligne.addAll(i.ordreLog(mode));
 		}
         Path fichier = Paths.get("stack"+id+".txt");
 		
@@ -145,8 +164,30 @@ public class OrdreStack {
 		}
 		return sameName;
 	}
+	
+	public Boolean checkSameOrdreAndSameDepo(ObservableList<Integer> indices)
+	{
+		boolean same = true;
+		String isin0 = ordres.get(indices.get(0)).getTitre().get(0).getisin();
+		String dep0 = ordres.get(indices.get(0)).getClientDepName();
+		
+		for ( int i = 1; i < indices.size(); ++i)
+		{
+			if ( !isin0.equals(ordres.get(indices.get(i)).getTitre().get(0).getisin())  || !dep0.equals(ordres.get(indices.get(i)).getClientDepName()))
+			{
+				same = false;
+			}
+		}
+		
+		return same;
+	}
+	
+	
+
+	
 	public ArrayList<OrdreClient> ordreToPass(ObservableList<Integer> indices)
 	{
+		
 		ArrayList<OrdreClient> interm = new ArrayList<OrdreClient>();
 		for ( int i = 0; i < indices.size(); ++i)
 		{
@@ -157,13 +198,29 @@ public class OrdreStack {
 	
 	public OrdreClient createOrdreForPdf(ObservableList<Integer> indices)
 	{
-		OrdreClient newOrdre = new OrdreClient(ordres.get(indices.get(0)).getClient());
+		OrdreClient newOrdre = new OrdreClient(ordres.get(indices.get(0)).getClient().get(0));
 		for ( int i = 0; i < indices.size(); ++i)
 		{
 			newOrdre.addTitre(ordres.get(indices.get(i)).getTitre().get(0), ordres.get(indices.get(i)).getSens().get(0), ordres.get(indices.get(i)).getQuant().get(0));
 		}
 		return newOrdre;
 	}
+	
+	public OrdreClient createOrdreForPdfparOrdre(ObservableList<Integer> indices)
+	{
+		OrdreClient newOrdre = new OrdreClient();
+		newOrdre.setTitre(ordres.get(indices.get(0)).getTitre().get(0));
+		for ( int i = 0; i < indices.size(); ++i)
+		{
+			newOrdre.addClient(ordres.get(indices.get(i)).getClient().get(0), ordres.get(indices.get(i)).getSens().get(0), ordres.get(indices.get(i)).getQuant().get(0));
+		}
+		System.out.println(newOrdre.getClient());
+		return newOrdre;
+		
+	}
+	
+	
+	
 	
 
 	

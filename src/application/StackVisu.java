@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import Mechanic.MemoryClone;
 import Mechanic.OrdreClient;
 import Mechanic.OrdreStack;
+import Mechanic.PDFGenActif;
 import Mechanic.PDFGenClient;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -117,37 +118,115 @@ public class StackVisu {
         rootStackVisuWindow.getChildren().add(clientPDF);
         clientPDF.setLayoutX(1000);
         clientPDF.setLayoutY(300);
-        Text error = new Text (200, 450, "  Des ordres pour des clients\n differents ont été selectionné");
+        
+        Button actifPDF = new Button();
+        actifPDF.setText("Génerer PDF ordres par ordre");
+        rootStackVisuWindow.getChildren().add(actifPDF);
+        actifPDF.setLayoutX(1000);
+        actifPDF.setLayoutY(400);
+        
+        
+        Text error = new Text (200, 450, "  Des ordres pour des clients\n differents ont été selectionnés");
 		error.setFill(Color.RED);
 		error.setX(1000);
 		error.setY(350);
+		
+		Text error2 = new Text (200, 450, "  Des ordres differents ou des\n depositaires differents sont selectionnés");
+		error2.setFill(Color.RED);
+		error2.setX(1000);
+		error2.setY(350);
+		
+		Text error3 = new Text(200, 450, "Aucun ordre selectionné");
+		error3.setFill(Color.RED);
+		error3.setX(1000);
+		error3.setY(350);
+		
         clientPDF.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				ObservableList<Integer> indices = listOrdres.getSelectionModel().getSelectedIndices();
-				Boolean sameClient = data.getStack().checkSameClient(indices);
+			
 				
-				if ( sameClient == false)
-				{
-					rootStackVisuWindow.getChildren().add(error);
-				} else
+				if ( indices.isEmpty())
 				{
 					rootStackVisuWindow.getChildren().remove(error);
-					PDFGenClient pdf = new PDFGenClient(data.getStack().createOrdreForPdf(indices));
-					try {
-						pdf.GenPdf();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					rootStackVisuWindow.getChildren().remove(error2);
+					rootStackVisuWindow.getChildren().remove(error3);
+					rootStackVisuWindow.getChildren().add(error3);
+				} else
+				{
+					Boolean sameClient = data.getStack().checkSameClient(indices);
+				
+					if ( sameClient == false)
+					{
+						rootStackVisuWindow.getChildren().remove(error);
+						rootStackVisuWindow.getChildren().remove(error2);
+						rootStackVisuWindow.getChildren().remove(error3);
+						rootStackVisuWindow.getChildren().add(error);
+					} else
+					{
+						rootStackVisuWindow.getChildren().remove(error);
+						rootStackVisuWindow.getChildren().remove(error2);
+						rootStackVisuWindow.getChildren().remove(error3);
+						PDFGenClient pdf = new PDFGenClient(data.getStack().createOrdreForPdf(indices));
+						try {
+							pdf.GenPdf();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
-					
 				}
 					
 				
 				
 			}
         });
+        
+        actifPDF.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				ObservableList<Integer> indices = listOrdres.getSelectionModel().getSelectedIndices();
+				if ( indices.isEmpty())
+				{
+					rootStackVisuWindow.getChildren().remove(error);
+					rootStackVisuWindow.getChildren().remove(error2);
+					rootStackVisuWindow.getChildren().remove(error3);
+					rootStackVisuWindow.getChildren().add(error3);
+					
+				} else
+				{
+					Boolean sameOrdresAndSameDepo = data.getStack().checkSameOrdreAndSameDepo(indices);
+				
+					if ( sameOrdresAndSameDepo == false)
+					{
+						rootStackVisuWindow.getChildren().remove(error);
+						rootStackVisuWindow.getChildren().remove(error2);
+						rootStackVisuWindow.getChildren().remove(error3);
+						rootStackVisuWindow.getChildren().add(error2);
+					} else
+					{
+						rootStackVisuWindow.getChildren().remove(error2);
+						rootStackVisuWindow.getChildren().remove(error);
+						PDFGenActif pdf = new PDFGenActif(data.getStack().createOrdreForPdfparOrdre(indices));
+						try {
+							pdf.GenPdf();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					
+					}
+				}
+					
+				
+				
+			}
+        });
+        
+        
         
         
 		return stageStackVisuWindow;

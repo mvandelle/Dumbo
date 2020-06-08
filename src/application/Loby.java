@@ -74,7 +74,7 @@ public class Loby {
         
         Button actionClient = new Button();
         actionClient.setText("Par client");
-        actionClient.setLayoutX(100);
+        actionClient.setLayoutX(80);
         actionClient.setLayoutY(200);
         rootLoby.getChildren().add(actionClient);
         
@@ -82,7 +82,7 @@ public class Loby {
 
 			@Override
 			public void handle(ActionEvent event) {
-				ActParClient apc = new ActParClient(data);
+				ActParClient apc = new ActParClient(data, true);
 				try {
 					apc.showActParClient().show();
 				} catch (MalformedURLException e) {
@@ -98,14 +98,31 @@ public class Loby {
         
         Button actionTitre = new Button();
         actionTitre.setText("Par titre");
-        actionTitre.setLayoutX(350);
+        actionTitre.setLayoutX(330);
         actionTitre.setLayoutY(200);
         rootLoby.getChildren().add(actionTitre);
+        actionTitre.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				OrdreParTitre opc = new OrdreParTitre(data);
+				try {
+					opc.showOrdreParTitre().show();
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+        	
+        	
+        
+        });
         
         Button seeStack = new Button();
         seeStack.setText("voir les ordres en attente");
-        seeStack.setLayoutX(250);
-        seeStack.setLayoutY(150);
+        seeStack.setLayoutX(160);
+        seeStack.setLayoutY(300);
         rootLoby.getChildren().add(seeStack);
         
         seeStack.setOnAction(new EventHandler<ActionEvent>() {
