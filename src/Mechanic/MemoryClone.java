@@ -1,6 +1,7 @@
 package Mechanic;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -105,9 +106,11 @@ public class MemoryClone {
 	
 	public void initialize()
 	{
-		Path fichier = Paths.get(fileClient);
-	    try {
-			Files.write(fichier, Arrays.asList(("Empty file")));
+		
+		File f = new File(fileClient);
+		f.delete();
+		try {
+			f.createNewFile();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

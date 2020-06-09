@@ -182,6 +182,7 @@ public class OrdreParTitre {
 			public void handle(ActionEvent event) {
 				clone.passOrdre(ordre, false);
 				
+				
 			}
         	
         	

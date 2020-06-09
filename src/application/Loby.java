@@ -78,6 +78,22 @@ public class Loby {
         actionClient.setLayoutY(200);
         rootLoby.getChildren().add(actionClient);
         
+        Button sync = new Button();
+        sync.setText("Synchroniser");
+        sync.setLayoutX(350);
+        sync.setLayoutY(20);
+        rootLoby.getChildren().add(sync);
+        
+        sync.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				data.sync();
+				
+			}
+        	
+        });
+        
         actionClient.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override

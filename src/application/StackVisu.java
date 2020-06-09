@@ -169,6 +169,7 @@ public class StackVisu {
 						rootStackVisuWindow.getChildren().remove(error);
 						rootStackVisuWindow.getChildren().remove(error2);
 						rootStackVisuWindow.getChildren().remove(error3);
+						indices = data.getStack().addForgottenOrdreClient(indices);
 						PDFGenClient pdf = new PDFGenClient(data.getStack().createOrdreForPdf(indices));
 						try {
 							pdf.GenPdf();
@@ -210,6 +211,9 @@ public class StackVisu {
 					{
 						rootStackVisuWindow.getChildren().remove(error2);
 						rootStackVisuWindow.getChildren().remove(error);
+						System.out.println(indices);
+						indices = data.getStack().addForgottenOrdreActif(indices);
+						System.out.println(indices);
 						PDFGenActif pdf = new PDFGenActif(data.getStack().createOrdreForPdfparOrdre(indices));
 						try {
 							pdf.GenPdf();

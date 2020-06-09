@@ -66,6 +66,14 @@ public class OrdreClient {
 		quant.add(Integer.parseInt(s[7]));
 	}
 	
+	public OrdreClient(OrdreClient o)
+	{
+		titres = new ArrayList<>(o.getTitre());
+		client = new ArrayList<>(o.getClient());
+		quant = new ArrayList<>(o.getQuant());
+		sens = new ArrayList<>(o.getSens());
+	}
+	
 	public ArrayList<Client> getClient()
 	{
 		return client;

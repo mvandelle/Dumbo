@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class OrdreStack {
@@ -89,6 +90,7 @@ public class OrdreStack {
 		
 		for ( OrdreClient i : ordres)
 		{
+			
 			ligne.addAll(i.ordreLog(mode));
 		}
         Path fichier = Paths.get("stack"+id+".txt");
@@ -104,7 +106,7 @@ public class OrdreStack {
 	
 	public void addOrdre(OrdreClient o)
 	{
-		ordres.add(o);
+		ordres.add(new OrdreClient(o));
 	}
 	
 	public String toString()
@@ -148,6 +150,35 @@ public class OrdreStack {
 		{
 			ordres.remove(indices.get(i)-i);
 		}
+	}
+	
+	public ObservableList<Integer> addForgottenOrdreClient(ObservableList<Integer> indices)
+	{
+		ArrayList<Integer> newIndices = new ArrayList<Integer>(indices);
+		for (int i = 0; i < ordres.size(); ++i)
+		{
+			if ( ordres.get(i).getClientNCompte().equals(ordres.get(indices.get(0)).getClientNCompte()) && !indices.contains(i) )
+			{
+				newIndices.add(i);
+			}
+		}
+		return FXCollections.observableArrayList(newIndices);
+	}
+	
+	public ObservableList<Integer> addForgottenOrdreActif(ObservableList<Integer> indices)
+	{
+		ArrayList<Integer> newIndices = new ArrayList<Integer>(indices);
+		
+		for (int i = 0; i < ordres.size(); ++i)
+		{
+			
+			if ( ordres.get(i).getClientDepName().equals(ordres.get(indices.get(0)).getClientDepName()) && !indices.contains(i) && ordres.get(i).getTitre().get(0).getisin().equals(ordres.get(indices.get(0)).getTitre().get(0).getisin()))
+			{
+				
+				newIndices.add(i);
+			}
+		}
+		return FXCollections.observableArrayList(newIndices);
 	}
 	
 	public Boolean checkSameClient(ObservableList<Integer> indices)
@@ -214,7 +245,7 @@ public class OrdreStack {
 		{
 			newOrdre.addClient(ordres.get(indices.get(i)).getClient().get(0), ordres.get(indices.get(i)).getSens().get(0), ordres.get(indices.get(i)).getQuant().get(0));
 		}
-		System.out.println(newOrdre.getClient());
+		
 		return newOrdre;
 		
 	}
