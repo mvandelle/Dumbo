@@ -84,6 +84,8 @@ public class Loby {
         sync.setLayoutY(20);
         rootLoby.getChildren().add(sync);
         
+       
+        
         sync.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override

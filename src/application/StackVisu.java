@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import Mechanic.LogWriter;
 import Mechanic.MemoryClone;
 import Mechanic.OrdreClient;
 import Mechanic.OrdreStack;
@@ -108,6 +109,13 @@ public class StackVisu {
 				listOrdres.setItems(FXCollections.observableArrayList(data.getStack().showOrdre()));
 				data.getStack().writeOnStack();
 				data.ValidOrdre(interm);
+				LogWriter l = new LogWriter();
+				try {
+					l.writeLogOnfile(interm, id);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 				
 			}

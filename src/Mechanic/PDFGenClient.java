@@ -202,7 +202,7 @@ public class PDFGenClient {
         cell3.setFontSize(10);
         
         
-        cell3 = headerRow3.createCell((float) 12.5, "ISIN");
+        cell3 = headerRow3.createCell((float) 12.5, "ISIN/ticker");
         cell3.setAlign(HorizontalAlignment.CENTER);
         cell3.setValign(VerticalAlignment.MIDDLE);
         cell3.setFont(fontBold);

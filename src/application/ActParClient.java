@@ -3,6 +3,8 @@ package application;
 
 import Mechanic.MemoryReaderClient;
 
+
+
 import Mechanic.MemoryReaderTitre;
 import Mechanic.OrdreClient;
 import Mechanic.Sens;
@@ -16,7 +18,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+
+import org.controlsfx.control.PrefixSelectionComboBox;
+
 import Mechanic.Client;
+import Mechanic.ComboBoxAutoComplete;
 import Mechanic.MemoryClone;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +35,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -56,7 +63,7 @@ public class ActParClient {
 		clone = m;
 		clone.loadClient();
 		clientID = new ArrayList<>();
-		this.TitRead = new MemoryReaderTitre("memoryTitre.txt");
+		this.TitRead = new MemoryReaderTitre();
 		TitRead.sortTitre();
 		for ( int i = 0; i < clone.getClient().size(); ++i)
 		{
@@ -95,20 +102,20 @@ public class ActParClient {
         
         Button buy = new Button();
         buy.setText("Acheter");
-        buy.setLayoutX(500);
+        buy.setLayoutX(800);
         buy.setLayoutY(500);
         rootstageActParClientWindow.getChildren().add(buy);
 		
         
         Button sell = new Button();
         sell.setText("Vendre");
-        sell.setLayoutX(600);
+        sell.setLayoutX(900);
         sell.setLayoutY(500);
         rootstageActParClientWindow.getChildren().add(sell);
         
         Button passOrdre = new Button();
         passOrdre.setText("Passer l'ordre");
-        passOrdre.setLayoutX(700);
+        passOrdre.setLayoutX(1000);
         passOrdre.setLayoutY(500);
         rootstageActParClientWindow.getChildren().add(passOrdre);
         
@@ -133,22 +140,33 @@ public class ActParClient {
         ComboBox<String> comboClient = new ComboBox<String>(optionsClient);
         comboClient.setMaxWidth(400);
         comboClient.setLayoutY(150);
-        comboClient.setLayoutX(150);
+        comboClient.setLayoutX(100);
         comboClient.setPromptText("Nom   Compte   Banque");
         rootstageActParClientWindow.getChildren().add(comboClient);
         
         ComboBox<String> comboTitres = new ComboBox<String>(optionsTitre);
 		comboTitres.setMaxWidth(400);
-		comboTitres.setLayoutY(400);
-		comboTitres.setLayoutX(150);
+		comboTitres.setLayoutY(500);
+		comboTitres.setLayoutX(100);
 		comboTitres.setPromptText("Type de titre");
 		rootstageActParClientWindow.getChildren().add(comboTitres);
         
-		ComboBox<String> sortTitre = new ComboBox<String>();
+		PrefixSelectionComboBox<String> sortTitre = new PrefixSelectionComboBox<String>();
+		sortTitre.setTypingDelay((int)Double.POSITIVE_INFINITY);
+		sortTitre.setBackSpaceAllowed(true);
+		sortTitre.setDisplayOnFocusedEnabled(true);
         sortTitre.setMaxWidth(400);
-        sortTitre.setLayoutY(400);
-        sortTitre.setLayoutX(300);
+        sortTitre.setLayoutY(500);
+        sortTitre.setLayoutX(250);
         rootstageActParClientWindow.getChildren().add(sortTitre);
+        
+        
+       
+     
+        
+        
+        
+        
        
         
         //****************************************************************
@@ -156,28 +174,36 @@ public class ActParClient {
         
         //**********TEXT**********
         
-        
         Text resumeClient = new Text();
-        resumeClient.setLayoutX(100);
-        resumeClient.setLayoutY(200);
-        rootstageActParClientWindow.getChildren().add(resumeClient);
         
+       
+        
+        ScrollPane scrollClient = new ScrollPane();
+        scrollClient.setPrefSize(400, 250);
+        scrollClient.setContent(resumeClient);
+        scrollClient.setLayoutX(100);
+        scrollClient.setLayoutY(200);
+        rootstageActParClientWindow.getChildren().add(scrollClient);
         
         Text resumeTitre = new Text();
-        resumeTitre.setLayoutX(600);
-        resumeTitre.setLayoutY(200);
+        resumeTitre.setLayoutX(100);
+        resumeTitre.setLayoutY(550);
         rootstageActParClientWindow.getChildren().add(resumeTitre);
         
         Text resumeOrdre = new Text();
-        resumeOrdre.setLayoutX(800);
-        resumeOrdre.setLayoutY(200);
+        
+        ScrollPane scrollOrdre = new ScrollPane();
+        scrollOrdre.setLayoutX(800);
+        scrollOrdre.setLayoutY(150);
+        scrollOrdre.setPrefSize(400, 300);
         resumeOrdre.setText("ordre : ");
-        rootstageActParClientWindow.getChildren().add(resumeOrdre);
+        scrollOrdre.setContent(resumeOrdre);
+        rootstageActParClientWindow.getChildren().add(scrollOrdre);
         
         Text Error = new Text();
         Error.setText("");
-        Error.setLayoutX(500);
-        Error.setLayoutY(600);
+        Error.setLayoutX(800);
+        Error.setLayoutY(620);
         rootstageActParClientWindow.getChildren().add(Error);
         
         TextField Qua = new TextField();

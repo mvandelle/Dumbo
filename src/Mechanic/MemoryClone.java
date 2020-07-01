@@ -66,8 +66,11 @@ public class MemoryClone {
 	public void sync()
 	{
 		ArrayList<Client> oldMem = memReaderCom.readMemoryClient();
+		
 		for ( int i = 0; i < oldMem.size(); ++i)
 		{
+			
+			
 			if ( client.get(i).HasBeenChanged())
 			{
 				client.get(i).setHasBeenChanged(false);
@@ -127,6 +130,7 @@ public class MemoryClone {
 	
 	public void ValidOrdre(ArrayList<OrdreClient> o)
 	{
+		
 		for ( int k = 0; k < o.size(); ++k)
 		{
 			if (o.get(k).getClientNCompte().equals(""))
@@ -151,6 +155,8 @@ public class MemoryClone {
 			}
 			memWriterPers.writeMemoryClient(client);
 		}
+		
+		
 	}
 	
 

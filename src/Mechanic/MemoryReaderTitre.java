@@ -1,10 +1,19 @@
 package Mechanic;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class MemoryReaderTitre {
 	private String file;
@@ -18,9 +27,8 @@ public class MemoryReaderTitre {
 	private ArrayList<Titre> titresCommodities;
 	
 	
-	public MemoryReaderTitre(String file)
+	public MemoryReaderTitre()
 	{
-		this.file = file;
 		titres = new ArrayList<>();
 		titresAction = new ArrayList<>();
 		titresObligation = new ArrayList<>();
@@ -38,6 +46,11 @@ public class MemoryReaderTitre {
 		}
 		return titresAction;
 	}
+	
+	public void addTitreAction(Titre titre)
+	{
+		titresAction.add(titre);
+	}
 
 	public ArrayList<Titre> getTitresObligation() {
 		if ( titresObligation.isEmpty())
@@ -45,6 +58,11 @@ public class MemoryReaderTitre {
 			sortTitre();
 		}
 		return titresObligation;
+	}
+	
+	public void addTitreObligation(Titre titre)
+	{
+		titresObligation.add(titre);
 	}
 
 	public ArrayList<Titre> getTitresFuture() {
@@ -54,6 +72,11 @@ public class MemoryReaderTitre {
 		}
 		return titresFuture;
 	}
+	
+	public void addTitreFuture(Titre titre)
+	{
+		titresFuture.add(titre);
+	}
 
 	public ArrayList<Titre> getTitresOption() {
 		if ( titresOption.isEmpty())
@@ -61,6 +84,11 @@ public class MemoryReaderTitre {
 			sortTitre();
 		}
 		return titresOption;
+	}
+	
+	public void addTitreOption(Titre titre)
+	{
+		titresOption.add(titre);
 	}
 
 	
@@ -72,6 +100,11 @@ public class MemoryReaderTitre {
 		}
 		return titresOPC;
 	}
+	
+	public void addTitreOPC(Titre titre)
+	{
+		titresOPC.add(titre);
+	}
 
 	public ArrayList<Titre> getTitresForex() {
 		if ( titresForex.isEmpty())
@@ -79,6 +112,11 @@ public class MemoryReaderTitre {
 			sortTitre();
 		}
 		return titresForex;
+	}
+	
+	public void addTitreForex(Titre titre)
+	{
+		titresForex.add(titre);
 	}
 
 	public ArrayList<Titre> getTitresCommodities() {
@@ -88,8 +126,13 @@ public class MemoryReaderTitre {
 		}
 		return titresCommodities;
 	}
+	
+	public void addTitreCommodities(Titre titre)
+	{
+		titresCommodities.add(titre);
+	}
 
-	public ArrayList<Titre> readMemoryTitre()
+	/*public ArrayList<Titre> readMemoryTitre()
 	{
 		titres.removeAll(titres);
 		BufferedReader in;
@@ -107,13 +150,67 @@ public class MemoryReaderTitre {
 		}
 		
 		return titres;
+	}*/
+	
+	public ArrayList<Titre> readMemoryU()
+	{
+		titres.removeAll(titres);
+		DataFormatter stri = new DataFormatter();
+		try {
+			FileInputStream fichier;
+			fichier = new FileInputStream(new File("UNI.xlsx"));
+			XSSFWorkbook wb = new XSSFWorkbook(fichier);
+			XSSFSheet sheet = wb.getSheetAt(0);
+			  for (Row ligne : sheet) {
+				  if (ligne.getRowNum() >= 1)
+				  {
+					  Titre t = new Titre(stri.formatCellValue(ligne.getCell(1)), stri.formatCellValue(ligne.getCell(3)), TypeTitre.ACTION, stri.formatCellValue(ligne.getCell(2)), 0);
+					  titres.add(t);
+				  }
+		       } 
+			  sheet = wb.getSheetAt(1); 
+			  for (Row ligne : sheet)
+			  {
+				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(3)),TypeTitre.OBLIGATION,stri.formatCellValue(ligne.getCell(1)),0);
+				  titres.add(t);
+			  }
+			  
+			  sheet = wb.getSheetAt(2); 
+			  for (Row ligne : sheet)
+			  {
+				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(3)),TypeTitre.FUTURE,stri.formatCellValue(ligne.getCell(1)),0);
+				  titres.add(t);
+			  }
+			  
+			  sheet = wb.getSheetAt(3); 
+			  for (Row ligne : sheet)
+			  {
+				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(3)),TypeTitre.OPTION,stri.formatCellValue(ligne.getCell(1)),0);
+				  titres.add(t);
+			  }
+			  
+			  sheet = wb.getSheetAt(4); 
+			  for (Row ligne : sheet)
+			  {
+				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(3)),TypeTitre.OPC,stri.formatCellValue(ligne.getCell(1)),0);
+				  titres.add(t);
+			  }
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+	       
+	       
+	
+		return titres;
 	}
 	
 	public void sortTitre()
 	{
 		if ( titres.isEmpty())
 		{
-			readMemoryTitre();
+			readMemoryU();
 		}
 		titresAction.removeAll(titresAction);
 		titresObligation.removeAll(titresObligation);
@@ -142,9 +239,6 @@ public class MemoryReaderTitre {
 				case OPTION:
 					titresOption.add(titres.get(i));
 					break;
-					
-				
-					
 				case OPC:
 					titresOPC.add(titres.get(i));
 					break;

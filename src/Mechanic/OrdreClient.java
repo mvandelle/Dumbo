@@ -116,10 +116,10 @@ public class OrdreClient {
 			{
 			
 				StringBuilder sb = new StringBuilder();
-				sb.append(client.get(0).getName()+" ");
 				for ( int i = 0 ; i < titres.size(); ++i)
 				{
 					sb.append(titres.get(i).showTitre()+ " " + sens.get(i).toString()+" "+quant.get(i)+" ");
+					sb.append("\n");
 				}
 				return sb.toString();
 			} else
@@ -142,6 +142,7 @@ public class OrdreClient {
 		for ( int i = 0 ; i < titres.size(); ++i)
 		{
 			sb.append(titres.get(i).showTitre()+ " " + sens.get(i).toString()+" "+quant.get(i)+" ");
+			
 		}
 		return sb.toString();
 	}

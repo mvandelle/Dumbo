@@ -50,7 +50,7 @@ public class OrdreParTitre {
 	{
 		clone = m;
 		clone.loadClient();
-		TitRead = new MemoryReaderTitre("memoryTitre.txt");
+		TitRead = new MemoryReaderTitre();
 		DepRead = new MemoryReaderDepositaire("memoryDep.txt");
 		TitRead.sortTitre();
 		quant = 0;
@@ -104,6 +104,14 @@ public class OrdreParTitre {
         update.setLayoutY(40);
         root.getChildren().add(update);
         
+        Button add = new Button();
+        add.setText("Ajouter un titre");
+        add.setLayoutX(1000);
+        add.setLayoutY(600);
+        root.getChildren().add(add);
+        
+       
+        
         
         ObservableList<String> optionsTitre = 
         	    FXCollections.observableArrayList(
@@ -127,13 +135,13 @@ public class OrdreParTitre {
         TreeTableView<ClientNode> navig = new TreeTableView<ClientNode>();
         navig.setLayoutX(170);
         navig.setLayoutY(200);
-        navig.setMinSize(400, 450);
-        navig.setMaxSize(400, 450);
+        navig.setMinSize(500, 450);
+        navig.setMaxSize(500, 450);
         root.getChildren().add(navig);
         
         TreeTableColumn<ClientNode, String> column1 = new TreeTableColumn<>("Client");
         column1.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
-        column1.setMinWidth(200);
+        column1.setMinWidth(300);
         
         TreeTableColumn<ClientNode, String> column2 = new TreeTableColumn<>("Quantité");
         column2.setCellValueFactory(new TreeItemPropertyValueFactory<>("quant"));
@@ -173,7 +181,24 @@ public class OrdreParTitre {
         Error.setText("");
         Error.setLayoutX(800);
         Error.setLayoutY(400);
-        root.getChildren().add(Error);
+        root.getChildren().add(Error); 
+        
+        add.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				AjoutTitre addWindow = new AjoutTitre(TitRead);
+				comboTitres.getSelectionModel().select(-1);
+				try {
+					addWindow.showAjoutTitre().show();;
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+        	
+        });
         
         
         passageOrdre.setOnAction(new EventHandler<ActionEvent>() {
@@ -298,45 +323,50 @@ public class OrdreParTitre {
 			public void handle(ActionEvent event) {
 				
 				ArrayList<String> sortTitreList = new ArrayList<>();
+				if ( comboTitres.getSelectionModel().getSelectedIndex()!= -1)
+				{
 				
-		        String typeSelected = comboTitres.getSelectionModel().getSelectedItem();
+					String typeSelected = comboTitres.getSelectionModel().getSelectedItem();
 		        
-		        switch ( typeSelected)
-		        {
-		        	case "ACTION":
-		        		TitRead.getTitresAction().forEach(x->sortTitreList.add(x.showTitre()));
-		        		break;
+		        
+					switch ( typeSelected)
+					{
+		        		case "ACTION":
+		        			TitRead.getTitresAction().forEach(x->sortTitreList.add(x.showTitre()));
+		        			break;
 		        		
-		        	case "OBLIGATION":
-		        		TitRead.getTitresObligation().forEach(x->sortTitreList.add(x.showTitre()));
-		        		break;
+		        		case "OBLIGATION":
+		        			TitRead.getTitresObligation().forEach(x->sortTitreList.add(x.showTitre()));
+		        			break;
 		        		
-		        	case "FUTURE":
-		        		TitRead.getTitresFuture().forEach(x->sortTitreList.add(x.showTitre()));
-		        		break;
+		        		case "FUTURE":
+		        			TitRead.getTitresFuture().forEach(x->sortTitreList.add(x.showTitre()));
+		        			break;
 		        		
-		        	case "OPTION":
-		        		TitRead.getTitresOption().forEach(x->sortTitreList.add(x.showTitre()));
-		        		break;
+		        		case "OPTION":
+		        			TitRead.getTitresOption().forEach(x->sortTitreList.add(x.showTitre()));
+		        			break;
 		        	
-		        	case "OPC":
-		        		TitRead.getTitresOPC().forEach(x->sortTitreList.add(x.showTitre()));
-		        		break;
+		        		case "OPC":
+		        			TitRead.getTitresOPC().forEach(x->sortTitreList.add(x.showTitre()));
+		        			break;
 		        		
-		        	case "FOREX":
-		        		TitRead.getTitresForex().forEach(x->sortTitreList.add(x.showTitre()));
-		        		break;
+		        		case "FOREX":
+		        			TitRead.getTitresForex().forEach(x->sortTitreList.add(x.showTitre()));
+		        			break;
 		        		
-		        	case "COMMODITIES":
-		        		TitRead.getTitresCommodities().forEach(x->sortTitreList.add(x.showTitre()));
-		        		break;
+		        		case "COMMODITIES":
+		        			TitRead.getTitresCommodities().forEach(x->sortTitreList.add(x.showTitre()));
+		        			break;
 		        	
-		        	default:
-		        		throw new IllegalArgumentException("Type selected was not found");
+		        			default:
+		        				throw new IllegalArgumentException("Type selected was not found");
 		        		
 		        }
+					
 		        
-		        sortTitre.setItems(FXCollections.observableArrayList(sortTitreList));
+					sortTitre.setItems(FXCollections.observableArrayList(sortTitreList));
+				}
 		        
 		        
 		        
@@ -403,13 +433,16 @@ public class OrdreParTitre {
         TreeItem<ClientNode> Tableroot = new TreeItem<>(new ClientNode(" ", 0));
         for ( int i = 0; i < t.getTree().size(); ++i)
         {
-        	TreeItem<ClientNode> item = new TreeItem<>(t.getTree().get(i).get(0));
-        	for ( int j = 1; j < t.getTree().get(i).size(); ++j)
+        	if ( !t.getTree().get(i).isEmpty())
         	{
+        		TreeItem<ClientNode> item = new TreeItem<>(t.getTree().get(i).get(0));
+        		for ( int j = 1; j < t.getTree().get(i).size(); ++j)
+        			{
         		
-        		item.getChildren().add(new TreeItem<ClientNode>(t.getTree().get(i).get(j)));
+        				item.getChildren().add(new TreeItem<ClientNode>(t.getTree().get(i).get(j)));
+        			}
+        		Tableroot.getChildren().add(item);
         	}
-        	Tableroot.getChildren().add(item);
         }
         navig.setRoot(Tableroot);
         navig.setShowRoot(false);

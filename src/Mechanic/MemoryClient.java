@@ -1,5 +1,9 @@
 package Mechanic;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -24,30 +28,51 @@ public class MemoryClient {
 	
 	public ArrayList<Client> mergeClient(ArrayList<Client> client)
 	{
-		ArrayList<String>contain = new ArrayList<>();
-		ArrayList<Client>mergeClient = new ArrayList<>();
+		ArrayList<Client> allClient = new ArrayList<>();
+		BufferedReader in;
+		try {
+			
+			in = new BufferedReader(new FileReader("Client.txt"));
+			String line;
+			
+			while ((line = in.readLine()) != null)
+			{
+				String[] info = line.split("\\*");
+				
+				allClient.add(new Client(info[0], info[1], info[2], false));
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		
 		for ( int i = 0; i < client.size(); ++i)
 		{
-			String nCompte = client.get(i).getnCompte();
-			
-			if ( contain.contains(nCompte))
+			for (int j = 0; j < allClient.size(); ++j)
 			{
-				
-			} else
-			{
-				Client c = new Client(client.get(i).getName(),client.get(i).getnCompte(),client.get(i).getDep(), client.get(i).HasBeenChanged());
-				for ( int j = 0; j < client.size(); ++j)
+				if (allClient.get(j).getnCompte().equals(client.get(i).getnCompte()))
 				{
-						if ( client.get(j).getnCompte().equals(c.getnCompte()))
-						{
-							c.addTitre(client.get(j).gettitreISIN());
-						}
+					allClient.get(j).addTitre(client.get(i).gettitreISIN());
+					allClient.get(j).setHasBeenChanged(client.get(i).HasBeenChanged());
 				}
-				contain.add(c.getnCompte());
-				mergeClient.add(c);
 			}
 		}
-		return mergeClient;
+		return allClient;
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 
 }

@@ -30,10 +30,11 @@ public class Client {
 		this.hasBeenChanged = Boolean.valueOf(s[3]).booleanValue();
 		titreISIN = new HashMap<>();
 		for ( int i = 0; i< s.length-4; ++i)
-		{
-			titreISIN.put(s[4+i],new Integer(s[4+i+1]));
-			++i;
-		}
+			{
+				titreISIN.put(s[4+i],new Integer(s[4+i+1]));
+				++i;
+			}
+		
 		
 	}
 	
@@ -162,7 +163,7 @@ public class Client {
 	{
 		StringBuilder base = new StringBuilder("Nom : " + name + "\nNuméro de compte : " + nCompte + "\nBanque dépositaire : " + depName + "\nISIN possédés : ");
 		for (Map.Entry<String, Integer> entry : titreISIN.entrySet()) {
-			    base.append(entry.getKey() + " " );
+			    base.append(entry.getKey() + " \n" );
 			}
 		
 		return base.toString();

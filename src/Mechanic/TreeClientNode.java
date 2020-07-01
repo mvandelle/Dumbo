@@ -71,8 +71,14 @@ public class TreeClientNode {
 			{
 				count = count + tree.get(i).get(j).getQuant();
 			}
-			tree.get(i).get(0).setQuant(count);
+			
+			if ( !tree.get(i).isEmpty())
+			{
+				tree.get(i).get(0).setQuant(count);
+			}
+			
 		}
+		
 		
 		
 	}

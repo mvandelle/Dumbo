@@ -28,7 +28,7 @@ public class test {
 		//MemoryWriterClient mr = new MemoryWriterClient("memory.txt");
 		//mr.writeMemoryClient(t.mergeClient(c));
 		
-		MemoryReaderTitre mt = new MemoryReaderTitre("memoryTitre.txt");
+		MemoryReaderTitre mt = new MemoryReaderTitre();
 		mt.sortTitre();
 		mt.getTitresAction().forEach(x->x.showTitre());
 		System.out.println(mt.getTitresAction());

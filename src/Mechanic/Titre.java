@@ -1,7 +1,7 @@
 package Mechanic;
 
 
-public class Titre {
+public class Titre implements Comparable<Titre>{
 	
 	private String name;
 	private String isin;
@@ -118,6 +118,12 @@ public class Titre {
 	public String resumeTitre()
 	{
 		return "Nom : " + name + "\nISIN : " + isin + "\nPrix :" + String.valueOf(price)+ "\nDevise : " + devise;
+	}
+
+	@Override
+	public int compareTo(Titre o) {
+		// TODO Auto-generated method stub
+		return this.getName().toLowerCase().compareTo(o.getName().toLowerCase());
 	}
 
 }
