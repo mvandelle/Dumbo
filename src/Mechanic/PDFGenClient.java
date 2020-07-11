@@ -1,6 +1,8 @@
 package Mechanic;
 
 import java.awt.Color;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -299,6 +301,7 @@ public class PDFGenClient {
         cos.close();
         document.save(outputFileName);
         document.close();
+        Desktop.getDesktop().open(new File(outputFileName));
 		
 	}
 	

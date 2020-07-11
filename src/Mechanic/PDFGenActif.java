@@ -1,6 +1,8 @@
 package Mechanic;
 
 import java.awt.Color;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -367,7 +369,9 @@ public class PDFGenActif {
         
         cos.close();
         document.save(outputFileName);
+        
         document.close();
+        Desktop.getDesktop().open(new File(outputFileName));
         
         
 	}

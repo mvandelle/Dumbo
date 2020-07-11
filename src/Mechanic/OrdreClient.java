@@ -216,6 +216,26 @@ public class OrdreClient {
 		quant.removeAll(quant);
 	}
 	
+	public void initializeParTitre()
+	{
+		client.removeAll(client);
+		sens.removeAll(sens);
+		quant.removeAll(quant);
+		
+	}
+	
+	public void initializeParClient()
+	{
+		titres.removeAll(titres);
+		sens.removeAll(sens);
+		quant.removeAll(quant);
+	}
+	
+	public boolean isEmpty()
+	{
+		return client.isEmpty() || titres.isEmpty();
+	}
+	
 	
 
 }

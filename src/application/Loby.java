@@ -55,7 +55,7 @@ public class Loby {
 	{
 		//base de la fenetre
 		Stage stageLoby = new Stage();
-    	stageLoby.setTitle(id + " Loby");
+    	stageLoby.setTitle(id + " Page de démarrage");
     	Group rootLoby = new Group();
         Scene sceneLoby = new Scene(rootLoby, 500, 500, Color.WHITE);
         stageLoby.setScene(sceneLoby);

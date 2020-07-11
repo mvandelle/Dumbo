@@ -200,11 +200,7 @@ public class ActParClient {
         scrollOrdre.setContent(resumeOrdre);
         rootstageActParClientWindow.getChildren().add(scrollOrdre);
         
-        Text Error = new Text();
-        Error.setText("");
-        Error.setLayoutX(800);
-        Error.setLayoutY(620);
-        rootstageActParClientWindow.getChildren().add(Error);
+       
         
         TextField Qua = new TextField();
         Qua.setPromptText("quant.");
@@ -255,45 +251,47 @@ public class ActParClient {
 			public void handle(ActionEvent event) {
 				
 				ArrayList<String> sortTitreList = new ArrayList<>();
-				
-		        String typeSelected = comboTitres.getSelectionModel().getSelectedItem();
-		        
-		        switch ( typeSelected)
-		        {
-		        	case "ACTION":
-		        		TitRead.getTitresAction().forEach(x->sortTitreList.add(x.showTitre()));
-		        		break;
+				if (comboTitres.getSelectionModel().getSelectedIndex()!= -1)
+				{
+					String typeSelected = comboTitres.getSelectionModel().getSelectedItem();
+					
+					switch ( typeSelected)
+					{
+		        		case "ACTION":
+		        			TitRead.getTitresAction().forEach(x->sortTitreList.add(x.showTitre()));
+			        		break;
+			        		
+		        		case "OBLIGATION":
+		        			TitRead.getTitresObligation().forEach(x->sortTitreList.add(x.showTitre()));
+		        			break;
 		        		
-		        	case "OBLIGATION":
-		        		TitRead.getTitresObligation().forEach(x->sortTitreList.add(x.showTitre()));
-		        		break;
+		        		case "FUTURE":
+		        			TitRead.getTitresFuture().forEach(x->sortTitreList.add(x.showTitre()));
+		        			break;
 		        		
-		        	case "FUTURE":
-		        		TitRead.getTitresFuture().forEach(x->sortTitreList.add(x.showTitre()));
-		        		break;
-		        		
-		        	case "OPTION":
-		        		TitRead.getTitresOption().forEach(x->sortTitreList.add(x.showTitre()));
-		        		break;
+		        		case "OPTION":
+		        			TitRead.getTitresOption().forEach(x->sortTitreList.add(x.showTitre()));
+		        			break;
 		        	
-		        	case "OPC":
-		        		TitRead.getTitresOPC().forEach(x->sortTitreList.add(x.showTitre()));
-		        		break;
+		        		case "OPC":
+		        			TitRead.getTitresOPC().forEach(x->sortTitreList.add(x.showTitre()));
+		        			break;
 		        		
-		        	case "FOREX":
-		        		TitRead.getTitresForex().forEach(x->sortTitreList.add(x.showTitre()));
-		        		break;
+		        		case "FOREX":
+		        			TitRead.getTitresForex().forEach(x->sortTitreList.add(x.showTitre()));
+		        			break;
 		        		
-		        	case "COMMODITIES":
-		        		TitRead.getTitresCommodities().forEach(x->sortTitreList.add(x.showTitre()));
-		        		break;
+		        		case "COMMODITIES":
+		        			TitRead.getTitresCommodities().forEach(x->sortTitreList.add(x.showTitre()));
+		        			break;
 		        	
-		        	default:
-		        		throw new IllegalArgumentException("Type selected was not found");
+		        		default:
+		        			throw new IllegalArgumentException("Type selected was not found");
 		        		
-		        }
+					}
 		        
-		        sortTitre.setItems(FXCollections.observableArrayList(sortTitreList));
+					sortTitre.setItems(FXCollections.observableArrayList(sortTitreList));
+				}
 		        
 		        
 		        
@@ -342,18 +340,18 @@ public class ActParClient {
 			@Override
 			public void handle(ActionEvent event) {
 				
-				if ( isParClient)
-				{
-					Error.setText("");
+				
 					if ( comboClient.getSelectionModel().getSelectedIndex() == -1 || comboTitres.getSelectionModel().getSelectedIndex() == -1 || sortTitre.getSelectionModel().getSelectedIndex() == -1)
 					{
-						Error.setText("Infromation incomplete");
+						PopupControl p = new PopupControl("Information incomplète", false, stageActParClientWindow);
+				        p.show();
 					
 					} else
 					{
 						if ( Qua.getCharacters().toString().isEmpty() || !isInt(Qua.getCharacters().toString()))
 						{
-							Error.setText("Quantité invalide");
+							PopupControl p = new PopupControl("Quantité invalide", false, stageActParClientWindow);
+					        p.show();
 						} else
 						{	
 							ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()));
@@ -361,25 +359,7 @@ public class ActParClient {
 						}
 					}
 				
-				} else
-				{
-					Error.setText("");
-					if ( comboClient.getSelectionModel().getSelectedIndex() == -1 || comboTitres.getSelectionModel().getSelectedIndex() == -1 || sortTitre.getSelectionModel().getSelectedIndex() == -1)
-					{
-						Error.setText("Infromation incomplete");
-					
-					} else
-					{
-						if ( Qua.getCharacters().toString().isEmpty() || !isInt(Qua.getCharacters().toString()))
-						{
-							Error.setText("Quantité invalide");
-						} else
-						{	
-							ordre.addClient(findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()));
-							resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
-						}
-					}
-				}
+				
 			}
         	
         });
@@ -388,12 +368,12 @@ public class ActParClient {
 
 			@Override
 			public void handle(ActionEvent event) {
-				if ( isParClient)
-				{
-					Error.setText("");
+				
+					
 					if ( comboClient.getSelectionModel().getSelectedIndex() == -1 || comboTitres.getSelectionModel().getSelectedIndex() == -1 || sortTitre.getSelectionModel().getSelectedIndex() == -1)
 					{
-						Error.setText("Information incomplète");
+						PopupControl p = new PopupControl("Information incomplète", false, stageActParClientWindow);
+				        p.show();
 					
 					} else
 					{
@@ -401,7 +381,8 @@ public class ActParClient {
 						{
 							if ( Qua.getCharacters().toString().isEmpty() || !isInt(Qua.getCharacters().toString()))
 							{
-								Error.setText("Quantité invalide");
+								PopupControl p = new PopupControl("Quantité invalide", false, stageActParClientWindow);
+						        p.show();
 							} else
 							{
 								if (findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).hasEnough(findTitre(sortTitre.getSelectionModel().getSelectedIndex(), comboTitres.getSelectionModel().getSelectedItem()).getisin(), Integer.parseInt(Qua.getText())) )
@@ -410,46 +391,18 @@ public class ActParClient {
 									resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
 								}else
 								{
-									Error.setText("Quantité insuffisiante");
+									PopupControl p = new PopupControl("Quantité insuffisante", false, stageActParClientWindow);
+							        p.show();
 								}
 							}
 						} else
 						{
-							Error.setText("Titre non possédé");
+							PopupControl p = new PopupControl("Le client ne possède pas ce titre", false, stageActParClientWindow);
+					        p.show();
 						}
 					}
 				
-				} else
-				{
-					Error.setText("");
-					if ( comboClient.getSelectionModel().getSelectedIndex() == -1 || comboTitres.getSelectionModel().getSelectedIndex() == -1 || sortTitre.getSelectionModel().getSelectedIndex() == -1)
-					{
-						Error.setText("Information incomplète");
-					
-					} else
-					{
-						if ( findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).ownTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()).getisin()))
-						{
-							if ( Qua.getCharacters().toString().isEmpty() || !isInt(Qua.getCharacters().toString()))
-							{
-								Error.setText("Quantité invalide");
-							} else
-							{
-								if (findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).hasEnough(findTitre(sortTitre.getSelectionModel().getSelectedIndex(), comboTitres.getSelectionModel().getSelectedItem()).getisin(), Integer.parseInt(Qua.getText())) )
-								{
-									ordre.addClient(findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()));
-									resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
-								}else
-								{
-									Error.setText("Quantité insuffisiante");
-								}
-							}
-						} else
-						{
-							Error.setText("Titre non possédé");
-						}
-					}
-				}
+				
 			}
         	
         });
@@ -458,9 +411,20 @@ public class ActParClient {
 
 			@Override
 			public void handle(ActionEvent event) {
-				clone.passOrdre(ordre, isParClient);
-				
-				
+				if ( ordre.isEmpty())
+				{
+					PopupControl p = new PopupControl("Ordre vide", false, stageActParClientWindow);
+			        p.show();
+				} else
+				{
+					clone.passOrdre(ordre, isParClient);
+					comboTitres.getSelectionModel().select(-1);
+					sortTitre.getSelectionModel().select(-1);
+					ordre.initializeParClient();
+					
+					PopupControl p = new PopupControl("Ordre passé", true, stageActParClientWindow);
+			        p.show();
+				}
 				
 			}
         	

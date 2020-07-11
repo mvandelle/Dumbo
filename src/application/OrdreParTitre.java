@@ -2,6 +2,8 @@ package application;
 
 
 
+
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
@@ -35,9 +38,14 @@ import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class OrdreParTitre {
 	private MemoryReaderTitre TitRead;
@@ -45,6 +53,8 @@ public class OrdreParTitre {
 	private OrdreClient ordre;
 	private MemoryClone clone;
 	private int quant;
+	private boolean isBuy;
+	private TreeTableView<ClientNode> navig;
 	
 	public OrdreParTitre(MemoryClone m)
 	{
@@ -55,12 +65,14 @@ public class OrdreParTitre {
 		TitRead.sortTitre();
 		quant = 0;
 		ordre = new OrdreClient();
+		isBuy = true;
+		navig = new TreeTableView<ClientNode>();
 	}
 	
 	public Stage showOrdreParTitre() throws MalformedURLException
 	{
 		Stage s = new Stage();
-		s.setTitle("Ordre par titre");
+		s.setTitle("Passage d'ordre par Titre");
 		Group root = new Group();
 		Scene scene = new Scene(root, 2000,2000, Color.WHITE);
 		s.setScene(scene);
@@ -85,6 +97,12 @@ public class OrdreParTitre {
         quantTot.setScaleY(1.7);
         root.getChildren().add(quantTot);
         
+      
+        
+     
+       
+        
+        
         
         Text resumeQuant = new Text("Quantité restante : " + quant);
         resumeQuant.setScaleX(2);
@@ -93,16 +111,20 @@ public class OrdreParTitre {
         resumeQuant.setLayoutY(70);
         root.getChildren().add(resumeQuant);
         
-        Text errorQuant = new Text("La quantité selectionné est eronnée");
-        errorQuant.setLayoutX(800);
-        errorQuant.setLayoutY(100);
+        
 
         
         Button update = new Button();
         update.setText("Mise a jour \nde la quantité");
-        update.setLayoutX(1050);
-        update.setLayoutY(40);
+        update.setLayoutX(750);
+        update.setLayoutY(100);
         root.getChildren().add(update);
+        
+        Button switche = new Button();
+        switche.setText("MODE : BUY");
+        switche.setLayoutX(875);
+        switche.setLayoutY(100);
+        root.getChildren().add(switche);
         
         Button add = new Button();
         add.setText("Ajouter un titre");
@@ -132,7 +154,7 @@ public class OrdreParTitre {
         sortTitre.setLayoutX(320);
         root.getChildren().add(sortTitre);
         
-        TreeTableView<ClientNode> navig = new TreeTableView<ClientNode>();
+        
         navig.setLayoutX(170);
         navig.setLayoutY(200);
         navig.setMinSize(500, 450);
@@ -171,17 +193,50 @@ public class OrdreParTitre {
         passageOrdre.setLayoutY(400);
         root.getChildren().add(passageOrdre);
         
+        Button startOver = new Button();
+        startOver.setText("Annuler et recommencer");
+        startOver.setLayoutX(1000);
+        startOver.setLayoutY(100);
+        root.getChildren().add(startOver);
+        
         TextField Qua = new TextField();
         Qua.setPromptText("quant.");
         Qua.setLayoutX(800);
         Qua.setLayoutY(350);
         root.getChildren().add(Qua);
         
-        Text Error = new Text();
-        Error.setText("");
-        Error.setLayoutX(800);
-        Error.setLayoutY(400);
-        root.getChildren().add(Error); 
+        
+        
+        
+        switche.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				
+				if ( ordre.isEmpty())
+				{
+					if ( isBuy)
+					{
+						isBuy = false;
+						switche.setText("MODE : SELL");
+					
+					}else
+					{
+						isBuy = true;
+						switche.setText("MODE : BUY");
+					
+					
+					}
+				} else
+				{
+					PopupControl p = new PopupControl("Ordre deja commencé", false, s);
+					p.show();
+				}
+				
+			}
+        	
+        	
+        });
         
         add.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -200,12 +255,89 @@ public class OrdreParTitre {
         	
         });
         
+        startOver.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				quantTot.setText("");
+				Qua.setText("");
+				comboTitres.getSelectionModel().select(-1);
+				sortTitre.getSelectionModel().select(-1);
+				quant = 0;
+				resumeQuant.setText("Quantité restante : " + quant);
+				ordre.initializeParTitre();
+				navig = new TreeTableView<ClientNode>();
+				navig.setLayoutX(170);
+				navig.setLayoutY(200);
+				navig.setMinSize(500, 450);
+				navig.setMaxSize(500, 450);
+				root.getChildren().add(navig);
+	        
+				TreeTableColumn<ClientNode, String> column1 = new TreeTableColumn<>("Client");
+				column1.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
+				column1.setMinWidth(300);
+	        
+				TreeTableColumn<ClientNode, String> column2 = new TreeTableColumn<>("Quantité");
+				column2.setCellValueFactory(new TreeItemPropertyValueFactory<>("quant"));
+				
+				TreeTableColumn<ClientNode, String> column3 = new TreeTableColumn<>("En cours");
+				column3.setCellValueFactory(new TreeItemPropertyValueFactory<>("modif"));
+	        
+				navig.getColumns().add(column1);
+				navig.getColumns().add(column2);
+				navig.getColumns().add(column3);
+				PopupControl p = new PopupControl("Page reinitialisée", true, s);
+				p.show();
+				
+			}
+        	
+        	
+        });
+        
         
         passageOrdre.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				clone.passOrdre(ordre, false);
+				
+				if ( ordre.isEmpty())
+				{
+					PopupControl p = new PopupControl("Ordre vide", false, s);
+			        p.show();
+				} else
+				{
+					clone.passOrdre(ordre, false);
+				
+					Qua.setText("");
+					comboTitres.getSelectionModel().select(-1);
+					sortTitre.getSelectionModel().select(-1);
+					quant = 0;
+					resumeQuant.setText("Quantité restante : " + quant);
+					ordre.initializeParTitre();
+					navig = new TreeTableView<ClientNode>();
+					navig.setLayoutX(170);
+					navig.setLayoutY(200);
+					navig.setMinSize(500, 450);
+					navig.setMaxSize(500, 450);
+					root.getChildren().add(navig);
+		        
+					TreeTableColumn<ClientNode, String> column1 = new TreeTableColumn<>("Client");
+					column1.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
+					column1.setMinWidth(300);
+		        
+					TreeTableColumn<ClientNode, String> column2 = new TreeTableColumn<>("Quantité");
+					column2.setCellValueFactory(new TreeItemPropertyValueFactory<>("quant"));
+					
+					TreeTableColumn<ClientNode, String> column3 = new TreeTableColumn<>("En cours");
+					column3.setCellValueFactory(new TreeItemPropertyValueFactory<>("modif"));
+		        
+					navig.getColumns().add(column1);
+					navig.getColumns().add(column2);
+					navig.getColumns().add(column3);
+					PopupControl p = new PopupControl("Ordre passé", true, s);
+					p.show();
+				}
+			
 				
 				
 			}
@@ -220,20 +352,38 @@ public class OrdreParTitre {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				Error.setText("");
+				
 				if ( navig.getSelectionModel().getSelectedIndex() != -1 && !navig.getSelectionModel().getSelectedItem().getParent().getValue().getName().equals(" "))
 				{
 					if (Qua.getCharacters().toString().isEmpty() || !isInt(Qua.getCharacters().toString()))
 					{
-						Error.setText("Quantité invalide");
+						PopupControl p = new PopupControl("Quantité non valide", false, s);
+				        p.show();
 					} else
 					{
-						navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()-Integer.parseInt(Qua.getCharacters().toString()));
-						navig.getColumns().remove(column3);
-						navig.getColumns().add(column3);
-						quant = quant + Integer.parseInt(Qua.getCharacters().toString());
-						resumeQuant.setText("Quantité restante : " + quant);
-						ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.SELL, Integer.parseInt(Qua.getCharacters().toString()));
+						
+						
+						if ( isBuy)
+						{
+							PopupControl p = new PopupControl("Impossible de vendre en mode \n                      BUY", false, s);
+					        p.show();
+						}else
+						{
+							if( quant - Integer.parseInt(Qua.getCharacters().toString())>= 0 && findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()).hasEnough(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()).getisin(), Integer.parseInt(Qua.getCharacters().toString())))
+							{
+								navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()-Integer.parseInt(Qua.getCharacters().toString()));
+								navig.getColumns().remove(column3);
+								navig.getColumns().add(column3);
+								quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+								resumeQuant.setText("Quantité restante : " + quant);
+								ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.SELL, Integer.parseInt(Qua.getCharacters().toString()));
+							} else
+							{
+								PopupControl p = new PopupControl("Quantité insuffisante", false, s);
+						        p.show();
+							}
+						}
+						
 						
 					}
 					
@@ -247,20 +397,39 @@ public class OrdreParTitre {
 
 			@Override
 			public void handle(ActionEvent event) {
-				Error.setText("");
+				;
 				if ( navig.getSelectionModel().getSelectedIndex() != -1 && !navig.getSelectionModel().getSelectedItem().getParent().getValue().getName().equals(" "))
 				{
 					if (Qua.getCharacters().toString().isEmpty() || !isInt(Qua.getCharacters().toString()))
 					{
-						Error.setText("Quantité invalide");
+						PopupControl p = new PopupControl("Quantité non valide", false, s);
+				        p.show();
 					} else
 					{
-						navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()+Integer.parseInt(Qua.getCharacters().toString()));
-						navig.getColumns().remove(column3);
-						navig.getColumns().add(column3);
-						quant = quant - Integer.parseInt(Qua.getCharacters().toString());
-						resumeQuant.setText("Quantité restante : " + quant);
-						ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.BUY, Integer.parseInt(Qua.getCharacters().toString()));
+						
+						if ( isBuy)
+						{
+							
+							if ( quant - Integer.parseInt(Qua.getCharacters().toString()) >= 0)
+							{
+								quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+								resumeQuant.setText("Quantité restante : " + quant);
+								navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()+Integer.parseInt(Qua.getCharacters().toString()));
+								navig.getColumns().remove(column3);
+								navig.getColumns().add(column3);
+								ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.BUY, Integer.parseInt(Qua.getCharacters().toString()));
+							} else
+							{
+								PopupControl p = new PopupControl("Quantité insuffisante", false, s);
+						        p.show();
+							}
+						}else
+						{
+							PopupControl p = new PopupControl("Impossible d'acheter en mode \n                  SELL", false, s);
+					        p.show();
+						}
+						
+						
 					}
 					
 				}
@@ -298,17 +467,17 @@ public class OrdreParTitre {
 
 			@Override
 			public void handle(ActionEvent event) {
-				root.getChildren().remove(errorQuant);
+				
 				int newQuant = quant;
 				
 				try {
 						newQuant = Integer.parseInt(quantTot.getText());
 				} catch ( NumberFormatException e)
 				{
-					
-					root.getChildren().add(errorQuant);
+					PopupControl p = new PopupControl("Quantité non valide", false, s);
+			        p.show();
 				}
-				quant = newQuant;
+				quant = quant + newQuant;
 				resumeQuant.setText("Quantité restante : " + quant);
 				
 				
@@ -472,6 +641,8 @@ public class OrdreParTitre {
 		throw new IllegalArgumentException("Client was not found");
 		
 	}
+	
+
 	
 	
 	
