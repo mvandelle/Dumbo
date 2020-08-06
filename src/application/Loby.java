@@ -3,6 +3,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 
 import Mechanic.Client;
+import Mechanic.DateFileManager;
 import Mechanic.MemoryClone;
 import Mechanic.OrdreStack;
 import javafx.event.ActionEvent;
@@ -19,10 +20,12 @@ import javafx.stage.Stage;
 public class Loby {
 	private String id;
 	private MemoryClone data;
+	private DateFileManager dateMan;
 	
 	
 	public Loby(String id)
 	{
+		dateMan = new DateFileManager();
 		this.id = id;
 		this.data = new MemoryClone(this.id);
 		if ( data.getClient().isEmpty())
@@ -84,6 +87,11 @@ public class Loby {
         sync.setLayoutY(20);
         rootLoby.getChildren().add(sync);
         
+        
+        Text lastSync = new Text("Dernière synchronisation : " + dateMan.getDate(id));
+        lastSync.setLayoutX(20);
+        lastSync.setLayoutY(450);
+        rootLoby.getChildren().add(lastSync);
        
         
         sync.setOnAction(new EventHandler<ActionEvent>() {
@@ -91,6 +99,8 @@ public class Loby {
 			@Override
 			public void handle(ActionEvent event) {
 				data.sync();
+				dateMan.update(id);
+				lastSync.setText("Dernière synchronisation : " + dateMan.getDate(id));
 				
 			}
         	

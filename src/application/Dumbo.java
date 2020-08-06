@@ -44,6 +44,7 @@ public class Dumbo extends Application{
         
         
         
+        
         // Choix gestionnaire
         ArrayList<String> gest = new ArrayList<>(Arrays.asList("JC","FA","Anonyme"));
         ObservableList<String> options = 

@@ -78,7 +78,7 @@ public class MemoryClone {
 			}
 		}
 		memWriterCom.writeMemoryClient(oldMem);
-		initialize();
+		cloneFile();
 	   
 	}
 	

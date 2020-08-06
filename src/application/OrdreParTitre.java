@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import org.controlsfx.control.PrefixSelectionComboBox;
+
 import Mechanic.Client;
 import Mechanic.ClientNode;
 import Mechanic.Depositaire;
@@ -148,7 +150,10 @@ public class OrdreParTitre {
 		comboTitres.setPromptText("Type de titre");
 		root.getChildren().add(comboTitres);
 		
-		ComboBox<String> sortTitre = new ComboBox<String>();
+		PrefixSelectionComboBox<String> sortTitre = new PrefixSelectionComboBox<String>();
+		sortTitre.setTypingDelay((int)Double.POSITIVE_INFINITY);
+		sortTitre.setBackSpaceAllowed(true);
+		sortTitre.setDisplayOnFocusedEnabled(true);
         sortTitre.setMaxWidth(400);
         sortTitre.setLayoutY(150);
         sortTitre.setLayoutX(320);
@@ -376,7 +381,7 @@ public class OrdreParTitre {
 								navig.getColumns().add(column3);
 								quant = quant - Integer.parseInt(Qua.getCharacters().toString());
 								resumeQuant.setText("Quantité restante : " + quant);
-								ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.SELL, Integer.parseInt(Qua.getCharacters().toString()));
+								ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.SELL, -Integer.parseInt(Qua.getCharacters().toString()));
 							} else
 							{
 								PopupControl p = new PopupControl("Quantité insuffisante", false, s);
