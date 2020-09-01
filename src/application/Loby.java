@@ -169,8 +169,28 @@ public class Loby {
 			}
         });
         
+        Button seePortfolio = new Button();
+        seePortfolio.setText("Portfolio");
+        seePortfolio.setLayoutX(210);
+        seePortfolio.setLayoutY(350);
+        rootLoby.getChildren().add(seePortfolio);
         
         
+        seePortfolio.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+		public void handle(ActionEvent event) {
+			data.getStack().loadOldOrdre();
+			Portfolio p = new Portfolio(data);
+			try {
+					p.showPortfolio().show();
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+        });
         
         
         return stageLoby;

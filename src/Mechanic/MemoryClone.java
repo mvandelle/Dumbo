@@ -23,7 +23,7 @@ public class MemoryClone {
 	public MemoryClone(String id)
 	{
 		this.id = id;
-		this.fileClient = "fileClient"+id;
+		this.fileClient = "fileClient"+id+".txt";
 		this.client = new ArrayList<>();
 		this.memReaderCom = new MemoryReaderClient("memory.txt");
 		this.memReaderPers= new MemoryReaderClient(fileClient);

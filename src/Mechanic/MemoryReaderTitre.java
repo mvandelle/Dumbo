@@ -258,6 +258,69 @@ public class MemoryReaderTitre {
 		}
 	}
 	
+	public Titre findTitre(String ISIN) throws Exception
+	{
+		for ( int i = 0; i < titresAction.size();++i)
+		{
+			if ( titresAction.get(i).getisin().equals(ISIN))
+			{
+				return titresAction.get(i);
+			}
+		}
+		
+		for ( int i = 0; i < titresObligation.size();++i)
+		{
+			if ( titresObligation.get(i).getisin().equals(ISIN))
+			{
+				return titresObligation.get(i);
+			}
+		}
+		
+		for ( int i = 0; i < titresFuture.size();++i)
+		{
+			if ( titresFuture.get(i).getisin().equals(ISIN))
+			{
+				return titresFuture.get(i);
+			}
+		}
+		
+		for ( int i = 0; i < titresOption.size();++i)
+		{
+			if ( titresAction.get(i).getisin().equals(ISIN))
+			{
+				return titresOption.get(i);
+			}
+		}
+		
+		for ( int i = 0; i < titresOPC.size();++i)
+		{
+			if ( titresOPC.get(i).getisin().equals(ISIN))
+			{
+				return titresOPC.get(i);
+			}
+		}
+		
+		for ( int i = 0; i < titresForex.size();++i)
+		{
+			if ( titresForex.get(i).getisin().equals(ISIN))
+			{
+				return titresForex.get(i);
+			}
+		}
+		
+		for ( int i = 0; i < titresCommodities.size();++i)
+		{
+			if ( titresCommodities.get(i).getisin().equals(ISIN))
+			{
+				return titresCommodities.get(i);
+			}
+		}
+		
+		throw new Exception();
+	}
+	
+	
+	
 	
 
 }
