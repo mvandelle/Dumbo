@@ -21,6 +21,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Dumbo extends Application{
+	public static int WIDTH_PC = 1500;
+	public static int HEIGHT_PC = 1000;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {

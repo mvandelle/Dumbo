@@ -81,7 +81,7 @@ public class ActParClient {
 		Stage stageActParClientWindow = new Stage();
 		stageActParClientWindow.setTitle("Action par client " + id );
     	Group rootstageActParClientWindow= new Group();
-        Scene scenestageActParClientWindow = new Scene(rootstageActParClientWindow,2000,2000, Color.WHITE);
+        Scene scenestageActParClientWindow = new Scene(rootstageActParClientWindow,Dumbo.WIDTH_PC,Dumbo.HEIGHT_PC, Color.WHITE);
         stageActParClientWindow.setScene(scenestageActParClientWindow);
         
         File ath = new File("athenee.png");
@@ -106,6 +106,11 @@ public class ActParClient {
         buy.setLayoutY(500);
         rootstageActParClientWindow.getChildren().add(buy);
 		
+        Button startOver = new Button();
+        startOver.setText("Annuler et recommencer");
+        startOver.setLayoutX(1000);
+        startOver.setLayoutY(550);
+        rootstageActParClientWindow.getChildren().add(startOver);
         
         Button sell = new Button();
         sell.setText("Vendre");
@@ -224,18 +229,26 @@ public class ActParClient {
 
 			@Override
 			public void handle(ActionEvent event) {
-				
-				if ( isParClient)
+				if ( comboClient.getSelectionModel().getSelectedIndex() != -1)
 				{
-					ordre.Empty();
-					Client selectedClient = findClientFromClientId(comboClient.getSelectionModel().getSelectedItem());
-					resumeClient.setText(selectedClient.showCLient());
-					ordre = new OrdreClient(selectedClient);
-					resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+				
+					if ( isParClient)
+					{
+						ordre.Empty();
+						Client selectedClient = findClientFromClientId(comboClient.getSelectionModel().getSelectedItem());
+						resumeClient.setText(selectedClient.showCLient());
+						ordre = new OrdreClient(selectedClient);
+						resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+					} else
+					{
+						Client selectedClient = findClientFromClientId(comboClient.getSelectionModel().getSelectedItem());
+						resumeClient.setText(selectedClient.showCLient());
+					}
 				} else
 				{
-					Client selectedClient = findClientFromClientId(comboClient.getSelectionModel().getSelectedItem());
-					resumeClient.setText(selectedClient.showCLient());
+					resumeClient.setText("");
+					resumeOrdre.setText("ordre : ");
+					ordre.Empty();
 				}
 				
 				
@@ -243,7 +256,19 @@ public class ActParClient {
         
 		});
         
-        
+        startOver.setOnAction(new EventHandler<ActionEvent>() {
+        		
+        		@Override
+    			public void handle(ActionEvent event) {
+        			comboTitres.getSelectionModel().select(-1);
+    				sortTitre.getSelectionModel().select(-1);
+    				comboClient.getSelectionModel().select(-1);
+    				Qua.setText("");
+    				PopupControl p = new PopupControl("Page reinitialisée", true, stageActParClientWindow);
+    				p.show();
+        			
+        		}
+        });
        
         comboTitres.setOnAction(new EventHandler<ActionEvent>() {
 

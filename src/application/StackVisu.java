@@ -50,7 +50,7 @@ public class StackVisu {
 		Stage stageStackVisuWindow = new Stage();
 		stageStackVisuWindow.setTitle("Ordres en attente " + id );
     	Group rootStackVisuWindow= new Group();
-        Scene sceneStackVisuWindow = new Scene(rootStackVisuWindow,2000,2000, Color.WHITE);
+        Scene sceneStackVisuWindow = new Scene(rootStackVisuWindow,Dumbo.WIDTH_PC,Dumbo.HEIGHT_PC, Color.WHITE);
         stageStackVisuWindow.setScene(sceneStackVisuWindow);
         
         File ath = new File("athenee.png");

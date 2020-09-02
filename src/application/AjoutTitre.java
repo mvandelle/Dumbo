@@ -44,7 +44,7 @@ public class AjoutTitre {
 		Stage s = new Stage();
 		s.setTitle("Ajout d'un titre");
 		Group root = new Group();
-		Scene scene = new Scene(root, 2000,2000, Color.WHITE);
+		Scene scene = new Scene(root, Dumbo.WIDTH_PC,Dumbo.HEIGHT_PC, Color.WHITE);
 		s.setScene(scene);
 		
 

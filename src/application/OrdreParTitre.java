@@ -76,7 +76,7 @@ public class OrdreParTitre {
 		Stage s = new Stage();
 		s.setTitle("Passage d'ordre par Titre");
 		Group root = new Group();
-		Scene scene = new Scene(root, 2000,2000, Color.WHITE);
+		Scene scene = new Scene(root, Dumbo.WIDTH_PC,Dumbo.HEIGHT_PC, Color.WHITE);
 		s.setScene(scene);
 		
 
@@ -172,9 +172,11 @@ public class OrdreParTitre {
         
         TreeTableColumn<ClientNode, String> column2 = new TreeTableColumn<>("Quantité");
         column2.setCellValueFactory(new TreeItemPropertyValueFactory<>("quant"));
+        column2.setMinWidth(100);
         
         TreeTableColumn<ClientNode, String> column3 = new TreeTableColumn<>("En cours");
         column3.setCellValueFactory(new TreeItemPropertyValueFactory<>("modif"));
+        column3.setMinWidth(100);
         
         navig.getColumns().add(column1);
         navig.getColumns().add(column2);
