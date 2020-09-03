@@ -6,6 +6,7 @@ import Mechanic.Client;
 import Mechanic.DateFileManager;
 import Mechanic.MemoryClone;
 import Mechanic.OrdreStack;
+import Mechanic.SyncDifManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -21,11 +23,14 @@ public class Loby {
 	private String id;
 	private MemoryClone data;
 	private DateFileManager dateMan;
+	private SyncDifManager syncMan;
+	
 	
 	
 	public Loby(String id)
 	{
 		dateMan = new DateFileManager();
+		syncMan = new SyncDifManager();
 		this.id = id;
 		this.data = new MemoryClone(this.id);
 		if ( data.getClient().isEmpty())
@@ -92,7 +97,41 @@ public class Loby {
         lastSync.setLayoutX(20);
         lastSync.setLayoutY(450);
         rootLoby.getChildren().add(lastSync);
-       
+        
+        Text difSync = new Text("Il y a actuellement " + syncMan.getSyncDif(id) + " entré(s) non synchronisé avec le registre principal");
+        if (syncMan.getSyncDif(id) > 0 )
+        {
+        	difSync.setFill(Color.RED);
+        } else
+        {
+        	difSync.setFill(Color.GREEN);
+        }
+        difSync.setLayoutX(20);
+        difSync.setLayoutY(470);
+        rootLoby.getChildren().add(difSync);
+        
+        rootLoby.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				
+				difSync.setText("Il y a actuellement " + syncMan.getSyncDif(id) + " entré(s) non synchronisé avec le registre principal");
+		        if (syncMan.getSyncDif(id) > 0 )
+		        {
+		        	difSync.setFill(Color.RED);
+		        } else
+		        {
+		        	difSync.setFill(Color.GREEN);
+		        }
+				
+			}
+
+			
+        	
+        } );
+        
+        
+        
         
         sync.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -100,11 +139,21 @@ public class Loby {
 			public void handle(ActionEvent event) {
 				data.sync();
 				dateMan.update(id);
+				syncMan.setToZero(id);
 				lastSync.setText("Dernière synchronisation : " + dateMan.getDate(id));
-				
+				difSync.setText("Il y a actuellement " + syncMan.getSyncDif(id) + " entré(s) non synchronisé avec le registre principal");
+				 if (syncMan.getSyncDif(id) > 0 )
+			        {
+			        	difSync.setFill(Color.RED);
+			        } else
+			        {
+			        	difSync.setFill(Color.GREEN);
+			        }
 			}
         	
         });
+        
+        
         
         actionClient.setOnAction(new EventHandler<ActionEvent>() {
 

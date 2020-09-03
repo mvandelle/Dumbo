@@ -315,7 +315,9 @@ public class OrdreParTitre {
 				{
 					clone.passOrdre(ordre, false);
 				
+				
 					Qua.setText("");
+					quantTot.setText("");
 					comboTitres.getSelectionModel().select(-1);
 					sortTitre.getSelectionModel().select(-1);
 					quant = 0;

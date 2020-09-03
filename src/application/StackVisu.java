@@ -12,6 +12,7 @@ import Mechanic.OrdreClient;
 import Mechanic.OrdreStack;
 import Mechanic.PDFGenActif;
 import Mechanic.PDFGenClient;
+import Mechanic.SyncDifManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,6 +32,7 @@ public class StackVisu {
 	
 	private String id;
 	private MemoryClone data;
+	private SyncDifManager syncMan;
 	
 	
 	
@@ -38,7 +40,7 @@ public class StackVisu {
 	{
 		this.id = id;
 		this.data = data;
-		
+		syncMan = new SyncDifManager();
 	}
 	
 	
@@ -109,6 +111,8 @@ public class StackVisu {
 				listOrdres.setItems(FXCollections.observableArrayList(data.getStack().showOrdre()));
 				data.getStack().writeOnStack();
 				data.ValidOrdre(interm);
+				syncMan.update(id, interm.size());
+				
 				LogWriter l = new LogWriter();
 				try {
 					l.writeLogOnfile(interm, id);

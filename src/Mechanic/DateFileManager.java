@@ -38,7 +38,7 @@ public class DateFileManager {
 		
 		
 		
-	};
+	}
 	
 	public String getDate(String id)
 	{

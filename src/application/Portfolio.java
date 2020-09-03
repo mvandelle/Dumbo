@@ -107,6 +107,7 @@ public class Portfolio {
 
 			@Override
 			public void handle(ActionEvent event) {
+				table.getItems().removeAll(table.getItems());
 				resumeClient.setText("");
 				Client selectedClient = findClientFromClientId(comboClient.getSelectionModel().getSelectedItem());
 				for ( String isin : selectedClient.gettitreISIN().keySet())

@@ -443,9 +443,12 @@ public class ActParClient {
 				} else
 				{
 					clone.passOrdre(ordre, isParClient);
+					
+    				comboClient.getSelectionModel().select(-1);
+    				Qua.setText("");
 					comboTitres.getSelectionModel().select(-1);
 					sortTitre.getSelectionModel().select(-1);
-					ordre.initializeParClient();
+					ordre.Empty();
 					
 					PopupControl p = new PopupControl("Ordre passé", true, stageActParClientWindow);
 			        p.show();
