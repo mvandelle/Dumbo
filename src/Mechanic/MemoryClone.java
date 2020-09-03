@@ -23,11 +23,11 @@ public class MemoryClone {
 	public MemoryClone(String id)
 	{
 		this.id = id;
-		this.fileClient = "fileClient"+id+".txt";
+		this.fileClient = "Dumbo's brain/fileClient"+id+".txt";
 		this.client = new ArrayList<>();
-		this.memReaderCom = new MemoryReaderClient("memory.txt");
+		this.memReaderCom = new MemoryReaderClient("Dumbo's brain/memory.txt");
 		this.memReaderPers= new MemoryReaderClient(fileClient);
-		this.memWriterCom = new MemoryWriterClient("memory.txt");
+		this.memWriterCom = new MemoryWriterClient("Dumbo's brain/memory.txt");
 		this.memWriterPers = new MemoryWriterClient(fileClient);
 		this.stack = new OrdreStack(id);
 		client = memReaderPers.readMemoryClient();

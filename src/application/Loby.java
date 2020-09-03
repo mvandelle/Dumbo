@@ -70,7 +70,7 @@ public class Loby {
         
         
       //logo athenee
-        File ath = new File("athenee.png");
+        File ath = new File("Dumbo's brain/athenee.png");
         String at = ath.toURI().toURL().toString();
         ImageView path = new ImageView();
         path.setImage(new Image(at));

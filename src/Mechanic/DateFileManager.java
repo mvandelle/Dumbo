@@ -22,7 +22,7 @@ public class DateFileManager {
 		BufferedReader in;
 		try {
 			
-			in = new BufferedReader(new FileReader("DateFile.txt"));
+			in = new BufferedReader(new FileReader("Dumbo's brain/DateFile.txt"));
 			String line;
 			
 			while ((line = in.readLine()) != null)
@@ -60,7 +60,7 @@ public class DateFileManager {
 			
 			ligne.add(i+"*"+dateGest.get(i));
 		}
-        Path fichier = Paths.get("DateFile.txt");
+        Path fichier = Paths.get("Dumbo's brain/DateFile.txt");
 		
 		try {
 			Files.write(fichier, ligne);

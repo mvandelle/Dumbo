@@ -22,7 +22,7 @@ public class SyncDifManager {
 		BufferedReader in;
 		try {
 			
-			in = new BufferedReader(new FileReader("SyncDif.txt"));
+			in = new BufferedReader(new FileReader("Dumbo's brain/SyncDif.txt"));
 			String line;
 			
 			while ((line = in.readLine()) != null)
@@ -45,7 +45,7 @@ public class SyncDifManager {
 		BufferedReader in;
 		try {
 			
-			in = new BufferedReader(new FileReader("SyncDif.txt"));
+			in = new BufferedReader(new FileReader("Dumbo's brain/SyncDif.txt"));
 			String line;
 			
 			while ((line = in.readLine()) != null)
@@ -81,7 +81,7 @@ public class SyncDifManager {
 			
 			ligne.add(i+"*"+syncDifGest.get(i));
 		}
-        Path fichier = Paths.get("SyncDif.txt");
+        Path fichier = Paths.get("Dumbo's brain/SyncDif.txt");
 		
 		try {
 			Files.write(fichier, ligne);

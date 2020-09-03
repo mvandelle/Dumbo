@@ -143,21 +143,7 @@ public class Client {
 		throw new IllegalArgumentException("Depositaire non trouvé dans la base de donné");
 	}
 	
-	/*public ArrayList<Titre> findTitre(ArrayList<Titre> titre)
-	{
-		ArrayList<Titre> t = new ArrayList<>();
-		for ( int i = 0; i < titre.size(); ++i)
-		{
-			for ( int j = 0; j < titreISIN.size(); ++j)
-			{
-				if ( titre.get(i).getisin().equals(titreISIN.get(j)))
-						{
-							t.add(titre.get(i));
-						}
-			}
-		}
-		return t;
-	}*/
+
 	
 	public String showCLient()
 	{

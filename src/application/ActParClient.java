@@ -84,7 +84,7 @@ public class ActParClient {
         Scene scenestageActParClientWindow = new Scene(rootstageActParClientWindow,Dumbo.WIDTH_PC,Dumbo.HEIGHT_PC, Color.WHITE);
         stageActParClientWindow.setScene(scenestageActParClientWindow);
         
-        File ath = new File("athenee.png");
+        File ath = new File("Dumbo's brain/athenee.png");
         String at = ath.toURI().toURL().toString();
         ImageView path = new ImageView();
         path.setImage(new Image(at));

@@ -38,7 +38,7 @@ public class OrdreStack {
 		ordres.removeAll(ordres);
 		BufferedReader in;
 		try {
-			in = new BufferedReader(new FileReader("stack"+id+".txt"));
+			in = new BufferedReader(new FileReader("Dumbo's brain/stack"+id+".txt"));
 			String line;
 			while ((line = in.readLine()) != null )
 			{
@@ -73,7 +73,7 @@ public class OrdreStack {
 		{
 			ligne.addAll(i.ordreLog(true));
 		}
-        Path fichier = Paths.get("stack"+id+".txt");
+        Path fichier = Paths.get("Dumbo's brain/stack"+id+".txt");
 		
 		try {
 			Files.write(fichier, ligne);
@@ -93,7 +93,7 @@ public class OrdreStack {
 			
 			ligne.addAll(i.ordreLog(mode));
 		}
-        Path fichier = Paths.get("stack"+id+".txt");
+        Path fichier = Paths.get("Dumbo's brain/stack"+id+".txt");
 		
 		try {
 			Files.write(fichier, ligne);
@@ -132,7 +132,7 @@ public class OrdreStack {
 	
 	public boolean isEmpty()
 	{
-		File stack = new File("stack"+id+".txt");
+		File stack = new File("Dumbo's brain/stack"+id+".txt");
 		if ( stack.length() == 0)
 		{
 			return true;

@@ -48,7 +48,7 @@ public class AjoutTitre {
 		s.setScene(scene);
 		
 
-        File ath = new File("athenee.png");
+        File ath = new File("Dumbo's brain/athenee.png");
         String at = ath.toURI().toURL().toString();
         ImageView path = new ImageView();
         path.setImage(new Image(at));
@@ -132,6 +132,8 @@ public class AjoutTitre {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
+							PopupControl pAct = new PopupControl("Titre ajouté", true, s);
+		    				pAct.show();
 							break;
 		        		
 						case "FUTURE":
@@ -142,6 +144,8 @@ public class AjoutTitre {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
+							PopupControl pFut = new PopupControl("Titre ajouté", true, s);
+		    				pFut.show();
 							break;
 		        		
 						case "OPTION":
@@ -152,6 +156,8 @@ public class AjoutTitre {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
+							PopupControl pOpt = new PopupControl("Titre ajouté", true, s);
+		    				pOpt.show();
 							break;
 		        	
 						case "OPC":
@@ -162,14 +168,32 @@ public class AjoutTitre {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
+							PopupControl pOPC = new PopupControl("Titre ajouté", true, s);
+		    				pOPC.show();
 							break;
 		        		
 						case "FOREX":
 							Titre newTitreFor = new Titre(name.getText(), ticker.getText(), TypeTitre.FOREX, devise.getText(), 0);
+							try {
+								w.writeMemoryTitreForex(newTitreFor,r);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							PopupControl pFor = new PopupControl("Titre ajouté", true, s);
+		    				pFor.show();
 							break;
 		        		
 						case "COMMODITIES":
 							Titre newTitreCommo = new Titre(name.getText(), ticker.getText(), TypeTitre.COMMODITIES, devise.getText(), 0);
+							try {
+								w.writeMemoryTitreCommo(newTitreCommo,r);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							PopupControl pCommo = new PopupControl("Titre ajouté", true, s);
+		    				pCommo.show();
 							break;
 		        	
 						default:

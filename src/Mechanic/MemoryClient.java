@@ -32,7 +32,7 @@ public class MemoryClient {
 		BufferedReader in;
 		try {
 			
-			in = new BufferedReader(new FileReader("Client.txt"));
+			in = new BufferedReader(new FileReader("Dumbo's brain/Client.txt"));
 			String line;
 			
 			while ((line = in.readLine()) != null)

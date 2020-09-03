@@ -158,7 +158,7 @@ public class MemoryReaderTitre {
 		DataFormatter stri = new DataFormatter();
 		try {
 			FileInputStream fichier;
-			fichier = new FileInputStream(new File("UNI.xlsx"));
+			fichier = new FileInputStream(new File("Dumbo's brain/UNI.xlsx"));
 			XSSFWorkbook wb = new XSSFWorkbook(fichier);
 			XSSFSheet sheet = wb.getSheetAt(0);
 			  for (Row ligne : sheet) {
@@ -193,6 +193,20 @@ public class MemoryReaderTitre {
 			  for (Row ligne : sheet)
 			  {
 				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(3)),TypeTitre.OPC,stri.formatCellValue(ligne.getCell(1)),0);
+				  titres.add(t);
+			  }
+			  
+			  sheet = wb.getSheetAt(5); 
+			  for (Row ligne : sheet)
+			  {
+				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(3)),TypeTitre.FOREX,stri.formatCellValue(ligne.getCell(1)),0);
+				  titres.add(t);
+			  }
+			  
+			  sheet = wb.getSheetAt(6); 
+			  for (Row ligne : sheet)
+			  {
+				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(3)),TypeTitre.COMMODITIES,stri.formatCellValue(ligne.getCell(1)),0);
 				  titres.add(t);
 			  }
 			

@@ -55,7 +55,7 @@ public class StackVisu {
         Scene sceneStackVisuWindow = new Scene(rootStackVisuWindow,Dumbo.WIDTH_PC,Dumbo.HEIGHT_PC, Color.WHITE);
         stageStackVisuWindow.setScene(sceneStackVisuWindow);
         
-        File ath = new File("athenee.png");
+        File ath = new File("Dumbo's brain/athenee.png");
         String at = ath.toURI().toURL().toString();
         ImageView path = new ImageView();
         path.setImage(new Image(at));

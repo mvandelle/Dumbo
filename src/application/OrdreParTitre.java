@@ -63,7 +63,7 @@ public class OrdreParTitre {
 		clone = m;
 		clone.loadClient();
 		TitRead = new MemoryReaderTitre();
-		DepRead = new MemoryReaderDepositaire("memoryDep.txt");
+		DepRead = new MemoryReaderDepositaire("Dumbo's brain/memoryDep.txt");
 		TitRead.sortTitre();
 		quant = 0;
 		ordre = new OrdreClient();
@@ -80,7 +80,7 @@ public class OrdreParTitre {
 		s.setScene(scene);
 		
 
-        File ath = new File("athenee.png");
+        File ath = new File("Dumbo's brain/athenee.png");
         String at = ath.toURI().toURL().toString();
         ImageView path = new ImageView();
         path.setImage(new Image(at));

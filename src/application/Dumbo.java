@@ -33,7 +33,7 @@ public class Dumbo extends Application{
         Scene scene = new Scene(root, 500, 500, Color.WHITE);
         
         //logo athenee
-        File ath = new File("athenee.png");
+        File ath = new File("Dumbo's brain/athenee.png");
         String at = ath.toURI().toURL().toString();
         ImageView path = new ImageView();
         path.setImage(new Image(at));

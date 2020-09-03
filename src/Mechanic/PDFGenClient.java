@@ -30,7 +30,7 @@ public class PDFGenClient {
 	
 	public PDFGenClient(OrdreClient ordres)
 	{
-		this.depReader= new MemoryReaderDepositaire("memoryDep.txt");
+		this.depReader= new MemoryReaderDepositaire("Dumbo's brain/memoryDep.txt");
 		ArrayList<Depositaire> dep = new ArrayList<Depositaire>();
 		dep = depReader.readMemoryDepositaire();
 		this.ordres = ordres;
@@ -50,7 +50,7 @@ public class PDFGenClient {
 		String outputFileName = ordres.getClientName()+"-"+ordres.getClientNCompte()+"test.pdf";
 		PDDocument document = new PDDocument();
         PDPage page = new PDPage(PDRectangle.A4);
-        PDImageXObject pdImage = PDImageXObject.createFromFile("athenee.png", document);
+        PDImageXObject pdImage = PDImageXObject.createFromFile("Dumbo's brain/athenee.png", document);
         document.addPage(page);
         PDPageContentStream cos = new PDPageContentStream(document, page);
         cos.drawImage(pdImage, 0, 750, 100, 100);

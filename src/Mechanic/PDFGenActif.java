@@ -30,7 +30,7 @@ public class PDFGenActif {
 	
 	public PDFGenActif(OrdreClient ordre)
 	{
-		this.depReader= new MemoryReaderDepositaire("memoryDep.txt");
+		this.depReader= new MemoryReaderDepositaire("Dumbo's brain/memoryDep.txt");
 		ArrayList<Depositaire> dep = new ArrayList<Depositaire>();
 		dep = depReader.readMemoryDepositaire();
 		this.ordres = ordre;
@@ -50,7 +50,7 @@ public class PDFGenActif {
 		String outputFileName = ordres.getTitre().get(0).getName()+"-"+"test.pdf";
 		PDDocument document = new PDDocument();
         PDPage page = new PDPage(PDRectangle.A4);
-        PDImageXObject pdImage = PDImageXObject.createFromFile("athenee.png", document);
+        PDImageXObject pdImage = PDImageXObject.createFromFile("Dumbo's brain/athenee.png", document);
         document.addPage(page);
         PDPageContentStream cos = new PDPageContentStream(document, page);
         cos.drawImage(pdImage, 0, 750, 100, 100);

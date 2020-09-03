@@ -29,7 +29,7 @@ public class MemoryWriterTitre {
 		{
 			MRT.addTitreAction(titre);
 			java.util.Collections.sort(MRT.getTitresAction());
-			FileInputStream fichier = new FileInputStream("UNI.xlsx");
+			FileInputStream fichier = new FileInputStream("Dumbo's brain/UNI.xlsx");
 			XSSFWorkbook wb = new XSSFWorkbook(fichier);
 			Sheet feuille = wb.getSheetAt(0);
 			
@@ -46,7 +46,7 @@ public class MemoryWriterTitre {
 			
 			FileOutputStream fileOut;
 			try {
-				fileOut = new FileOutputStream("UNI.xlsx");
+				fileOut = new FileOutputStream("Dumbo's brain/UNI.xlsx");
 				wb.write(fileOut);
 				fileOut.close();
 			} catch (FileNotFoundException e) {
@@ -63,7 +63,7 @@ public class MemoryWriterTitre {
 	{
 		MRT.addTitreObligation(titre);
 		java.util.Collections.sort(MRT.getTitresObligation());
-		FileInputStream fichier = new FileInputStream("UNI.xlsx");
+		FileInputStream fichier = new FileInputStream("Dumbo's brain/UNI.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(fichier);
 		Sheet feuille = wb.getSheetAt(1);
 		
@@ -80,7 +80,7 @@ public class MemoryWriterTitre {
 		
 		FileOutputStream fileOut;
 		try {
-			fileOut = new FileOutputStream("UNI.xlsx");
+			fileOut = new FileOutputStream("Dumbo's brain/UNI.xlsx");
 			wb.write(fileOut);
 			fileOut.close();
 		} catch (FileNotFoundException e) {
@@ -97,7 +97,7 @@ public class MemoryWriterTitre {
 	{
 		MRT.addTitreFuture(titre);
 		java.util.Collections.sort(MRT.getTitresFuture());
-		FileInputStream fichier = new FileInputStream("UNI.xlsx");
+		FileInputStream fichier = new FileInputStream("Dumbo's brain/UNI.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(fichier);
 		Sheet feuille = wb.getSheetAt(2);
 		
@@ -114,7 +114,7 @@ public class MemoryWriterTitre {
 		
 		FileOutputStream fileOut;
 		try {
-			fileOut = new FileOutputStream("UNI.xlsx");
+			fileOut = new FileOutputStream("Dumbo's brain/UNI.xlsx");
 			wb.write(fileOut);
 			fileOut.close();
 		} catch (FileNotFoundException e) {
@@ -131,7 +131,7 @@ public class MemoryWriterTitre {
 	{
 		MRT.addTitreOption(titre);
 		java.util.Collections.sort(MRT.getTitresOption());
-		FileInputStream fichier = new FileInputStream("UNI.xlsx");
+		FileInputStream fichier = new FileInputStream("Dumbo's brain/UNI.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(fichier);
 		Sheet feuille = wb.getSheetAt(3);
 		
@@ -148,7 +148,7 @@ public class MemoryWriterTitre {
 		
 		FileOutputStream fileOut;
 		try {
-			fileOut = new FileOutputStream("UNI.xlsx");
+			fileOut = new FileOutputStream("Dumbo's brain/UNI.xlsx");
 			wb.write(fileOut);
 			fileOut.close();
 		} catch (FileNotFoundException e) {
@@ -165,7 +165,7 @@ public class MemoryWriterTitre {
 	{
 		MRT.addTitreOPC(titre);
 		java.util.Collections.sort(MRT.getTitresOPC());
-		FileInputStream fichier = new FileInputStream("UNI.xlsx");
+		FileInputStream fichier = new FileInputStream("Dumbo's brain/UNI.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(fichier);
 		Sheet feuille = wb.getSheetAt(4);
 		
@@ -182,7 +182,75 @@ public class MemoryWriterTitre {
 		
 		FileOutputStream fileOut;
 		try {
-			fileOut = new FileOutputStream("UNI.xlsx");
+			fileOut = new FileOutputStream("Dumbo's brain/UNI.xlsx");
+			wb.write(fileOut);
+			fileOut.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		fichier.close();
+		wb.close();
+	}
+	
+	public void writeMemoryTitreForex(Titre titre, MemoryReaderTitre MRT) throws IOException
+	{
+		MRT.addTitreForex(titre);
+		java.util.Collections.sort(MRT.getTitresForex());
+		FileInputStream fichier = new FileInputStream("Dumbo's brain/UNI.xlsx");
+		XSSFWorkbook wb = new XSSFWorkbook(fichier);
+		Sheet feuille = wb.getSheetAt(5);
+		
+		for ( int i = 0; i < MRT.getTitresForex().size(); ++i)
+		{
+			Row row = feuille.createRow(i+1);
+			Cell cell_1 = row.createCell(0);
+			cell_1.setCellValue(MRT.getTitresForex().get(i).getName().toUpperCase());
+			Cell cell_2 = row.createCell(2);
+			cell_2.setCellValue(MRT.getTitresForex().get(i).getisin());
+			Cell cell_3 = row.createCell(1);
+			cell_3.setCellValue(MRT.getTitresForex().get(i).getDevise());
+		}
+		
+		FileOutputStream fileOut;
+		try {
+			fileOut = new FileOutputStream("Dumbo's brain/UNI.xlsx");
+			wb.write(fileOut);
+			fileOut.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		fichier.close();
+		wb.close();
+	}
+	
+	public void writeMemoryTitreCommo(Titre titre, MemoryReaderTitre MRT) throws IOException
+	{
+		MRT.addTitreCommodities(titre);
+		java.util.Collections.sort(MRT.getTitresCommodities());
+		FileInputStream fichier = new FileInputStream("Dumbo's brain/UNI.xlsx");
+		XSSFWorkbook wb = new XSSFWorkbook(fichier);
+		Sheet feuille = wb.getSheetAt(6);
+		
+		for ( int i = 0; i < MRT.getTitresCommodities().size(); ++i)
+		{
+			Row row = feuille.createRow(i+1);
+			Cell cell_1 = row.createCell(0);
+			cell_1.setCellValue(MRT.getTitresCommodities().get(i).getName().toUpperCase());
+			Cell cell_2 = row.createCell(2);
+			cell_2.setCellValue(MRT.getTitresCommodities().get(i).getisin());
+			Cell cell_3 = row.createCell(1);
+			cell_3.setCellValue(MRT.getTitresCommodities().get(i).getDevise());
+		}
+		
+		FileOutputStream fileOut;
+		try {
+			fileOut = new FileOutputStream("Dumbo's brain/UNI.xlsx");
 			wb.write(fileOut);
 			fileOut.close();
 		} catch (FileNotFoundException e) {

@@ -11,7 +11,7 @@ public class TreeClientNode {
 	public TreeClientNode(MemoryClone m )
 	{
 		clone = m;
-		DepRead = new MemoryReaderDepositaire("memoryDep.txt");
+		DepRead = new MemoryReaderDepositaire("Dumbo's brain/memoryDep.txt");
 		dep = new ArrayList<>();
 		dep = DepRead.readMemoryDepositaire();
 		tree = new ArrayList<>();
