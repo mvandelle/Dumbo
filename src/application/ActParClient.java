@@ -5,6 +5,7 @@ import Mechanic.MemoryReaderClient;
 
 
 
+
 import Mechanic.MemoryReaderTitre;
 import Mechanic.OrdreClient;
 import Mechanic.Sens;
@@ -22,7 +23,7 @@ import java.util.HashSet;
 import org.controlsfx.control.PrefixSelectionComboBox;
 
 import Mechanic.Client;
-import Mechanic.ComboBoxAutoComplete;
+
 import Mechanic.MemoryClone;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,7 +44,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class ActParClient {
 	private String id;
@@ -73,17 +76,18 @@ public class ActParClient {
 		
 	}
 	
-	public Stage showActParClient() throws MalformedURLException
+	public Stage showActParClient(Stage st) throws MalformedURLException
 	{
 		//**********PRESENTATION GENERAL**********
 		
 		
 		Stage stageActParClientWindow = new Stage();
 		stageActParClientWindow.setTitle("Action par client " + id );
+		
     	Group rootstageActParClientWindow= new Group();
         Scene scenestageActParClientWindow = new Scene(rootstageActParClientWindow,Dumbo.WIDTH_PC,Dumbo.HEIGHT_PC, Color.WHITE);
         stageActParClientWindow.setScene(scenestageActParClientWindow);
-        
+      
         File ath = new File("Dumbo's brain/athenee.png");
         String at = ath.toURI().toURL().toString();
         ImageView path = new ImageView();
@@ -124,11 +128,34 @@ public class ActParClient {
         passOrdre.setLayoutY(500);
         rootstageActParClientWindow.getChildren().add(passOrdre);
         
+        TextField echeance = new TextField();
+        echeance.setPromptText("Echéance");
+        echeance.setLayoutX(1000);
+        echeance.setLayoutY(600);
+        rootstageActParClientWindow.getChildren().add(echeance);
+       
+        
+        TextField limite = new TextField();
+        limite.setPromptText("Limite");
+        limite.setLayoutX(800);
+        limite.setLayoutY(600);
+        rootstageActParClientWindow.getChildren().add(limite);
         
         
         //**********************************************************
         
         //**********COMBO**********
+        
+        ObservableList<String> optionsType = 
+        	    FXCollections.observableArrayList(Arrays.asList("Au marché", "A cours limité", "A seuil de declenchment", "A plage de déclenchement", "STOP LOSS")
+        	        );
+        
+        ComboBox<String> comboType = new ComboBox<String>(optionsType);
+        comboType.setLayoutY(600);
+        comboType.setMaxWidth(150);
+        comboType.setLayoutX(400);
+        comboType.setPromptText("Type");
+        rootstageActParClientWindow.getChildren().add(comboType);
         
         
         ObservableList<String> optionsClient = 
@@ -260,6 +287,9 @@ public class ActParClient {
         		
         		@Override
     			public void handle(ActionEvent event) {
+        			limite.setText("");
+    				echeance.setText("");
+    				comboType.getSelectionModel().select(-1);
         			comboTitres.getSelectionModel().select(-1);
     				sortTitre.getSelectionModel().select(-1);
     				comboClient.getSelectionModel().select(-1);
@@ -340,19 +370,7 @@ public class ActParClient {
 					{
 						resumeTitre.setText("");
 					}
-				} else
-				{
-					if (sortTitre.getSelectionModel().getSelectedIndex()>-1 )
-					{
-						
-						Titre sTitre = findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem());
-						resumeTitre.setText(sTitre.resumeTitre());
-						ordre.setTitre(sTitre);
-					} else
-					{
-						resumeTitre.setText("");
-					}
-				}
+				} 
 			}
         	
         	
@@ -379,8 +397,29 @@ public class ActParClient {
 					        p.show();
 						} else
 						{	
-							ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()));
-							resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+							if ( comboType.getSelectionModel().getSelectedIndex() != -1)
+							{ 	
+								if ( !limite.getText().isEmpty())
+								{
+									if ( !echeance.getText().isEmpty())
+									{
+										ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()), comboType.getSelectionModel().getSelectedItem(), limite.getText(),echeance.getText());
+										resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+									} else
+									{
+										PopupControl p = new PopupControl("Echance invalide", false, stageActParClientWindow);
+								        p.show();
+									}
+								} else
+								{
+									PopupControl p = new PopupControl("Limite invalide", false, stageActParClientWindow);
+							        p.show();
+								}
+							} else
+							{
+								PopupControl p = new PopupControl("Type invalide", false, stageActParClientWindow);
+						        p.show();
+							}
 						}
 					}
 				
@@ -412,8 +451,29 @@ public class ActParClient {
 							{
 								if (findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).hasEnough(findTitre(sortTitre.getSelectionModel().getSelectedIndex(), comboTitres.getSelectionModel().getSelectedItem()).getisin(), Integer.parseInt(Qua.getText())) )
 								{
-									ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()));
-									resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+									if ( comboType.getSelectionModel().getSelectedIndex() != -1)
+									{ 	
+										if ( !limite.getText().isEmpty())
+										{
+											if ( !echeance.getText().isEmpty())
+											{
+												ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()), comboType.getSelectionModel().getSelectedItem(), limite.getText(),echeance.getText());
+												resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+											} else
+											{
+												PopupControl p = new PopupControl("Echance invalide", false, stageActParClientWindow);
+										        p.show();
+											}
+										} else
+										{
+											PopupControl p = new PopupControl("Limite invalide", false, stageActParClientWindow);
+									        p.show();
+										}
+									} else
+									{
+										PopupControl p = new PopupControl("Type invalide", false, stageActParClientWindow);
+								        p.show();
+									}
 								}else
 								{
 									PopupControl p = new PopupControl("Quantité insuffisante", false, stageActParClientWindow);
@@ -444,14 +504,18 @@ public class ActParClient {
 				{
 					clone.passOrdre(ordre, isParClient);
 					
+    				/*
     				comboClient.getSelectionModel().select(-1);
     				Qua.setText("");
 					comboTitres.getSelectionModel().select(-1);
 					sortTitre.getSelectionModel().select(-1);
 					ordre.Empty();
+					*/
 					
-					PopupControl p = new PopupControl("Ordre passé", true, stageActParClientWindow);
+					
+					PopupControl p = new PopupControl("Ordre passé", true, st);
 			        p.show();
+			        stageActParClientWindow.close();
 				}
 				
 			}

@@ -199,14 +199,14 @@ public class MemoryReaderTitre {
 			  sheet = wb.getSheetAt(5); 
 			  for (Row ligne : sheet)
 			  {
-				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(3)),TypeTitre.FOREX,stri.formatCellValue(ligne.getCell(1)),0);
+				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(2)),TypeTitre.FOREX,stri.formatCellValue(ligne.getCell(1)),0);
 				  titres.add(t);
 			  }
 			  
 			  sheet = wb.getSheetAt(6); 
 			  for (Row ligne : sheet)
 			  {
-				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(3)),TypeTitre.COMMODITIES,stri.formatCellValue(ligne.getCell(1)),0);
+				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(2)),TypeTitre.COMMODITIES,stri.formatCellValue(ligne.getCell(1)),0);
 				  titres.add(t);
 			  }
 			

@@ -125,5 +125,21 @@ public class Titre implements Comparable<Titre>{
 		// TODO Auto-generated method stub
 		return this.getName().toLowerCase().compareTo(o.getName().toLowerCase());
 	}
+	
+	public boolean equals(Object obj)
+	{
+		if ( obj instanceof Titre )
+		{
+			return this.getisin().equals(((Titre) obj).getisin());
+		}else
+		{
+			return false;
+		}
+	}
+	
+	public int hashCode()
+	{
+		return this.getisin().hashCode();
+	}
 
 }

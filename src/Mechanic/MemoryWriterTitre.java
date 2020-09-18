@@ -263,5 +263,40 @@ public class MemoryWriterTitre {
 		wb.close();
 	}
 	
+	public void PARSING(ArrayList<Titre> titre) throws IOException
+	{
+		
+		FileInputStream fichier = new FileInputStream("Dumbo's brain/UNI.xlsx");
+		XSSFWorkbook wb = new XSSFWorkbook(fichier);
+		Sheet feuille = wb.getSheetAt(7);
+		
+		for ( int i = 0; i < titre.size(); ++i)
+		{
+			Row row = feuille.createRow(i+1);
+			Cell cell_1 = row.createCell(1);
+			cell_1.setCellValue(titre.get(i).getName().toUpperCase());
+			Cell cell_2 = row.createCell(3);
+			cell_2.setCellValue(titre.get(i).getisin());
+			Cell cell_3 = row.createCell(2);
+			cell_3.setCellValue(titre.get(i).getDevise());
+		}
+		
+		
+		FileOutputStream fileOut;
+		try {
+			fileOut = new FileOutputStream("Dumbo's brain/UNI.xlsx");
+			wb.write(fileOut);
+			fileOut.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		fichier.close();
+		wb.close();
+	}
+	
+	
 
 }

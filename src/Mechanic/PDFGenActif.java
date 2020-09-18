@@ -47,7 +47,7 @@ public class PDFGenActif {
 	
 	public void GenPdf() throws IOException
 	{
-		String outputFileName = ordres.getTitre().get(0).getName()+"-"+"test.pdf";
+		String outputFileName = ordres.getTitre().get(0).getName()+".pdf";
 		PDDocument document = new PDDocument();
         PDPage page = new PDPage(PDRectangle.A4);
         PDImageXObject pdImage = PDImageXObject.createFromFile("Dumbo's brain/athenee.png", document);
@@ -56,6 +56,7 @@ public class PDFGenActif {
         cos.drawImage(pdImage, 0, 750, 100, 100);
         
         PDFont fontBold = PDType1Font.HELVETICA_BOLD;
+        
         
         
         
@@ -108,7 +109,7 @@ public class PDFGenActif {
         cell.setValign(VerticalAlignment.MIDDLE);
         
         Row<PDPage> row_3 = table.createRow(5);
-        cell = row_3.createCell(50, "Fax:");
+        cell = row_3.createCell(50, "E-mail:");
         cell.setAlign(HorizontalAlignment.RIGHT);
         cell.setValign(VerticalAlignment.MIDDLE);
         
@@ -117,7 +118,7 @@ public class PDFGenActif {
         cell.setValign(VerticalAlignment.MIDDLE);
         
         Row<PDPage> row_4 = table.createRow(5);
-        cell = row_4.createCell(50, "E-mail:");
+        cell = row_4.createCell(50, "E-mail personnel:");
         cell.setAlign(HorizontalAlignment.RIGHT);
         cell.setValign(VerticalAlignment.MIDDLE);
         
@@ -168,7 +169,7 @@ public class PDFGenActif {
         
         float bottomMargin3= 70;
         // y position is your coordinate of top left corner of the table
-        float yPosition3 = 550;
+        float yPosition3 = 600;
         float xPosition3 = 20;
         float tableLarge3 = 550;
         float mystery3 = 1000;
@@ -178,7 +179,7 @@ public class PDFGenActif {
             bottomMargin3, tableLarge3, xPosition3, document, page, true, drawContent3);
         
         Row<PDPage> headerRow3 = table3.createRow(25);
-        Cell<PDPage> cell3 = headerRow3.createCell(10, "Devise");
+        Cell<PDPage> cell3 = headerRow3.createCell(7, "Devise");
         cell3.setAlign(HorizontalAlignment.CENTER);
         cell3.setValign(VerticalAlignment.MIDDLE);
         
@@ -190,26 +191,35 @@ public class PDFGenActif {
         
         //cell2.setFillColor(Color.LIGHT_GRAY);
         
-        cell3 = headerRow3.createCell(20, "Code");
+        cell3 = headerRow3.createCell(12, "Code");
         cell3.setAlign(HorizontalAlignment.CENTER);
         cell3.setValign(VerticalAlignment.MIDDLE);
         
         
-        cell3 = headerRow3.createCell(20, "Quantité");
+        cell3 = headerRow3.createCell(10, "Quantité");
         cell3.setAlign(HorizontalAlignment.CENTER);
         cell3.setValign(VerticalAlignment.MIDDLE);
         
         
-        cell3 = headerRow3.createCell(20, "Montant");
+        cell3 = headerRow3.createCell(14, "Type");
+        cell3.setAlign(HorizontalAlignment.CENTER);
+        cell3.setValign(VerticalAlignment.MIDDLE);
+        
+        cell3 = headerRow3.createCell(15, "Limite");
+        cell3.setAlign(HorizontalAlignment.CENTER);
+        cell3.setValign(VerticalAlignment.MIDDLE);
+        
+        cell3 = headerRow3.createCell(12, "Echeance");
         cell3.setAlign(HorizontalAlignment.CENTER);
         cell3.setValign(VerticalAlignment.MIDDLE);
         
         
         Row<PDPage> headerRow03 = table3.createRow(25);
-        Cell<PDPage> cell03 = headerRow03.createCell(10, ordres.getTitre().get(0).getDevise());
+        Cell<PDPage> cell03 = headerRow03.createCell(7, ordres.getTitre().get(0).getDevise());
         cell03.setAlign(HorizontalAlignment.CENTER);
         cell03.setValign(VerticalAlignment.MIDDLE);
         cell03.setFont(fontBold);
+        cell03.setFontSize(7);
         
         //cell2.setFillColor(Color.LIGHT_GRAY);
         
@@ -217,25 +227,41 @@ public class PDFGenActif {
         cell03.setAlign(HorizontalAlignment.CENTER);
         cell03.setValign(VerticalAlignment.MIDDLE);
         cell03.setFont(fontBold);
+        cell03.setFontSize(7);
         
         //cell2.setFillColor(Color.LIGHT_GRAY);
         
-        cell03 = headerRow03.createCell(20, ordres.getTitre().get(0).getisin());
+        cell03 = headerRow03.createCell(12, ordres.getTitre().get(0).getisin());
         cell03.setAlign(HorizontalAlignment.CENTER);
         cell03.setValign(VerticalAlignment.MIDDLE);
         cell03.setFont(fontBold);
+        cell03.setFontSize(7);
         
         
-        cell03 = headerRow03.createCell(20, String.valueOf(ordres.Total()));
+        cell03 = headerRow03.createCell(10, String.valueOf(Math.abs(ordres.Total())));
         cell03.setAlign(HorizontalAlignment.CENTER);
         cell03.setValign(VerticalAlignment.MIDDLE);
         cell03.setFont(fontBold);
+        cell03.setFontSize(7);
         
         
-        cell03 = headerRow03.createCell(20,"");
+        cell03 = headerRow03.createCell(14,ordres.getType().get(0));
         cell03.setAlign(HorizontalAlignment.CENTER);
         cell03.setValign(VerticalAlignment.MIDDLE);
         cell03.setFont(fontBold);
+        cell03.setFontSize(7);
+        
+        cell03 = headerRow03.createCell(15,ordres.getLimite().get(0));
+        cell03.setAlign(HorizontalAlignment.CENTER);
+        cell03.setValign(VerticalAlignment.MIDDLE);
+        cell03.setFont(fontBold);
+        cell03.setFontSize(7);
+        
+        cell03 = headerRow03.createCell(12,ordres.getEcheance().get(0));
+        cell03.setAlign(HorizontalAlignment.CENTER);
+        cell03.setValign(VerticalAlignment.MIDDLE);
+        cell03.setFont(fontBold);
+        cell03.setFontSize(7);
         
         
         table3.draw();
@@ -246,7 +272,7 @@ public class PDFGenActif {
         
         float bottomMargin4 = 70;
         // y position is your coordinate of top left corner of the table
-        float yPosition4 = 450;
+        float yPosition4 = 525;
         float xPosition4 = 20;
         float tableLarge4 = 550;
         float mystery4 = 1000;
@@ -271,7 +297,7 @@ public class PDFGenActif {
         
         float bottomMargin5= 70;
         // y position is your coordinate of top left corner of the table
-        float yPosition5 = 350;
+        float yPosition5 = 475;
         float xPosition5 = 20;
         float tableLarge5 = 550;
         float mystery5 = 1000;
@@ -281,55 +307,48 @@ public class PDFGenActif {
             bottomMargin5, tableLarge5, xPosition5, document, page, true, drawContent5);
         
         Row<PDPage> headerRow5 = table5.createRow(30);
-        Cell<PDPage> cell5 = headerRow5.createCell(25, "Clients");
+        Cell<PDPage> cell5 = headerRow5.createCell(34, "Clients");
         cell5.setAlign(HorizontalAlignment.CENTER);
         cell5.setValign(VerticalAlignment.MIDDLE);
         
         
         
-        cell5 = headerRow5.createCell(25, "Compte");
+        cell5 = headerRow5.createCell(33, "Compte");
         cell5.setAlign(HorizontalAlignment.CENTER);
         cell5.setValign(VerticalAlignment.MIDDLE);
         
         //cell2.setFillColor(Color.LIGHT_GRAY);
         
-        cell5 = headerRow5.createCell(25, "Nb part");
+        cell5 = headerRow5.createCell(33, "Nb part");
         cell5.setAlign(HorizontalAlignment.CENTER);
         cell5.setValign(VerticalAlignment.MIDDLE);
         
-        
-        cell5 = headerRow5.createCell(25, "Montant");
-        cell5.setAlign(HorizontalAlignment.CENTER);
-        cell5.setValign(VerticalAlignment.MIDDLE);
         
         for ( int i = 0; i < ordres.getClient().size(); ++i)
         {
         	
         	
         	Row<PDPage> headerRow05 = table5.createRow(30);
-        	Cell<PDPage> cell05 = headerRow05.createCell(25, ordres.getClient().get(i).getName());
+        	Cell<PDPage> cell05 = headerRow05.createCell(34, ordres.getClient().get(i).getName());
         	cell05.setAlign(HorizontalAlignment.CENTER);
         	cell05.setValign(VerticalAlignment.MIDDLE);
         	cell05.setFont(fontBold);
         
     
         
-        	cell05 = headerRow05.createCell(25, ordres.getClient().get(i).getnCompte());
+        	cell05 = headerRow05.createCell(33, ordres.getClient().get(i).getnCompte());
         	cell05.setAlign(HorizontalAlignment.CENTER);
         	cell05.setValign(VerticalAlignment.MIDDLE);
         	cell05.setFont(fontBold);
         
         
         
-        	cell05 = headerRow05.createCell(25, String.valueOf(ordres.getQuant().get(i)));
+        	cell05 = headerRow05.createCell(33, String.valueOf(Math.abs(ordres.getQuant().get(i))));
         	cell05.setAlign(HorizontalAlignment.CENTER);
         	cell05.setValign(VerticalAlignment.MIDDLE);
         	cell05.setFont(fontBold);
         	
-        	cell05 = headerRow05.createCell(25, "");
-        	cell05.setAlign(HorizontalAlignment.CENTER);
-        	cell05.setValign(VerticalAlignment.MIDDLE);
-        	cell05.setFont(fontBold);
+        	
         
         
        

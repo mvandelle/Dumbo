@@ -98,7 +98,7 @@ public class Loby {
         lastSync.setLayoutY(450);
         rootLoby.getChildren().add(lastSync);
         
-        Text difSync = new Text("Il y a actuellement " + syncMan.getSyncDif(id) + " entré(s) non synchronisé avec le registre principal");
+        Text difSync = new Text("Il y a actuellement " + syncMan.getSyncDif(id) + " entrée(s) non synchronisée avec le registre principal");
         if (syncMan.getSyncDif(id) > 0 )
         {
         	difSync.setFill(Color.RED);
@@ -115,7 +115,7 @@ public class Loby {
 			@Override
 			public void handle(MouseEvent event) {
 				
-				difSync.setText("Il y a actuellement " + syncMan.getSyncDif(id) + " entré(s) non synchronisé avec le registre principal");
+				difSync.setText("Il y a actuellement " + syncMan.getSyncDif(id) + " entrée(s) non synchronisée avec le registre principal");
 		        if (syncMan.getSyncDif(id) > 0 )
 		        {
 		        	difSync.setFill(Color.RED);
@@ -141,7 +141,7 @@ public class Loby {
 				dateMan.update(id);
 				syncMan.setToZero(id);
 				lastSync.setText("Dernière synchronisation : " + dateMan.getDate(id));
-				difSync.setText("Il y a actuellement " + syncMan.getSyncDif(id) + " entré(s) non synchronisé avec le registre principal");
+				difSync.setText("Il y a actuellement " + syncMan.getSyncDif(id) + " entrée(s) non synchronisée avec le registre principal");
 				 if (syncMan.getSyncDif(id) > 0 )
 			        {
 			        	difSync.setFill(Color.RED);
@@ -161,7 +161,7 @@ public class Loby {
 			public void handle(ActionEvent event) {
 				ActParClient apc = new ActParClient(data, true);
 				try {
-					apc.showActParClient().show();
+					apc.showActParClient(stageLoby).show();
 				} catch (MalformedURLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -184,7 +184,7 @@ public class Loby {
 			public void handle(ActionEvent event) {
 				OrdreParTitre opc = new OrdreParTitre(data);
 				try {
-					opc.showOrdreParTitre().show();
+					opc.showOrdreParTitre(stageLoby).show();
 				} catch (MalformedURLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

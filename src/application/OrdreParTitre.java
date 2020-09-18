@@ -71,7 +71,7 @@ public class OrdreParTitre {
 		navig = new TreeTableView<ClientNode>();
 	}
 	
-	public Stage showOrdreParTitre() throws MalformedURLException
+	public Stage showOrdreParTitre(Stage st) throws MalformedURLException
 	{
 		Stage s = new Stage();
 		s.setTitle("Passage d'ordre par Titre");
@@ -98,6 +98,29 @@ public class OrdreParTitre {
         quantTot.setScaleX(1.7);
         quantTot.setScaleY(1.7);
         root.getChildren().add(quantTot);
+        
+        TextField limite = new TextField();
+        limite.setPromptText("Limite");
+        limite.setLayoutX(800);
+        limite.setLayoutY(450);
+        root.getChildren().add(limite);
+        
+        TextField echeance = new TextField();
+        echeance.setPromptText("Echeance");
+        echeance.setLayoutX(800);
+        echeance.setLayoutY(500);
+        root.getChildren().add(echeance);
+        
+        ObservableList<String> optionsType = 
+        	    FXCollections.observableArrayList(Arrays.asList("Au marché", "A cours limité", "A seuil de declenchment", "A plage de déclenchement", "STOP LOSS")
+        	        );
+        
+        ComboBox<String> comboType = new ComboBox<String>(optionsType);
+        comboType.setMaxWidth(150);
+        comboType.setLayoutY(400);
+        comboType.setLayoutX(800);
+        comboType.setPromptText("Type");
+        root.getChildren().add(comboType);
         
       
         
@@ -267,6 +290,9 @@ public class OrdreParTitre {
 			@Override
 			public void handle(ActionEvent event) {
 				quantTot.setText("");
+				limite.setText("");
+				echeance.setText("");
+				comboType.getSelectionModel().select(-1);
 				Qua.setText("");
 				comboTitres.getSelectionModel().select(-1);
 				sortTitre.getSelectionModel().select(-1);
@@ -307,48 +333,58 @@ public class OrdreParTitre {
 			@Override
 			public void handle(ActionEvent event) {
 				
-				if ( ordre.isEmpty())
+				if ( quant > 0)
 				{
-					PopupControl p = new PopupControl("Ordre vide", false, s);
+					PopupControl p = new PopupControl("Quantité restante non nulle", false, s);
 			        p.show();
 				} else
 				{
-					clone.passOrdre(ordre, false);
 				
+					if ( ordre.isEmpty())
+					{
+						PopupControl p = new PopupControl("Ordre vide", false, s);
+						p.show();
+					} else
+					{
+						clone.passOrdre(ordre, false);
 				
-					Qua.setText("");
-					quantTot.setText("");
-					comboTitres.getSelectionModel().select(-1);
-					sortTitre.getSelectionModel().select(-1);
-					quant = 0;
-					resumeQuant.setText("Quantité restante : " + quant);
-					ordre.initializeParTitre();
-					navig = new TreeTableView<ClientNode>();
-					navig.setLayoutX(170);
-					navig.setLayoutY(200);
-					navig.setMinSize(500, 450);
-					navig.setMaxSize(500, 450);
-					root.getChildren().add(navig);
+				      /*
+						Qua.setText("");
+						quantTot.setText("");
+						comboTitres.getSelectionModel().select(-1);
+						sortTitre.getSelectionModel().select(-1);
+						quant = 0;
+						resumeQuant.setText("Quantité restante : " + quant);
+						ordre.initializeParTitre();
+						navig = new TreeTableView<ClientNode>();
+						navig.setLayoutX(170);
+						navig.setLayoutY(200);
+						navig.setMinSize(500, 450);
+						navig.setMaxSize(500, 450);
+						root.getChildren().add(navig);
 		        
-					TreeTableColumn<ClientNode, String> column1 = new TreeTableColumn<>("Client");
-					column1.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
-					column1.setMinWidth(300);
+						TreeTableColumn<ClientNode, String> column1 = new TreeTableColumn<>("Client");
+						column1.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
+						column1.setMinWidth(300);
 		        
-					TreeTableColumn<ClientNode, String> column2 = new TreeTableColumn<>("Quantité");
-					column2.setCellValueFactory(new TreeItemPropertyValueFactory<>("quant"));
+						TreeTableColumn<ClientNode, String> column2 = new TreeTableColumn<>("Quantité");
+						column2.setCellValueFactory(new TreeItemPropertyValueFactory<>("quant"));
 					
-					TreeTableColumn<ClientNode, String> column3 = new TreeTableColumn<>("En cours");
-					column3.setCellValueFactory(new TreeItemPropertyValueFactory<>("modif"));
+						TreeTableColumn<ClientNode, String> column3 = new TreeTableColumn<>("En cours");
+						column3.setCellValueFactory(new TreeItemPropertyValueFactory<>("modif"));
 		        
-					navig.getColumns().add(column1);
-					navig.getColumns().add(column2);
-					navig.getColumns().add(column3);
-					PopupControl p = new PopupControl("Ordre passé", true, s);
-					p.show();
-				}
+						navig.getColumns().add(column1);
+						navig.getColumns().add(column2);
+						navig.getColumns().add(column3);
+						*/
+						PopupControl p = new PopupControl("Ordre passé", true, st);
+						p.show();
+						s.close();
+					}
 			
 				
 				
+				}
 			}
         	
         	
@@ -380,12 +416,37 @@ public class OrdreParTitre {
 						{
 							if( quant - Integer.parseInt(Qua.getCharacters().toString())>= 0 && findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()).hasEnough(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()).getisin(), Integer.parseInt(Qua.getCharacters().toString())))
 							{
-								navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()-Integer.parseInt(Qua.getCharacters().toString()));
-								navig.getColumns().remove(column3);
-								navig.getColumns().add(column3);
-								quant = quant - Integer.parseInt(Qua.getCharacters().toString());
-								resumeQuant.setText("Quantité restante : " + quant);
-								ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.SELL, -Integer.parseInt(Qua.getCharacters().toString()));
+								
+								if ( comboType.getSelectionModel().getSelectedIndex() != -1)
+								{ 	
+									if ( !limite.getText().isEmpty())
+									{
+										if ( !echeance.getText().isEmpty())
+										{
+								
+											navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()-Integer.parseInt(Qua.getCharacters().toString()));
+											navig.getColumns().remove(column3);
+											navig.getColumns().add(column3);
+											quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+											resumeQuant.setText("Quantité restante : " + quant);
+											ordre.setTLE(comboType.getSelectionModel().getSelectedItem(), limite.getText(), echeance.getText());
+											ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.SELL, -Integer.parseInt(Qua.getCharacters().toString()));
+											
+										} else
+										{
+											PopupControl p = new PopupControl("Echance invalide", false, s);
+									        p.show();
+										}
+									} else
+									{
+										PopupControl p = new PopupControl("Limite invalide", false, s);
+								        p.show();
+									}
+								} else
+								{
+									PopupControl p = new PopupControl("Type invalide", false, s);
+							        p.show();
+								}
 							} else
 							{
 								PopupControl p = new PopupControl("Quantité insuffisante", false, s);
@@ -421,12 +482,38 @@ public class OrdreParTitre {
 							
 							if ( quant - Integer.parseInt(Qua.getCharacters().toString()) >= 0)
 							{
-								quant = quant - Integer.parseInt(Qua.getCharacters().toString());
-								resumeQuant.setText("Quantité restante : " + quant);
-								navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()+Integer.parseInt(Qua.getCharacters().toString()));
-								navig.getColumns().remove(column3);
-								navig.getColumns().add(column3);
-								ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.BUY, Integer.parseInt(Qua.getCharacters().toString()));
+								
+								
+								if ( comboType.getSelectionModel().getSelectedIndex() != -1)
+								{ 	
+									if ( !limite.getText().isEmpty())
+									{
+										if ( !echeance.getText().isEmpty())
+										{
+								
+											navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()+Integer.parseInt(Qua.getCharacters().toString()));
+											navig.getColumns().remove(column3);
+											navig.getColumns().add(column3);
+											quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+											resumeQuant.setText("Quantité restante : " + quant);
+											ordre.setTLE(comboType.getSelectionModel().getSelectedItem(), limite.getText(), echeance.getText());
+											ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.BUY, Integer.parseInt(Qua.getCharacters().toString()));
+											
+										} else
+										{
+											PopupControl p = new PopupControl("Echance invalide", false, s);
+									        p.show();
+										}
+									} else
+									{
+										PopupControl p = new PopupControl("Limite invalide", false, s);
+								        p.show();
+									}
+								} else
+								{
+									PopupControl p = new PopupControl("Type invalide", false, s);
+							        p.show();
+								}
 							} else
 							{
 								PopupControl p = new PopupControl("Quantité insuffisante", false, s);

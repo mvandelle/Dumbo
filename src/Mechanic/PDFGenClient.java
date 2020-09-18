@@ -47,7 +47,7 @@ public class PDFGenClient {
 	
 	public void GenPdf() throws IOException
 	{
-		String outputFileName = ordres.getClientName()+"-"+ordres.getClientNCompte()+"test.pdf";
+		String outputFileName = ordres.getClientName()+"-"+ordres.getClientNCompte()+".pdf";
 		PDDocument document = new PDDocument();
         PDPage page = new PDPage(PDRectangle.A4);
         PDImageXObject pdImage = PDImageXObject.createFromFile("Dumbo's brain/athenee.png", document);
@@ -107,7 +107,7 @@ public class PDFGenClient {
         cell.setValign(VerticalAlignment.MIDDLE);
         
         Row<PDPage> row_3 = table.createRow(5);
-        cell = row_3.createCell(50, "Fax:");
+        cell = row_3.createCell(50, "E-mail:");
         cell.setAlign(HorizontalAlignment.RIGHT);
         cell.setValign(VerticalAlignment.MIDDLE);
         
@@ -116,7 +116,7 @@ public class PDFGenClient {
         cell.setValign(VerticalAlignment.MIDDLE);
         
         Row<PDPage> row_4 = table.createRow(5);
-        cell = row_4.createCell(50, "E-mail:");
+        cell = row_4.createCell(50, "E-mail personnel:");
         cell.setAlign(HorizontalAlignment.RIGHT);
         cell.setValign(VerticalAlignment.MIDDLE);
         
@@ -252,12 +252,26 @@ public class PDFGenClient {
             Cell<PDPage> cell3_1 = headerRow3_1.createCell((float) 12.5, ordres.getTitre().get(i).getName());
             
             cell3_1 = headerRow3_1.createCell((float) 12.5,ordres.getTitre().get(i).getisin());
+            cell3_1.setAlign(HorizontalAlignment.CENTER);
+            cell3_1.setValign(VerticalAlignment.MIDDLE);
             cell3_1 = headerRow3_1.createCell((float) 12.5,ordres.getTitre().get(i).getDevise());
+            cell3_1.setAlign(HorizontalAlignment.CENTER);
+            cell3_1.setValign(VerticalAlignment.MIDDLE);
             cell3_1 = headerRow3_1.createCell((float) 12.5,ordres.getSens().get(i).toString());
-            cell3_1 = headerRow3_1.createCell((float) 12.5,ordres.getQuant().get(i).toString());
-            cell3_1 = headerRow3_1.createCell((float) 12.5,ordres.getTitre().get(i).getType().toString());
-            cell3_1 = headerRow3_1.createCell((float) 12.5,"");
-            cell3_1 = headerRow3_1.createCell((float) 12.5,"");
+            cell3_1.setAlign(HorizontalAlignment.CENTER);
+            cell3_1.setValign(VerticalAlignment.MIDDLE);
+            cell3_1 = headerRow3_1.createCell((float) 12.5,String.valueOf(Math.abs(ordres.getQuant().get(i))));
+            cell3_1.setAlign(HorizontalAlignment.CENTER);
+            cell3_1.setValign(VerticalAlignment.MIDDLE);
+            cell3_1 = headerRow3_1.createCell((float) 12.5,ordres.getType().get(i));
+            cell3_1.setAlign(HorizontalAlignment.CENTER);
+            cell3_1.setValign(VerticalAlignment.MIDDLE);
+            cell3_1 = headerRow3_1.createCell((float) 12.5,ordres.getLimite().get(i));
+            cell3_1.setAlign(HorizontalAlignment.CENTER);
+            cell3_1.setValign(VerticalAlignment.MIDDLE);
+            cell3_1 = headerRow3_1.createCell((float) 12.5,ordres.getEcheance().get(i));
+            cell3_1.setAlign(HorizontalAlignment.CENTER);
+            cell3_1.setValign(VerticalAlignment.MIDDLE);
         }
         table3.draw();
         

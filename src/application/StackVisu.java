@@ -89,6 +89,9 @@ public class StackVisu {
 					data.getStack().removeOrdre( listOrdres.getSelectionModel().getSelectedIndices());
 					listOrdres.setItems(FXCollections.observableArrayList(data.getStack().showOrdre()));
 					data.getStack().writeOnStack();
+					
+					PopupControl p = new PopupControl("Ordre supprimé", true, stageStackVisuWindow);
+			        p.show();
 				}
 				
 			}
@@ -121,6 +124,9 @@ public class StackVisu {
 					e.printStackTrace();
 				}
 				
+				PopupControl p = new PopupControl("Ordre validé", true, stageStackVisuWindow);
+		        p.show();
+				
 				
 			}
         });
@@ -132,7 +138,7 @@ public class StackVisu {
         clientPDF.setLayoutY(300);
         
         Button actifPDF = new Button();
-        actifPDF.setText("Génerer PDF ordres par ordre");
+        actifPDF.setText("Génerer PDF ordres par titre");
         rootStackVisuWindow.getChildren().add(actifPDF);
         actifPDF.setLayoutX(1000);
         actifPDF.setLayoutY(400);
@@ -162,25 +168,20 @@ public class StackVisu {
 				
 				if ( indices.isEmpty())
 				{
-					rootStackVisuWindow.getChildren().remove(error);
-					rootStackVisuWindow.getChildren().remove(error2);
-					rootStackVisuWindow.getChildren().remove(error3);
-					rootStackVisuWindow.getChildren().add(error3);
+					
+					PopupControl p = new PopupControl("Aucun ordre selectionné", false, stageStackVisuWindow);
+			        p.show();
 				} else
 				{
 					Boolean sameClient = data.getStack().checkSameClient(indices);
 				
 					if ( sameClient == false)
 					{
-						rootStackVisuWindow.getChildren().remove(error);
-						rootStackVisuWindow.getChildren().remove(error2);
-						rootStackVisuWindow.getChildren().remove(error3);
-						rootStackVisuWindow.getChildren().add(error);
+						PopupControl p = new PopupControl("Des ordres pour des clients\ndifferents ont été selectionnés", false, stageStackVisuWindow);
+				        p.show();
 					} else
 					{
-						rootStackVisuWindow.getChildren().remove(error);
-						rootStackVisuWindow.getChildren().remove(error2);
-						rootStackVisuWindow.getChildren().remove(error3);
+					
 						indices = data.getStack().addForgottenOrdreClient(indices);
 						PDFGenClient pdf = new PDFGenClient(data.getStack().createOrdreForPdf(indices));
 						try {
@@ -204,10 +205,8 @@ public class StackVisu {
 				ObservableList<Integer> indices = listOrdres.getSelectionModel().getSelectedIndices();
 				if ( indices.isEmpty())
 				{
-					rootStackVisuWindow.getChildren().remove(error);
-					rootStackVisuWindow.getChildren().remove(error2);
-					rootStackVisuWindow.getChildren().remove(error3);
-					rootStackVisuWindow.getChildren().add(error3);
+					PopupControl p = new PopupControl("Aucun ordre selectionné", false, stageStackVisuWindow);
+			        p.show();
 					
 				} else
 				{
@@ -215,17 +214,14 @@ public class StackVisu {
 				
 					if ( sameOrdresAndSameDepo == false)
 					{
-						rootStackVisuWindow.getChildren().remove(error);
-						rootStackVisuWindow.getChildren().remove(error2);
-						rootStackVisuWindow.getChildren().remove(error3);
-						rootStackVisuWindow.getChildren().add(error2);
+						PopupControl p = new PopupControl("Des dépositaires ou des titres\ndifférents ont été sélectionnés", false, stageStackVisuWindow);
+				        p.show();
 					} else
 					{
-						rootStackVisuWindow.getChildren().remove(error2);
-						rootStackVisuWindow.getChildren().remove(error);
-						System.out.println(indices);
+					
+						
 						indices = data.getStack().addForgottenOrdreActif(indices);
-						System.out.println(indices);
+						
 						PDFGenActif pdf = new PDFGenActif(data.getStack().createOrdreForPdfparOrdre(indices));
 						try {
 							pdf.GenPdf();

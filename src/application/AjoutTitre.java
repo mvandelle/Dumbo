@@ -134,6 +134,7 @@ public class AjoutTitre {
 							}
 							PopupControl pAct = new PopupControl("Titre ajouté", true, s);
 		    				pAct.show();
+		    				
 							break;
 		        		
 						case "FUTURE":
