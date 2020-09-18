@@ -275,7 +275,7 @@ public class OrdreParTitre {
 				AjoutTitre addWindow = new AjoutTitre(TitRead);
 				comboTitres.getSelectionModel().select(-1);
 				try {
-					addWindow.showAjoutTitre().show();;
+					addWindow.showAjoutTitre(s).show();;
 				} catch (MalformedURLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

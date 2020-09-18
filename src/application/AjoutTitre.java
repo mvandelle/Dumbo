@@ -39,7 +39,7 @@ public class AjoutTitre {
 	}
 
 	
-	public Stage showAjoutTitre() throws MalformedURLException
+	public Stage showAjoutTitre(Stage st) throws MalformedURLException
 	{
 		Stage s = new Stage();
 		s.setTitle("Ajout d'un titre");
@@ -122,6 +122,10 @@ public class AjoutTitre {
 								e.printStackTrace();
 							}
 							
+							PopupControl pAct = new PopupControl("Titre ajouté", true, st);
+		    				pAct.show();
+		    				s.close();
+							
 							break;
 		        		
 						case "OBLIGATION":
@@ -132,8 +136,9 @@ public class AjoutTitre {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-							PopupControl pAct = new PopupControl("Titre ajouté", true, s);
-		    				pAct.show();
+							PopupControl pObl = new PopupControl("Titre ajouté", true, st);
+		    				pObl.show();
+		    				s.close();
 		    				
 							break;
 		        		
@@ -145,8 +150,9 @@ public class AjoutTitre {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-							PopupControl pFut = new PopupControl("Titre ajouté", true, s);
+							PopupControl pFut = new PopupControl("Titre ajouté", true, st);
 		    				pFut.show();
+		    				s.close();
 							break;
 		        		
 						case "OPTION":
@@ -157,8 +163,9 @@ public class AjoutTitre {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-							PopupControl pOpt = new PopupControl("Titre ajouté", true, s);
+							PopupControl pOpt = new PopupControl("Titre ajouté", true, st);
 		    				pOpt.show();
+		    				s.close();
 							break;
 		        	
 						case "OPC":
@@ -169,8 +176,9 @@ public class AjoutTitre {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-							PopupControl pOPC = new PopupControl("Titre ajouté", true, s);
+							PopupControl pOPC = new PopupControl("Titre ajouté", true, st);
 		    				pOPC.show();
+		    				s.close();
 							break;
 		        		
 						case "FOREX":
@@ -181,8 +189,9 @@ public class AjoutTitre {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-							PopupControl pFor = new PopupControl("Titre ajouté", true, s);
+							PopupControl pFor = new PopupControl("Titre ajouté", true, st);
 		    				pFor.show();
+		    				s.close();
 							break;
 		        		
 						case "COMMODITIES":
@@ -193,8 +202,9 @@ public class AjoutTitre {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-							PopupControl pCommo = new PopupControl("Titre ajouté", true, s);
+							PopupControl pCommo = new PopupControl("Titre ajouté", true, st);
 		    				pCommo.show();
+		    				s.close();
 							break;
 		        	
 						default:
