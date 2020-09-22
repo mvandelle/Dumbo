@@ -52,10 +52,10 @@ public class AjoutTitre {
         String at = ath.toURI().toURL().toString();
         ImageView path = new ImageView();
         path.setImage(new Image(at));
-        path.setLayoutX(-30);
-        path.setLayoutY(-40);
-        path.setScaleX(0.7);
-        path.setScaleY(0.7);
+        path.setLayoutX(Dumbo.A_X);
+        path.setLayoutY(Dumbo.A_Y);
+        path.setScaleX(Dumbo.SCALE);
+        path.setScaleY(Dumbo.SCALE);
         root.getChildren().add(path);
         
         ObservableList<String> optionsTitre = 

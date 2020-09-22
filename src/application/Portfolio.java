@@ -56,17 +56,17 @@ public class Portfolio {
 		Stage stage= new Stage();
 		stage.setTitle("Portefeuille Client " + id );
     	Group rootstageActParClientWindow= new Group();
-        Scene scenestageActParClientWindow = new Scene(rootstageActParClientWindow,2000,2000, Color.WHITE);
+        Scene scenestageActParClientWindow = new Scene(rootstageActParClientWindow,Dumbo.WIDTH_PC,Dumbo.HEIGHT_PC, Color.WHITE);
         stage.setScene(scenestageActParClientWindow);
         
         File ath = new File("Dumbo's brain/athenee.png");
         String at = ath.toURI().toURL().toString();
         ImageView path = new ImageView();
         path.setImage(new Image(at));
-        path.setLayoutX(-30);
-        path.setLayoutY(-40);
-        path.setScaleX(0.7);
-        path.setScaleY(0.7);
+        path.setLayoutX(Dumbo.A_X);
+        path.setLayoutY(Dumbo.A_Y);
+        path.setScaleX(Dumbo.SCALE);
+        path.setScaleY(Dumbo.SCALE);
         rootstageActParClientWindow.getChildren().add(path);
         
         ObservableList<String> optionsClient = 

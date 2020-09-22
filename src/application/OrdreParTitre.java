@@ -40,6 +40,7 @@ import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
@@ -56,10 +57,12 @@ public class OrdreParTitre {
 	private MemoryClone clone;
 	private int quant;
 	private boolean isBuy;
+	private boolean specialSell;
 	private TreeTableView<ClientNode> navig;
 	
 	public OrdreParTitre(MemoryClone m)
 	{
+		specialSell = true;
 		clone = m;
 		clone.loadClient();
 		TitRead = new MemoryReaderTitre();
@@ -84,10 +87,10 @@ public class OrdreParTitre {
         String at = ath.toURI().toURL().toString();
         ImageView path = new ImageView();
         path.setImage(new Image(at));
-        path.setLayoutX(-30);
-        path.setLayoutY(-40);
-        path.setScaleX(0.7);
-        path.setScaleY(0.7);
+        path.setLayoutX(Dumbo.A_X);
+        path.setLayoutY(Dumbo.A_Y);
+        path.setScaleX(Dumbo.SCALE);
+        path.setScaleY(Dumbo.SCALE);
         root.getChildren().add(path);
         
         
@@ -112,7 +115,7 @@ public class OrdreParTitre {
         root.getChildren().add(echeance);
         
         ObservableList<String> optionsType = 
-        	    FXCollections.observableArrayList(Arrays.asList("Au marché", "A cours limité", "A seuil de declenchment", "A plage de déclenchement", "STOP LOSS")
+        	    FXCollections.observableArrayList(Arrays.asList("Au marche", "A cours limite", "A seuil de declenchment", "A plage de declenchement", "STOP LOSS")
         	        );
         
         ComboBox<String> comboType = new ComboBox<String>(optionsType);
@@ -175,12 +178,44 @@ public class OrdreParTitre {
 		
 		PrefixSelectionComboBox<String> sortTitre = new PrefixSelectionComboBox<String>();
 		sortTitre.setTypingDelay((int)Double.POSITIVE_INFINITY);
+		
 		sortTitre.setBackSpaceAllowed(true);
 		sortTitre.setDisplayOnFocusedEnabled(true);
         sortTitre.setMaxWidth(400);
         sortTitre.setLayoutY(150);
-        sortTitre.setLayoutX(320);
+        sortTitre.setLayoutX(350);
+        
+        
         root.getChildren().add(sortTitre);
+        
+        Text research = new Text("Recherche : ");
+        research.setLayoutX(350);
+        research.setLayoutY(130);
+        
+    	root.getChildren().add(research);
+       
+        
+       
+        
+        sortTitre.setOnKeyPressed(e -> {
+        	
+        	ArrayList<String> alpha = new ArrayList<>();
+        	alpha.addAll(Arrays.asList("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"));
+            	
+           if ( alpha.contains(e.getCode().toString()))
+           {
+        	   research.setText(research.getText()+ e.getCode().toString());
+           }
+            
+            
+            if (e.getCode() == KeyCode.BACK_SPACE) {
+            	
+            	research.setText("Recherche : ");
+                sortTitre.getSelectionModel().select(-1);
+            }
+            
+            
+        });
         
         
         navig.setLayoutX(170);
@@ -414,38 +449,30 @@ public class OrdreParTitre {
 					        p.show();
 						}else
 						{
-							if( quant - Integer.parseInt(Qua.getCharacters().toString())>= 0 && findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()).hasEnough(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()).getisin(), Integer.parseInt(Qua.getCharacters().toString())))
+							if( (quant - Integer.parseInt(Qua.getCharacters().toString())>= 0 && findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()).hasEnough(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()).getisin(), Integer.parseInt(Qua.getCharacters().toString())))|| specialSell)
 							{
 								
 								if ( comboType.getSelectionModel().getSelectedIndex() != -1)
 								{ 	
-									if ( !limite.getText().isEmpty())
-									{
-										if ( !echeance.getText().isEmpty())
-										{
+									
 								
-											navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()-Integer.parseInt(Qua.getCharacters().toString()));
-											navig.getColumns().remove(column3);
-											navig.getColumns().add(column3);
-											quant = quant - Integer.parseInt(Qua.getCharacters().toString());
-											resumeQuant.setText("Quantité restante : " + quant);
-											ordre.setTLE(comboType.getSelectionModel().getSelectedItem(), limite.getText(), echeance.getText());
-											ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.SELL, -Integer.parseInt(Qua.getCharacters().toString()));
-											
-										} else
-										{
-											PopupControl p = new PopupControl("Echance invalide", false, s);
-									        p.show();
-										}
-									} else
-									{
-										PopupControl p = new PopupControl("Limite invalide", false, s);
-								        p.show();
-									}
+									navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()-Integer.parseInt(Qua.getCharacters().toString()));
+									navig.getColumns().remove(column3);
+									navig.getColumns().add(column3);
+									quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+									resumeQuant.setText("Quantité restante : " + quant);
+									ordre.setTLE(comboType.getSelectionModel().getSelectedItem(), limite.getText(), echeance.getText());
+									ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.SELL, -Integer.parseInt(Qua.getCharacters().toString()));
+										
 								} else
 								{
-									PopupControl p = new PopupControl("Type invalide", false, s);
-							        p.show();
+									navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()-Integer.parseInt(Qua.getCharacters().toString()));
+									navig.getColumns().remove(column3);
+									navig.getColumns().add(column3);
+									quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+									resumeQuant.setText("Quantité restante : " + quant);
+									ordre.setTLE("", limite.getText(), echeance.getText());
+									ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.SELL, -Integer.parseInt(Qua.getCharacters().toString()));
 								}
 							} else
 							{
@@ -486,33 +513,24 @@ public class OrdreParTitre {
 								
 								if ( comboType.getSelectionModel().getSelectedIndex() != -1)
 								{ 	
-									if ( !limite.getText().isEmpty())
-									{
-										if ( !echeance.getText().isEmpty())
-										{
-								
-											navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()+Integer.parseInt(Qua.getCharacters().toString()));
-											navig.getColumns().remove(column3);
-											navig.getColumns().add(column3);
-											quant = quant - Integer.parseInt(Qua.getCharacters().toString());
-											resumeQuant.setText("Quantité restante : " + quant);
-											ordre.setTLE(comboType.getSelectionModel().getSelectedItem(), limite.getText(), echeance.getText());
-											ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.BUY, Integer.parseInt(Qua.getCharacters().toString()));
-											
-										} else
-										{
-											PopupControl p = new PopupControl("Echance invalide", false, s);
-									        p.show();
-										}
-									} else
-									{
-										PopupControl p = new PopupControl("Limite invalide", false, s);
-								        p.show();
-									}
+									
+									navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()+Integer.parseInt(Qua.getCharacters().toString()));
+									navig.getColumns().remove(column3);
+									navig.getColumns().add(column3);
+									quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+									resumeQuant.setText("Quantité restante : " + quant);
+									ordre.setTLE(comboType.getSelectionModel().getSelectedItem(), limite.getText(), echeance.getText());
+									ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.BUY, Integer.parseInt(Qua.getCharacters().toString()));
+										
 								} else
 								{
-									PopupControl p = new PopupControl("Type invalide", false, s);
-							        p.show();
+									navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()+Integer.parseInt(Qua.getCharacters().toString()));
+									navig.getColumns().remove(column3);
+									navig.getColumns().add(column3);
+									quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+									resumeQuant.setText("Quantité restante : " + quant);
+									ordre.setTLE("", limite.getText(), echeance.getText());
+									ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.BUY, Integer.parseInt(Qua.getCharacters().toString()));
 								}
 							} else
 							{
@@ -598,30 +616,37 @@ public class OrdreParTitre {
 					{
 		        		case "ACTION":
 		        			TitRead.getTitresAction().forEach(x->sortTitreList.add(x.showTitre()));
+		        			specialSell = false;
 		        			break;
 		        		
 		        		case "OBLIGATION":
 		        			TitRead.getTitresObligation().forEach(x->sortTitreList.add(x.showTitre()));
+		        			specialSell = false;
 		        			break;
 		        		
 		        		case "FUTURE":
 		        			TitRead.getTitresFuture().forEach(x->sortTitreList.add(x.showTitre()));
+		        			specialSell = true;
 		        			break;
 		        		
 		        		case "OPTION":
 		        			TitRead.getTitresOption().forEach(x->sortTitreList.add(x.showTitre()));
+		        			specialSell = true;
 		        			break;
 		        	
 		        		case "OPC":
 		        			TitRead.getTitresOPC().forEach(x->sortTitreList.add(x.showTitre()));
+		        			specialSell = false;
 		        			break;
 		        		
 		        		case "FOREX":
 		        			TitRead.getTitresForex().forEach(x->sortTitreList.add(x.showTitre()));
+		        			specialSell = true;
 		        			break;
 		        		
 		        		case "COMMODITIES":
 		        			TitRead.getTitresCommodities().forEach(x->sortTitreList.add(x.showTitre()));
+		        			specialSell = false;
 		        			break;
 		        	
 		        			default:

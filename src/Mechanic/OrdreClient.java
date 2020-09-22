@@ -251,6 +251,19 @@ public class OrdreClient {
 			ArrayList<String> l = new ArrayList<>();
 			for ( int i = 0; i < titres.size(); ++i )
 			{
+				if ( limite.get(i).equals(""))
+				{
+					limite.set(i, " ");
+				}
+				if ( type.get(i).equals(""))
+				{
+					type.set(i, " ");
+				}
+				if ( echeance.get(i).equals(""))
+				{
+					echeance.set(i, " ");
+				}
+				
 				l.add(client.get(0).getnCompte()+"*"+titres.get(i).toString()+"*"+sens.get(i)+"*"+quant.get(i)+"*"+type.get(i)+"*"+limite.get(i)+"*"+echeance.get(i));
 			}
 			return l;
@@ -259,6 +272,18 @@ public class OrdreClient {
 			ArrayList<String> l = new ArrayList<>();
 			for ( int i = 0; i < client.size(); ++i )
 			{
+				if ( limite.get(i).equals(""))
+				{
+					limite.set(i, " ");
+				}
+				if ( type.get(i).equals(""))
+				{
+					type.set(i, " ");
+				}
+				if ( echeance.get(i).equals(""))
+				{
+					echeance.set(i, " ");
+				}
 				
 				l.add(client.get(i).getnCompte()+"*"+titres.get(0).toString()+"*"+sens.get(i)+"*"+quant.get(i)+"*"+type.get(0)+"*"+limite.get(0)+"*"+echeance.get(0));
 			}

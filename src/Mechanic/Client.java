@@ -169,7 +169,13 @@ public class Client {
 	
 	public boolean hasEnough(String isin, int q)
 	{
-		return titreISIN.get(isin) >= q;
+		if (titreISIN.containsKey(isin))
+		{
+			return titreISIN.get(isin) >= q;
+		}else
+		{
+			return false;
+		}
 	}
 	
 

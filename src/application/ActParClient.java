@@ -41,6 +41,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -55,11 +56,13 @@ public class ActParClient {
 	private OrdreClient ordre;
 	private MemoryClone clone;
 	private boolean isParClient;
+	private boolean specialSell;
 	
 	
 	
 	public ActParClient(MemoryClone m, boolean mode)
 	{
+		specialSell = false;
 		this.id = m.getId();
 	    isParClient = mode;
 		ordre = new OrdreClient();
@@ -92,17 +95,25 @@ public class ActParClient {
         String at = ath.toURI().toURL().toString();
         ImageView path = new ImageView();
         path.setImage(new Image(at));
-        path.setLayoutX(-30);
-        path.setLayoutY(-40);
-        path.setScaleX(0.7);
-        path.setScaleY(0.7);
+        path.setLayoutX(Dumbo.A_X);
+        path.setLayoutY(Dumbo.A_Y);
+        path.setScaleX(Dumbo.SCALE);
+        path.setScaleY(Dumbo.SCALE);
         rootstageActParClientWindow.getChildren().add(path);
+        
+        
         
         
         //*******************************************************
         
         
         //**********BOUTON**********
+        
+        Button add = new Button();
+        add.setText("Ajouter un titre");
+        add.setLayoutX(1150);
+        add.setLayoutY(650);
+        rootstageActParClientWindow.getChildren().add(add);
         
         Button buy = new Button();
         buy.setText("Acheter");
@@ -113,7 +124,7 @@ public class ActParClient {
         Button startOver = new Button();
         startOver.setText("Annuler et recommencer");
         startOver.setLayoutX(1000);
-        startOver.setLayoutY(550);
+        startOver.setLayoutY(100);
         rootstageActParClientWindow.getChildren().add(startOver);
         
         Button sell = new Button();
@@ -147,7 +158,7 @@ public class ActParClient {
         //**********COMBO**********
         
         ObservableList<String> optionsType = 
-        	    FXCollections.observableArrayList(Arrays.asList("Au marché", "A cours limité", "A seuil de declenchment", "A plage de déclenchement", "STOP LOSS")
+        	    FXCollections.observableArrayList(Arrays.asList("Au marche", "A cours limite", "A seuil de declenchment", "A plage de declenchement", "STOP LOSS")
         	        );
         
         ComboBox<String> comboType = new ComboBox<String>(optionsType);
@@ -185,16 +196,52 @@ public class ActParClient {
         
 		PrefixSelectionComboBox<String> sortTitre = new PrefixSelectionComboBox<String>();
 		sortTitre.setTypingDelay((int)Double.POSITIVE_INFINITY);
+		
 		sortTitre.setBackSpaceAllowed(true);
 		sortTitre.setDisplayOnFocusedEnabled(true);
         sortTitre.setMaxWidth(400);
         sortTitre.setLayoutY(500);
         sortTitre.setLayoutX(250);
+        
+        
         rootstageActParClientWindow.getChildren().add(sortTitre);
         
+        Text research = new Text("Recherche : ");
+        research.setLayoutX(250);
+        research.setLayoutY(480);
+        
+    	rootstageActParClientWindow.getChildren().add(research);
+       
         
        
-     
+        
+        sortTitre.setOnKeyPressed(e -> {
+        	
+        	ArrayList<String> alpha = new ArrayList<>();
+        	alpha.addAll(Arrays.asList("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"));
+            	
+           if ( alpha.contains(e.getCode().toString()))
+           {
+        	   research.setText(research.getText()+ e.getCode().toString());
+           }
+            
+            
+            if (e.getCode() == KeyCode.BACK_SPACE) {
+            	
+            	research.setText("Recherche : ");
+                sortTitre.getSelectionModel().select(-1);
+            }
+            
+            
+        });
+        
+       
+        
+  
+        
+        
+  
+        
         
         
         
@@ -247,7 +294,22 @@ public class ActParClient {
         
         //********** SET ON ACTION **********
         
-       
+        add.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				AjoutTitre addWindow = new AjoutTitre(TitRead);
+				comboTitres.getSelectionModel().select(-1);
+				try {
+					addWindow.showAjoutTitre(stageActParClientWindow).show();;
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+        	
+        });
         
         
         
@@ -314,30 +376,37 @@ public class ActParClient {
 					{
 		        		case "ACTION":
 		        			TitRead.getTitresAction().forEach(x->sortTitreList.add(x.showTitre()));
+		        			specialSell = false;
 			        		break;
 			        		
 		        		case "OBLIGATION":
 		        			TitRead.getTitresObligation().forEach(x->sortTitreList.add(x.showTitre()));
+		        			specialSell = false;
 		        			break;
 		        		
 		        		case "FUTURE":
 		        			TitRead.getTitresFuture().forEach(x->sortTitreList.add(x.showTitre()));
+		        			specialSell = true;
 		        			break;
 		        		
 		        		case "OPTION":
 		        			TitRead.getTitresOption().forEach(x->sortTitreList.add(x.showTitre()));
+		        			specialSell = true;
 		        			break;
 		        	
 		        		case "OPC":
 		        			TitRead.getTitresOPC().forEach(x->sortTitreList.add(x.showTitre()));
+		        			specialSell = false;
 		        			break;
 		        		
 		        		case "FOREX":
 		        			TitRead.getTitresForex().forEach(x->sortTitreList.add(x.showTitre()));
+		        			specialSell = true;
 		        			break;
 		        		
 		        		case "COMMODITIES":
 		        			TitRead.getTitresCommodities().forEach(x->sortTitreList.add(x.showTitre()));
+		        			specialSell = false;
 		        			break;
 		        	
 		        		default:
@@ -399,26 +468,18 @@ public class ActParClient {
 						{	
 							if ( comboType.getSelectionModel().getSelectedIndex() != -1)
 							{ 	
-								if ( !limite.getText().isEmpty())
-								{
-									if ( !echeance.getText().isEmpty())
-									{
-										ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()), comboType.getSelectionModel().getSelectedItem(), limite.getText(),echeance.getText());
-										resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
-									} else
-									{
-										PopupControl p = new PopupControl("Echance invalide", false, stageActParClientWindow);
-								        p.show();
-									}
-								} else
-								{
-									PopupControl p = new PopupControl("Limite invalide", false, stageActParClientWindow);
-							        p.show();
-								}
+								
+									
+								ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()), comboType.getSelectionModel().getSelectedItem(), limite.getText(),echeance.getText());
+										
+								resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+									
+								
 							} else
 							{
-								PopupControl p = new PopupControl("Type invalide", false, stageActParClientWindow);
-						        p.show();
+								ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()), "", limite.getText(),echeance.getText());
+								
+								resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
 							}
 						}
 					}
@@ -441,7 +502,7 @@ public class ActParClient {
 					
 					} else
 					{
-						if ( findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).ownTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()).getisin()))
+						if ( findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).ownTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()).getisin()) || specialSell)
 						{
 							if ( Qua.getCharacters().toString().isEmpty() || !isInt(Qua.getCharacters().toString()))
 							{
@@ -449,30 +510,18 @@ public class ActParClient {
 						        p.show();
 							} else
 							{
-								if (findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).hasEnough(findTitre(sortTitre.getSelectionModel().getSelectedIndex(), comboTitres.getSelectionModel().getSelectedItem()).getisin(), Integer.parseInt(Qua.getText())) )
+								if (findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).hasEnough(findTitre(sortTitre.getSelectionModel().getSelectedIndex(), comboTitres.getSelectionModel().getSelectedItem()).getisin(), Integer.parseInt(Qua.getText())) || specialSell )
 								{
 									if ( comboType.getSelectionModel().getSelectedIndex() != -1)
 									{ 	
-										if ( !limite.getText().isEmpty())
-										{
-											if ( !echeance.getText().isEmpty())
-											{
-												ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()), comboType.getSelectionModel().getSelectedItem(), limite.getText(),echeance.getText());
-												resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
-											} else
-											{
-												PopupControl p = new PopupControl("Echance invalide", false, stageActParClientWindow);
-										        p.show();
-											}
-										} else
-										{
-											PopupControl p = new PopupControl("Limite invalide", false, stageActParClientWindow);
-									        p.show();
-										}
+										
+										ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()), comboType.getSelectionModel().getSelectedItem(), limite.getText(),echeance.getText());
+										resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+											
 									} else
 									{
-										PopupControl p = new PopupControl("Type invalide", false, stageActParClientWindow);
-								        p.show();
+										ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()), "", limite.getText(),echeance.getText());
+										resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
 									}
 								}else
 								{

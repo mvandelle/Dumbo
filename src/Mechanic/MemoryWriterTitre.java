@@ -72,7 +72,7 @@ public class MemoryWriterTitre {
 			Row row = feuille.createRow(i+1);
 			Cell cell_1 = row.createCell(0);
 			cell_1.setCellValue(MRT.getTitresObligation().get(i).getName().toUpperCase());
-			Cell cell_2 = row.createCell(2);
+			Cell cell_2 = row.createCell(3);
 			cell_2.setCellValue(MRT.getTitresObligation().get(i).getisin());
 			Cell cell_3 = row.createCell(1);
 			cell_3.setCellValue(MRT.getTitresObligation().get(i).getDevise());

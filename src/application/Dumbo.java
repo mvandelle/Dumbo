@@ -23,6 +23,9 @@ import javafx.stage.Stage;
 public class Dumbo extends Application{
 	public static int WIDTH_PC = 1500;
 	public static int HEIGHT_PC = 1000;
+	public static int A_X = -90;
+	public static int A_Y = -90;
+	public static double SCALE= 0.5;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -37,10 +40,10 @@ public class Dumbo extends Application{
         String at = ath.toURI().toURL().toString();
         ImageView path = new ImageView();
         path.setImage(new Image(at));
-        path.setLayoutX(-30);
-        path.setLayoutY(-40);
-        path.setScaleX(0.7);
-        path.setScaleY(0.7);
+        path.setLayoutX(A_X);
+        path.setLayoutY(A_Y);
+        path.setScaleX(SCALE);
+        path.setScaleY(SCALE);
         root.getChildren().add(path);
         
         

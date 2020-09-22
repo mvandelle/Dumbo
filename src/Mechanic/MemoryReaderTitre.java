@@ -178,21 +178,21 @@ public class MemoryReaderTitre {
 			  sheet = wb.getSheetAt(2); 
 			  for (Row ligne : sheet)
 			  {
-				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(3)),TypeTitre.FUTURE,stri.formatCellValue(ligne.getCell(1)),0);
+				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(2)),TypeTitre.FUTURE,stri.formatCellValue(ligne.getCell(1)),0);
 				  titres.add(t);
 			  }
 			  
 			  sheet = wb.getSheetAt(3); 
 			  for (Row ligne : sheet)
 			  {
-				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(3)),TypeTitre.OPTION,stri.formatCellValue(ligne.getCell(1)),0);
+				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(2)),TypeTitre.OPTION,stri.formatCellValue(ligne.getCell(1)),0);
 				  titres.add(t);
 			  }
 			  
 			  sheet = wb.getSheetAt(4); 
 			  for (Row ligne : sheet)
 			  {
-				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(3)),TypeTitre.OPC,stri.formatCellValue(ligne.getCell(1)),0);
+				  Titre t = new Titre(stri.formatCellValue(ligne.getCell(0)), stri.formatCellValue(ligne.getCell(2)),TypeTitre.OPC,stri.formatCellValue(ligne.getCell(1)),0);
 				  titres.add(t);
 			  }
 			  
@@ -274,6 +274,7 @@ public class MemoryReaderTitre {
 	
 	public Titre findTitre(String ISIN) throws Exception
 	{
+		System.out.println(ISIN);
 		for ( int i = 0; i < titresAction.size();++i)
 		{
 			if ( titresAction.get(i).getisin().equals(ISIN))
@@ -300,7 +301,7 @@ public class MemoryReaderTitre {
 		
 		for ( int i = 0; i < titresOption.size();++i)
 		{
-			if ( titresAction.get(i).getisin().equals(ISIN))
+			if ( titresOption.get(i).getisin().equals(ISIN))
 			{
 				return titresOption.get(i);
 			}
