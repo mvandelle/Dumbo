@@ -3,7 +3,10 @@ package application;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+
+import org.controlsfx.control.PrefixSelectionComboBox;
 
 import Mechanic.Client;
 import Mechanic.MemoryClone;
@@ -23,6 +26,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -99,32 +103,69 @@ public class Portfolio {
         rootstageActParClientWindow.getChildren().add(table);
         
         
-        ComboBox<String> comboClient = new ComboBox<String>(optionsClient);
+        PrefixSelectionComboBox<String> comboClient = new PrefixSelectionComboBox<String>();
+        comboClient.setItems(FXCollections.observableArrayList(optionsClient));
+        comboClient.setTypingDelay((int)Double.POSITIVE_INFINITY);
+        comboClient.setBackSpaceAllowed(true);
+        comboClient.setDisplayOnFocusedEnabled(true);
         comboClient.setMaxWidth(400);
         comboClient.setLayoutY(150);
         comboClient.setLayoutX(100);
         comboClient.setPromptText("Nom   Compte   Banque");
         rootstageActParClientWindow.getChildren().add(comboClient);
         
+        
+        Text research = new Text("Recherche : ");
+        research.setLayoutX(100);
+        research.setLayoutY(120);
+        
+    	rootstageActParClientWindow.getChildren().add(research);
+       
+        
+       
+        
+        comboClient.setOnKeyPressed(e -> {
+        	
+        	ArrayList<String> alpha = new ArrayList<>();
+        	alpha.addAll(Arrays.asList("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"));
+            	
+           if ( alpha.contains(e.getCode().toString()))
+           {
+        	   research.setText(research.getText()+ e.getCode().toString());
+           }
+            
+            
+            if (e.getCode() == KeyCode.BACK_SPACE) {
+            	
+            	research.setText("Recherche : ");
+                comboClient.getSelectionModel().select(-1);
+            }
+            
+            
+        });
+        
         comboClient.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				table.getItems().removeAll(table.getItems());
-				resumeClient.setText("");
-				Client selectedClient = findClientFromClientId(comboClient.getSelectionModel().getSelectedItem());
-				for ( String isin : selectedClient.gettitreISIN().keySet())
+				if (comboClient.getSelectionModel().getSelectedIndex() != -1)
 				{
+					table.getItems().removeAll(table.getItems());
+					resumeClient.setText("");
+				
+					Client selectedClient = findClientFromClientId(comboClient.getSelectionModel().getSelectedItem());
+					for ( String isin : selectedClient.gettitreISIN().keySet())
+					{
 					
-					try {
-							UnityTitreVisual u = new UnityTitreVisual(TitRead.findTitre(isin), selectedClient.gettitreISIN().get(isin),selectedClient.getTitreISINP().get(isin));
-							table.getItems().add(u);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						try {
+								UnityTitreVisual u = new UnityTitreVisual(TitRead.findTitre(isin), selectedClient.gettitreISIN().get(isin),selectedClient.getTitreISINP().get(isin));
+								table.getItems().add(u);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
-				
 				
 				
 			}
