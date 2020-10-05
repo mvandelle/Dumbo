@@ -37,6 +37,8 @@ public class MemoryReaderClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		
 		MemoryClient mc = new MemoryClient();
 		return mc.mergeClient(r);
 	}

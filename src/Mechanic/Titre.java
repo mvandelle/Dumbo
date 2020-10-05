@@ -7,15 +7,15 @@ public class Titre implements Comparable<Titre>{
 	private String isin;
 	private TypeTitre type;
 	private String devise;
-	private double price;
 	
-	public Titre(String name, String isin,TypeTitre type, String devise, double price)
+	
+	public Titre(String name, String isin,TypeTitre type, String devise)
 	{
 		this.name = name;
 		this.isin = isin;
 		this.type = type;
 		this.devise = devise;
-		this.price = price;
+		
 	}
 	
 	public Titre(String[] s)
@@ -50,7 +50,7 @@ public class Titre implements Comparable<Titre>{
 				throw new IllegalArgumentException("Type mismatch in memory file");
 		}
 		this.devise = s[3];
-		this.price = Double.parseDouble(s[4]);
+		
 	}
 
 	public String getName() {
@@ -84,26 +84,26 @@ public class Titre implements Comparable<Titre>{
 		switch(type)
 		{
 			case ACTION:
-				return name+"*"+isin+"*"+"act"+"*"+devise+"*"+String.valueOf(price);
+				return name+"*"+isin+"*"+"act"+"*"+devise;
 			
 			case OBLIGATION:
-				return name+"*"+isin+"*"+"obl"+"*"+devise+"*"+String.valueOf(price);
+				return name+"*"+isin+"*"+"obl"+"*"+devise;
 				
 			case FUTURE:
-				return name+"*"+isin+"*"+"fut"+"*"+devise+"*"+String.valueOf(price);
+				return name+"*"+isin+"*"+"fut"+"*"+devise;
 				
 			case OPTION:
-				return name+"*"+isin+"*"+"opt"+"*"+devise+"*"+String.valueOf(price);
+				return name+"*"+isin+"*"+"opt"+"*"+devise;
 		
 				
 			case OPC:
-				return name+"*"+isin+"*"+"opc"+"*"+devise+"*"+String.valueOf(price);
+				return name+"*"+isin+"*"+"opc"+"*"+devise;
 				
 			case FOREX:
-				return name+"*"+isin+"*"+"for"+"*"+devise+"*"+String.valueOf(price);
+				return name+"*"+isin+"*"+"for"+"*"+devise;
 			
 			case COMMODITIES:
-				return name+"*"+isin+"*"+"com"+"*"+devise+"*"+String.valueOf(price);
+				return name+"*"+isin+"*"+"com"+"*"+devise;
 			
 			default:
 				throw new IllegalArgumentException("Ce titre n'a pas de type");
@@ -117,7 +117,7 @@ public class Titre implements Comparable<Titre>{
 	
 	public String resumeTitre()
 	{
-		return "Nom : " + name + "\nISIN : " + isin + "\nPrix :" + String.valueOf(price)+ "\nDevise : " + devise;
+		return "Nom : " + name + "\nISIN : " + isin +  "\nDevise : " + devise;
 	}
 
 	@Override

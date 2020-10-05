@@ -47,7 +47,7 @@ public class PDFGenActif {
 	
 	public void GenPdf() throws IOException
 	{
-		String outputFileName = ordres.getTitre().get(0).getName()+".pdf";
+		String outputFileName = ordres.getClientDepName()+".pdf";
 		PDDocument document = new PDDocument();
         PDPage page = new PDPage(PDRectangle.A4);
         PDImageXObject pdImage = PDImageXObject.createFromFile("Dumbo's brain/athenee.png", document);
@@ -376,7 +376,7 @@ public class PDFGenActif {
         Cell<PDPage> cell6 = headerRow6.createCell((float) 29,"");
         cell6.setRightBorderStyle(new LineStyle(Color.WHITE, 0));
         cell6 = headerRow6.createCell(42, "  ATHENEE CAPITAL SA - QUAI DES BERGUES 23 - CH - GENEVE"+ "               TEL : +41 22 702 09 65 - FAX : +41 22 786 04 81"
-        		+ "              admin@athenee-capital.com - www.athenee-capital.com");
+        		);
         cell6.setAlign(HorizontalAlignment.CENTER);
         cell6.setValign(VerticalAlignment.MIDDLE);
         cell6.setFontSize(7);

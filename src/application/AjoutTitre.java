@@ -114,7 +114,7 @@ public class AjoutTitre {
 					switch (comboTitres.getSelectionModel().getSelectedItem())
 					{
 						case "ACTION":
-							Titre newTitreAct = new Titre(name.getText(), ticker.getText(), TypeTitre.ACTION, devise.getText(), 0);
+							Titre newTitreAct = new Titre(name.getText(), ticker.getText(), TypeTitre.ACTION, devise.getText());
 							try {
 								w.writeMemoryTitreAction(newTitreAct,r);
 							} catch (IOException e) {
@@ -129,7 +129,7 @@ public class AjoutTitre {
 							break;
 		        		
 						case "OBLIGATION":
-							Titre newTitreObl = new Titre(name.getText(), ticker.getText(), TypeTitre.OBLIGATION, devise.getText(), 0);
+							Titre newTitreObl = new Titre(name.getText(), ticker.getText(), TypeTitre.OBLIGATION, devise.getText());
 							try {
 								w.writeMemoryTitreObligation(newTitreObl,r);
 							} catch (IOException e) {
@@ -143,7 +143,7 @@ public class AjoutTitre {
 							break;
 		        		
 						case "FUTURE":
-							Titre newTitreFut = new Titre(name.getText(), ticker.getText(), TypeTitre.FUTURE, devise.getText(), 0);
+							Titre newTitreFut = new Titre(name.getText(), ticker.getText(), TypeTitre.FUTURE, devise.getText());
 							try {
 								w.writeMemoryTitreFuture(newTitreFut,r);
 							} catch (IOException e) {
@@ -156,7 +156,7 @@ public class AjoutTitre {
 							break;
 		        		
 						case "OPTION":
-							Titre newTitreOpt = new Titre(name.getText(), ticker.getText(), TypeTitre.OPTION, devise.getText(), 0);
+							Titre newTitreOpt = new Titre(name.getText(), ticker.getText(), TypeTitre.OPTION, devise.getText());
 							try {
 								w.writeMemoryTitreOption(newTitreOpt,r);
 							} catch (IOException e) {
@@ -169,7 +169,7 @@ public class AjoutTitre {
 							break;
 		        	
 						case "OPC":
-							Titre newTitreOPC = new Titre(name.getText(), ticker.getText(), TypeTitre.OPC, devise.getText(), 0);
+							Titre newTitreOPC = new Titre(name.getText(), ticker.getText(), TypeTitre.OPC, devise.getText());
 							try {
 								w.writeMemoryTitreOPC(newTitreOPC,r);
 							} catch (IOException e) {
@@ -182,7 +182,7 @@ public class AjoutTitre {
 							break;
 		        		
 						case "FOREX":
-							Titre newTitreFor = new Titre(name.getText(), ticker.getText(), TypeTitre.FOREX, devise.getText(), 0);
+							Titre newTitreFor = new Titre(name.getText(), ticker.getText(), TypeTitre.FOREX, devise.getText());
 							try {
 								w.writeMemoryTitreForex(newTitreFor,r);
 							} catch (IOException e) {
@@ -195,7 +195,7 @@ public class AjoutTitre {
 							break;
 		        		
 						case "COMMODITIES":
-							Titre newTitreCommo = new Titre(name.getText(), ticker.getText(), TypeTitre.COMMODITIES, devise.getText(), 0);
+							Titre newTitreCommo = new Titre(name.getText(), ticker.getText(), TypeTitre.COMMODITIES, devise.getText());
 							try {
 								w.writeMemoryTitreCommo(newTitreCommo,r);
 							} catch (IOException e) {

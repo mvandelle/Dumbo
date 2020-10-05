@@ -11,6 +11,7 @@ public class OrdreClient {
 	ArrayList<String> type;
 	ArrayList<String> limite;
 	ArrayList<String> echeance;
+	ArrayList<Double> price;
 	
 	public OrdreClient(Client client)
 	{
@@ -22,6 +23,7 @@ public class OrdreClient {
 		type = new ArrayList<>();
 		limite = new ArrayList<>();
 		echeance = new ArrayList<>();
+		price = new ArrayList<>();
 	}
 	
 	public OrdreClient()
@@ -33,6 +35,7 @@ public class OrdreClient {
 		type = new ArrayList<>();
 		limite = new ArrayList<>();
 		echeance = new ArrayList<>();
+		price = new ArrayList<>();
 	}
 	
 	public OrdreClient(Client client, String[] s)
@@ -45,7 +48,8 @@ public class OrdreClient {
 		type = new ArrayList<>();
 		limite = new ArrayList<>();
 		echeance = new ArrayList<>();
-		switch(s[6])
+		price = new ArrayList<>();
+		switch(s[5])
 		{
 			case "BUYOPEN":
 				sens.add(Sens.BUYOPEN);
@@ -75,10 +79,11 @@ public class OrdreClient {
 				throw new IllegalArgumentException("NO SENS FOUND");
 		}
 		quant = new ArrayList<>();
-		quant.add(Integer.parseInt(s[7]));
-		type.add(s[8]);
-		limite.add(s[9]);
-		echeance.add(s[10]);
+		quant.add(Integer.parseInt(s[6]));
+		type.add(s[7]);
+		limite.add(s[8]);
+		echeance.add(s[9]);
+		price.add(Double.parseDouble(s[10]));
 	}
 	
 	public OrdreClient(OrdreClient o)
@@ -90,8 +95,14 @@ public class OrdreClient {
 		type = new ArrayList<>(o.getType());
 		limite = new ArrayList<>(o.getLimite());
 		echeance = new ArrayList<>(o.getEcheance());
+		price = new ArrayList<>(o.getPrice());
 	}
+	public ArrayList<Double> getPrice()
+	{
+		return price;
+	}	
 	
+		
 	public ArrayList<String> getType()
 	{
 		return type;
@@ -125,7 +136,7 @@ public class OrdreClient {
 		
 	}
 	
-	public void setTLE(String type, String limite, String echeance)
+	public void setTLE(String type, String limite, String echeance, Double price)
 	{
 		
 		if ( this.type.isEmpty())
@@ -140,11 +151,15 @@ public class OrdreClient {
 		{
 			this.echeance.add(echeance);
 		}
+		if ( this.price.isEmpty())
+		{
+			this.price.add(price);
+		}
 
 
 	}
 	
-	public void addTitre(Titre titre, Sens sens, int quant, String type, String limite, String echeance)
+	public void addTitre(Titre titre, Sens sens, int quant, String type, String limite, String echeance, Double price)
 	{
 		titres.add(titre);
 		this.sens.add(sens);
@@ -152,6 +167,7 @@ public class OrdreClient {
 		this.type.add(type);
 		this.limite.add(limite);
 		this.echeance.add(echeance);
+		this.price.add(price);
 	}
 	
 	public void addClient(Client client, Sens sens, int quant)
@@ -195,10 +211,16 @@ public class OrdreClient {
 	public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(client.get(0).getName()+" ");
+		sb.append(client.get(0).getName()+"         ");
 		for ( int i = 0 ; i < titres.size(); ++i)
 		{
-			sb.append(titres.get(i).showTitre()+ " " + sens.get(i).toString()+" "+quant.get(i)+" ");
+			if ( price.get(i).equals(Math.PI))
+			{
+				sb.append(titres.get(i).showTitre()+ "         " + sens.get(i).toString()+"         "+quant.get(i));
+			} else
+			{
+				sb.append(titres.get(i).showTitre()+ "         " + sens.get(i).toString()+"         "+quant.get(i)+"         "+price.get(i));
+			}
 			
 		}
 		return sb.toString();
@@ -212,6 +234,12 @@ public class OrdreClient {
 	public String getClientName()
 	{
 		return client.get(0).getName();
+	}
+	
+	public void setPrice(double p)
+	{
+		price.removeAll(price);
+		price.add(p);
 	}
 	
 	public String getClientDepName()
@@ -251,6 +279,11 @@ public class OrdreClient {
 			ArrayList<String> l = new ArrayList<>();
 			for ( int i = 0; i < titres.size(); ++i )
 			{
+				if ( price.get(i).isNaN())
+				{
+					price.set(i,3.14);
+				}
+				
 				if ( limite.get(i).equals(""))
 				{
 					limite.set(i, " ");
@@ -264,7 +297,7 @@ public class OrdreClient {
 					echeance.set(i, " ");
 				}
 				
-				l.add(client.get(0).getnCompte()+"*"+titres.get(i).toString()+"*"+sens.get(i)+"*"+quant.get(i)+"*"+type.get(i)+"*"+limite.get(i)+"*"+echeance.get(i));
+				l.add(client.get(0).getnCompte()+"*"+titres.get(i).toString()+"*"+sens.get(i)+"*"+quant.get(i)+"*"+type.get(i)+"*"+limite.get(i)+"*"+echeance.get(i)+"*"+price.get(i));
 			}
 			return l;
 		} else
@@ -272,20 +305,25 @@ public class OrdreClient {
 			ArrayList<String> l = new ArrayList<>();
 			for ( int i = 0; i < client.size(); ++i )
 			{
-				if ( limite.get(i).equals(""))
+				if ( price.get(0).isNaN())
 				{
-					limite.set(i, " ");
-				}
-				if ( type.get(i).equals(""))
-				{
-					type.set(i, " ");
-				}
-				if ( echeance.get(i).equals(""))
-				{
-					echeance.set(i, " ");
+					price.set(0,3.14);
 				}
 				
-				l.add(client.get(i).getnCompte()+"*"+titres.get(0).toString()+"*"+sens.get(i)+"*"+quant.get(i)+"*"+type.get(0)+"*"+limite.get(0)+"*"+echeance.get(0));
+				if ( limite.get(0).equals(""))
+				{
+					limite.set(0, " ");
+				}
+				if ( type.get(0).equals(""))
+				{
+					type.set(0, " ");
+				}
+				if ( echeance.get(0).equals(""))
+				{
+					echeance.set(0, " ");
+				}
+				
+				l.add(client.get(i).getnCompte()+"*"+titres.get(0).toString()+"*"+sens.get(i)+"*"+quant.get(i)+"*"+type.get(0)+"*"+limite.get(0)+"*"+echeance.get(0)+"*"+price.get(0));
 			}
 			return l;
 		}
@@ -300,6 +338,7 @@ public class OrdreClient {
 		type.removeAll(type);
 		limite.removeAll(limite);
 		echeance.removeAll(echeance);
+		price.removeAll(price);
 	}
 	
 	public void initializeParTitre()
@@ -310,6 +349,7 @@ public class OrdreClient {
 		type.removeAll(type);
 		limite.removeAll(limite);
 		echeance.removeAll(echeance);
+		price.removeAll(price);
 		
 	}
 	
@@ -321,6 +361,7 @@ public class OrdreClient {
 		type.removeAll(type);
 		limite.removeAll(limite);
 		echeance.removeAll(echeance);
+		price.removeAll(price);
 	}
 	
 	public boolean isEmpty()

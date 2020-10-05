@@ -296,7 +296,7 @@ public class PDFGenClient {
         Cell<PDPage> cell4 = headerRow4.createCell((float) 29,"");
         cell4.setRightBorderStyle(new LineStyle(Color.WHITE, 0));
         cell4 = headerRow4.createCell(42, "  ATHENEE CAPITAL SA - QUAI DES BERGUES 23 - CH - GENEVE"+ "               TEL : +41 22 702 09 65 - FAX : +41 22 786 04 81"
-        		+ "              admin@athenee-capital.com - www.athenee-capital.com");
+        		);
         cell4.setAlign(HorizontalAlignment.CENTER);
         cell4.setValign(VerticalAlignment.MIDDLE);
         cell4.setFontSize(7);

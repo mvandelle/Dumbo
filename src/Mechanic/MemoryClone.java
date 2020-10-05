@@ -67,12 +67,14 @@ public class MemoryClone {
 	{
 		ArrayList<Client> oldMem = memReaderCom.readMemoryClient();
 		
+		
 		for ( int i = 0; i < oldMem.size(); ++i)
 		{
 			
 			
 			if ( client.get(i).HasBeenChanged())
 			{
+				
 				client.get(i).setHasBeenChanged(false);
 				oldMem.set(i, client.get(i));
 			}
@@ -128,31 +130,30 @@ public class MemoryClone {
 		stack.writeOnStack(mode);
 	}
 	
-	public void ValidOrdre(ArrayList<OrdreClient> o)
+	public void ValidOrdre(OrdreClient o)
 	{
 		
-		for ( int k = 0; k < o.size(); ++k)
-		{
-			if (o.get(k).getClientNCompte().equals(""))
+		
+			if (o.getClientNCompte().equals(""))
 			{
 				
 			} else
 			{
 				for ( int i = 0; i < client.size(); ++i)
 					{
-						if ( client.get(i).getnCompte().equals(o.get(k).getClientNCompte()))
+						if ( client.get(i).getnCompte().equals(o.getClientNCompte()))
 							{
 								client.get(i).setHasBeenChanged(true);
-								for ( int j = 0; j < o.get(k).getTitre().size(); ++j)
+								for ( int j = 0; j < o.getTitre().size(); ++j)
 									{
 										
-										client.get(i).addTitre(o.get(k).getTitre().get(j),o.get(k).getQuant().get(j));
+										client.get(i).addTitre(o.getTitre().get(j),o.getQuant().get(j), o.getPrice().get(j));
 									}
 							}
 					}
 				
 				
-			}
+			
 			memWriterPers.writeMemoryClient(client);
 		}
 		

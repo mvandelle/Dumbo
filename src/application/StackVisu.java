@@ -32,7 +32,7 @@ public class StackVisu {
 	
 	private String id;
 	private MemoryClone data;
-	private SyncDifManager syncMan;
+	
 	
 	
 	
@@ -40,7 +40,7 @@ public class StackVisu {
 	{
 		this.id = id;
 		this.data = data;
-		syncMan = new SyncDifManager();
+		
 	}
 	
 	
@@ -107,25 +107,26 @@ public class StackVisu {
 
 			@Override
 			public void handle(ActionEvent event) {
-				ArrayList<OrdreClient> interm = new ArrayList<OrdreClient>();
 				
-				interm = data.getStack().ordreToPass(listOrdres.getSelectionModel().getSelectedIndices());
-				data.getStack().removeOrdre( listOrdres.getSelectionModel().getSelectedIndices());
-				listOrdres.setItems(FXCollections.observableArrayList(data.getStack().showOrdre()));
-				data.getStack().writeOnStack();
-				data.ValidOrdre(interm);
-				syncMan.update(id, interm.size());
 				
-				LogWriter l = new LogWriter();
-				try {
-					l.writeLogOnfile(interm, id);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				//ArrayList<OrdreClient> interm = new ArrayList<OrdreClient>();
+				
+				//interm = data.getStack().ordreToPass(listOrdres.getSelectionModel().getSelectedIndices());
+				if ( listOrdres.getSelectionModel().getSelectedIndex() != -1)
+				{
+					OrdreClient interm = new OrdreClient(data.getStack().getOrdre().get(listOrdres.getSelectionModel().getSelectedIndex()));
+					ValidationWindow v = new ValidationWindow(id,interm,data, listOrdres);
+					try {
+						v.showValidation(stageStackVisuWindow).show();
+					} catch (MalformedURLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 				
-				PopupControl p = new PopupControl("Ordre validé", true, stageStackVisuWindow);
-		        p.show();
+				
+			
+				
 				
 				
 			}

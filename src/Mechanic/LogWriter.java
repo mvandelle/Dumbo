@@ -26,7 +26,7 @@ public class LogWriter {
 	
 	}
 	
-	public void writeLogOnfile(ArrayList<OrdreClient> ordre, String id) throws IOException
+	public void writeLogOnfile(OrdreClient ordre, String id) throws IOException
 	{
 		FileInputStream fichier = new FileInputStream("HistoriqueDesOrdres.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(fichier);
@@ -44,26 +44,25 @@ public class LogWriter {
 		cell5.setCellStyle(st1);
 		cell5.setCellValue("Historique des ordres");
 		
-		for ( int i = 0; i < ordre.size(); ++i)
-		{
-			Row rowT = feuille.createRow(i+feuille.getLastRowNum()+1);
-			Cell cell_1 = rowT.createCell(0);
-			cell_1.setCellValue(id);
-			Cell cell_2 = rowT.createCell(1);
-			cell_2.setCellValue(ordre.get(i).getClientName());
-			Cell cell_3 = rowT.createCell(2);
-			cell_3.setCellValue(ordre.get(i).getTitre().get(0).getName());
-			Cell cell_4 = rowT.createCell(3);
-			cell_4.setCellValue(ordre.get(i).getTitre().get(0).getisin());
-			Cell cell_5 = rowT.createCell(4);
-			cell_5.setCellValue(ordre.get(i).getSens().get(0).toString());
-			Cell cell_6 = rowT.createCell(5);
-			cell_6.setCellValue(ordre.get(i).getQuant().get(0));
-			Cell cell_7 = rowT.createCell(6);
-			cell_7.setCellValue(LocalDate.now().toString());
+		
+		Row rowT = feuille.createRow(feuille.getLastRowNum()+1);
+		Cell cell_1 = rowT.createCell(0);
+		cell_1.setCellValue(id);
+		Cell cell_2 = rowT.createCell(1);
+		cell_2.setCellValue(ordre.getClientName());
+		Cell cell_3 = rowT.createCell(2);
+		cell_3.setCellValue(ordre.getTitre().get(0).getName());
+		Cell cell_4 = rowT.createCell(3);
+		cell_4.setCellValue(ordre.getTitre().get(0).getisin());
+		Cell cell_5 = rowT.createCell(4);
+		cell_5.setCellValue(ordre.getSens().get(0).toString());
+		Cell cell_6 = rowT.createCell(5);
+		cell_6.setCellValue(ordre.getQuant().get(0));
+		Cell cell_7 = rowT.createCell(6);
+		cell_7.setCellValue(LocalDate.now().toString());
 			
 			
-		}
+		
 		fichier.close();
 		
 		

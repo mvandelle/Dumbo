@@ -53,6 +53,7 @@ public class OrdreStack {
 					}
 				
 					ordres.add(new OrdreClient(client.get(indexClient), s));
+					
 				}
 				
 			}
@@ -82,6 +83,11 @@ public class OrdreStack {
 			{
 					e.printStackTrace();
 			}
+	}
+	
+	public ArrayList<OrdreClient> getOrdre()
+	{
+		return ordres;
 	}
 	
 	public void writeOnStack(boolean mode)
@@ -232,7 +238,7 @@ public class OrdreStack {
 		OrdreClient newOrdre = new OrdreClient(ordres.get(indices.get(0)).getClient().get(0));
 		for ( int i = 0; i < indices.size(); ++i)
 		{
-			newOrdre.addTitre(ordres.get(indices.get(i)).getTitre().get(0), ordres.get(indices.get(i)).getSens().get(0), ordres.get(indices.get(i)).getQuant().get(0),ordres.get(indices.get(i)).getType().get(0),ordres.get(indices.get(i)).getLimite().get(0),ordres.get(indices.get(i)).getEcheance().get(0));
+			newOrdre.addTitre(ordres.get(indices.get(i)).getTitre().get(0), ordres.get(indices.get(i)).getSens().get(0), ordres.get(indices.get(i)).getQuant().get(0),ordres.get(indices.get(i)).getType().get(0),ordres.get(indices.get(i)).getLimite().get(0),ordres.get(indices.get(i)).getEcheance().get(0), ordres.get(indices.get(i)).getPrice().get(0));
 		}
 		return newOrdre;
 	}
@@ -241,7 +247,7 @@ public class OrdreStack {
 	{
 		OrdreClient newOrdre = new OrdreClient();
 		newOrdre.setTitre(ordres.get(indices.get(0)).getTitre().get(0));
-		newOrdre.setTLE(ordres.get(indices.get(0)).getType().get(0),ordres.get(indices.get(0)).getLimite().get(0),ordres.get(indices.get(0)).getEcheance().get(0));
+		newOrdre.setTLE(ordres.get(indices.get(0)).getType().get(0),ordres.get(indices.get(0)).getLimite().get(0),ordres.get(indices.get(0)).getEcheance().get(0),ordres.get(indices.get(0)).getPrice().get(0));
 		for ( int i = 0; i < indices.size(); ++i)
 		{
 			newOrdre.addClient(ordres.get(indices.get(i)).getClient().get(0), ordres.get(indices.get(i)).getSens().get(0), ordres.get(indices.get(i)).getQuant().get(0));

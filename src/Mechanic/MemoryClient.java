@@ -19,7 +19,7 @@ public class MemoryClient {
 		ArrayList<String> a = new ArrayList<>();
 		for ( Map.Entry<String, Integer> entry : client.gettitreISIN().entrySet())
 		{
-			a.add(client.getName()+"*"+client.getnCompte()+"*"+client.getDep()+"*"+client.HasBeenChanged()+"*"+entry.getKey()+"*"+entry.getValue());
+			a.add(client.getName()+"*"+client.getnCompte()+"*"+client.getDep()+"*"+client.HasBeenChanged()+"*"+entry.getKey()+"*"+entry.getValue()+"*"+client.getTitreISINP().get(entry.getKey()));
 		}
 		return a;
 	}
@@ -58,7 +58,7 @@ public class MemoryClient {
 			{
 				if (allClient.get(j).getnCompte().equals(client.get(i).getnCompte()))
 				{
-					allClient.get(j).addTitre(client.get(i).gettitreISIN());
+					allClient.get(j).addTitre(client.get(i).gettitreISIN(),client.get(i).getTitreISINP());
 					allClient.get(j).setHasBeenChanged(client.get(i).HasBeenChanged());
 				}
 			}

@@ -4,13 +4,15 @@ public class UnityTitreVisual {
 	private String isin;
 	private int quant;
 	private String name;
+	private double price;
 	
 	
-	public UnityTitreVisual(Titre titre, int quant)
+	public UnityTitreVisual(Titre titre, int quant, double price)
 	{
 		this.quant = quant;
 		isin = titre.getisin();
 		name = titre.getName();
+		this.price = price;
 	}
 
 
@@ -43,6 +45,15 @@ public class UnityTitreVisual {
 		this.name = name;
 	}
 	
+	public void setPrice(double price)
+	{
+		this.price = price;
+	}
+	
+	public double getPrice()
+	{
+		return price;
+	}
 	
 	
 

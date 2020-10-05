@@ -86,13 +86,16 @@ public class Portfolio {
         isinCol.setMinWidth(200);
         TableColumn<UnityTitreVisual, Integer> quantCol = new TableColumn<UnityTitreVisual, Integer>("Quantite");
         quantCol.setMinWidth(75);
+        TableColumn<UnityTitreVisual, Integer> priceCol = new TableColumn<UnityTitreVisual, Integer>("Prix d'entré");
+        priceCol.setMinWidth(75);
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         isinCol.setCellValueFactory(new PropertyValueFactory<>("isin"));
         quantCol.setCellValueFactory(new PropertyValueFactory<>("quant"));
+        priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
         table.setLayoutX(500);
         table.setLayoutY(150);
         table.setMinWidth(600);
-        table.getColumns().addAll(nameCol,isinCol,quantCol);
+        table.getColumns().addAll(nameCol,isinCol,quantCol,priceCol);
         rootstageActParClientWindow.getChildren().add(table);
         
         
@@ -114,7 +117,7 @@ public class Portfolio {
 				{
 					
 					try {
-							UnityTitreVisual u = new UnityTitreVisual(TitRead.findTitre(isin), selectedClient.gettitreISIN().get(isin));
+							UnityTitreVisual u = new UnityTitreVisual(TitRead.findTitre(isin), selectedClient.gettitreISIN().get(isin),selectedClient.getTitreISINP().get(isin));
 							table.getItems().add(u);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block

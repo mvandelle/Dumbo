@@ -41,6 +41,7 @@ import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
@@ -113,6 +114,35 @@ public class OrdreParTitre {
         echeance.setLayoutX(800);
         echeance.setLayoutY(500);
         root.getChildren().add(echeance);
+        
+        TextField price = new TextField();
+        price.setPromptText("Prix d'entré");
+        price.setLayoutX(800);
+        price.setLayoutY(550);
+        root.getChildren().add(price);
+        
+        Text errorPrice = new Text("Prix non valide \n(ne sera pas pris en compte)");
+        errorPrice.setFill(Color.WHITE);
+        root.getChildren().add(errorPrice);
+        errorPrice.setLayoutX(800);
+        errorPrice.setLayoutY(600);
+        
+        
+        root.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				
+				if ( (!isDouble(price.getText()) && !price.getText().equals("") )  )
+					{
+						
+						errorPrice.setFill(Color.RED);
+					} else
+					{
+						errorPrice.setFill(Color.WHITE);
+					}
+				
+			} });
         
         ObservableList<String> optionsType = 
         	    FXCollections.observableArrayList(Arrays.asList("Au marche", "A cours limite", "A seuil de declenchment", "A plage de declenchement", "STOP LOSS")
@@ -452,27 +482,54 @@ public class OrdreParTitre {
 							if( (quant - Integer.parseInt(Qua.getCharacters().toString())>= 0 && findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()).hasEnough(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()).getisin(), Integer.parseInt(Qua.getCharacters().toString())))|| specialSell)
 							{
 								
-								if ( comboType.getSelectionModel().getSelectedIndex() != -1)
-								{ 	
+								if ( isDouble(price.getText()))
+								{
+									if ( comboType.getSelectionModel().getSelectedIndex() != -1)
+									{ 	
 									
 								
-									navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()-Integer.parseInt(Qua.getCharacters().toString()));
-									navig.getColumns().remove(column3);
-									navig.getColumns().add(column3);
-									quant = quant - Integer.parseInt(Qua.getCharacters().toString());
-									resumeQuant.setText("Quantité restante : " + quant);
-									ordre.setTLE(comboType.getSelectionModel().getSelectedItem(), limite.getText(), echeance.getText());
-									ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.SELL, -Integer.parseInt(Qua.getCharacters().toString()));
+										navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()-Integer.parseInt(Qua.getCharacters().toString()));
+										navig.getColumns().remove(column3);
+										navig.getColumns().add(column3);
+										quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+										resumeQuant.setText("Quantité restante : " + quant);
+										ordre.setTLE(comboType.getSelectionModel().getSelectedItem(), limite.getText(), echeance.getText(),Double.parseDouble(price.getText()));
+										ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.SELL, -Integer.parseInt(Qua.getCharacters().toString()));
 										
-								} else
+									} else
+									{
+										navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()-Integer.parseInt(Qua.getCharacters().toString()));
+										navig.getColumns().remove(column3);
+										navig.getColumns().add(column3);
+										quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+										resumeQuant.setText("Quantité restante : " + quant);
+										ordre.setTLE("", limite.getText(), echeance.getText(),Double.parseDouble(price.getText()));
+										ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.SELL, -Integer.parseInt(Qua.getCharacters().toString()));
+									}
+								}else
 								{
-									navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()-Integer.parseInt(Qua.getCharacters().toString()));
-									navig.getColumns().remove(column3);
-									navig.getColumns().add(column3);
-									quant = quant - Integer.parseInt(Qua.getCharacters().toString());
-									resumeQuant.setText("Quantité restante : " + quant);
-									ordre.setTLE("", limite.getText(), echeance.getText());
-									ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.SELL, -Integer.parseInt(Qua.getCharacters().toString()));
+									if ( comboType.getSelectionModel().getSelectedIndex() != -1)
+									{ 	
+									
+								
+										navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()-Integer.parseInt(Qua.getCharacters().toString()));
+										navig.getColumns().remove(column3);
+										navig.getColumns().add(column3);
+										quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+										resumeQuant.setText("Quantité restante : " + quant);
+										ordre.setTLE(comboType.getSelectionModel().getSelectedItem(), limite.getText(), echeance.getText(),Math.PI);
+										ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.SELL, -Integer.parseInt(Qua.getCharacters().toString()));
+										
+									} else
+									{
+										navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()-Integer.parseInt(Qua.getCharacters().toString()));
+										navig.getColumns().remove(column3);
+										navig.getColumns().add(column3);
+										quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+										resumeQuant.setText("Quantité restante : " + quant);
+										ordre.setTLE("", limite.getText(), echeance.getText(),Math.PI);
+										ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.SELL, -Integer.parseInt(Qua.getCharacters().toString()));
+									}
 								}
 							} else
 							{
@@ -510,27 +567,52 @@ public class OrdreParTitre {
 							if ( quant - Integer.parseInt(Qua.getCharacters().toString()) >= 0)
 							{
 								
-								
-								if ( comboType.getSelectionModel().getSelectedIndex() != -1)
-								{ 	
-									
-									navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()+Integer.parseInt(Qua.getCharacters().toString()));
-									navig.getColumns().remove(column3);
-									navig.getColumns().add(column3);
-									quant = quant - Integer.parseInt(Qua.getCharacters().toString());
-									resumeQuant.setText("Quantité restante : " + quant);
-									ordre.setTLE(comboType.getSelectionModel().getSelectedItem(), limite.getText(), echeance.getText());
-									ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.BUY, Integer.parseInt(Qua.getCharacters().toString()));
-										
-								} else
+								if ( isDouble(price.getText()))
 								{
-									navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()+Integer.parseInt(Qua.getCharacters().toString()));
-									navig.getColumns().remove(column3);
-									navig.getColumns().add(column3);
-									quant = quant - Integer.parseInt(Qua.getCharacters().toString());
-									resumeQuant.setText("Quantité restante : " + quant);
-									ordre.setTLE("", limite.getText(), echeance.getText());
-									ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.BUY, Integer.parseInt(Qua.getCharacters().toString()));
+									if ( comboType.getSelectionModel().getSelectedIndex() != -1)
+									{ 	
+									
+											navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()+Integer.parseInt(Qua.getCharacters().toString()));
+											navig.getColumns().remove(column3);
+											navig.getColumns().add(column3);
+										quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+										resumeQuant.setText("Quantité restante : " + quant);
+										ordre.setTLE(comboType.getSelectionModel().getSelectedItem(), limite.getText(), echeance.getText(),Double.parseDouble(price.getText()));
+										ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.BUY, Integer.parseInt(Qua.getCharacters().toString()));
+										
+									} else
+									{
+										navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()+Integer.parseInt(Qua.getCharacters().toString()));
+										navig.getColumns().remove(column3);
+										navig.getColumns().add(column3);
+										quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+										resumeQuant.setText("Quantité restante : " + quant);
+										ordre.setTLE("", limite.getText(), echeance.getText(),Double.parseDouble(price.getText()));
+										ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.BUY, Integer.parseInt(Qua.getCharacters().toString()));
+									}
+								}else
+								{
+									if ( comboType.getSelectionModel().getSelectedIndex() != -1)
+									{ 	
+									
+											navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()+Integer.parseInt(Qua.getCharacters().toString()));
+											navig.getColumns().remove(column3);
+											navig.getColumns().add(column3);
+										quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+										resumeQuant.setText("Quantité restante : " + quant);
+										ordre.setTLE(comboType.getSelectionModel().getSelectedItem(), limite.getText(), echeance.getText(),Math.PI);
+										ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.BUY, Integer.parseInt(Qua.getCharacters().toString()));
+										
+									} else
+									{
+										navig.getSelectionModel().getSelectedItem().getValue().setModif(navig.getSelectionModel().getSelectedItem().getValue().getModif()+Integer.parseInt(Qua.getCharacters().toString()));
+										navig.getColumns().remove(column3);
+										navig.getColumns().add(column3);
+										quant = quant - Integer.parseInt(Qua.getCharacters().toString());
+										resumeQuant.setText("Quantité restante : " + quant);
+										ordre.setTLE("", limite.getText(), echeance.getText(),Math.PI);
+										ordre.addClient(findClientFromClientId(navig.getSelectionModel().getSelectedItem().getValue().getName()), Sens.BUY, Integer.parseInt(Qua.getCharacters().toString()));
+									}
 								}
 							} else
 							{
@@ -666,7 +748,7 @@ public class OrdreParTitre {
         	
         });
         
-       
+        
         
         
         
@@ -708,6 +790,10 @@ public class OrdreParTitre {
 					throw new IllegalArgumentException("Type was not selected");
 			}
 		}
+		
+		
+		
+		
 	}  
 	
 	public void updateNavig(String isin, MemoryClone clone, TreeTableView<ClientNode> navig)
@@ -761,6 +847,18 @@ public class OrdreParTitre {
 		}
 		throw new IllegalArgumentException("Client was not found");
 		
+	}
+	
+	public boolean isDouble(String a)
+	{
+		
+		try {
+			Double.parseDouble(a);
+		} catch ( NumberFormatException e)
+		{
+			return false;
+		}
+		return true;
 	}
 	
 

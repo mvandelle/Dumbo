@@ -153,6 +153,8 @@ public class ActParClient {
         rootstageActParClientWindow.getChildren().add(limite);
         
         
+        
+        
         //**********************************************************
         
         //**********COMBO**********
@@ -286,6 +288,12 @@ public class ActParClient {
         Qua.setLayoutX(600);
         Qua.setLayoutY(600);
         rootstageActParClientWindow.getChildren().add(Qua);
+        
+        TextField price = new TextField();
+        price.setPromptText("Prix d'entré");
+        price.setLayoutX(200);
+        price.setLayoutY(600);
+        rootstageActParClientWindow.getChildren().add(price);
        
         
         
@@ -351,6 +359,7 @@ public class ActParClient {
     			public void handle(ActionEvent event) {
         			limite.setText("");
     				echeance.setText("");
+    				price.setText("");
     				comboType.getSelectionModel().select(-1);
         			comboTitres.getSelectionModel().select(-1);
     				sortTitre.getSelectionModel().select(-1);
@@ -465,23 +474,46 @@ public class ActParClient {
 							PopupControl p = new PopupControl("Quantité invalide", false, stageActParClientWindow);
 					        p.show();
 						} else
-						{	
-							if ( comboType.getSelectionModel().getSelectedIndex() != -1)
-							{ 	
+						{
+							if ( isDouble(price.getCharacters().toString()) )
+							{
+							
+							
+								if ( comboType.getSelectionModel().getSelectedIndex() != -1)
+								{ 	
 								
 									
-								ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()), comboType.getSelectionModel().getSelectedItem(), limite.getText(),echeance.getText());
+									ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()), comboType.getSelectionModel().getSelectedItem(), limite.getText(),echeance.getText(),Double.parseDouble(price.getCharacters().toString()));
 										
-								resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+									resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
 									
 								
+								} else
+								{
+									ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()), "", limite.getText(),echeance.getText(),Double.parseDouble(price.getCharacters().toString()));
+								
+									resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+								}
 							} else
 							{
-								ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()), "", limite.getText(),echeance.getText());
 								
-								resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+								if ( comboType.getSelectionModel().getSelectedIndex() != -1)
+								{ 	
+								
+									
+									ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()), comboType.getSelectionModel().getSelectedItem(), limite.getText(),echeance.getText(),Math.PI);
+										
+									resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+									
+								
+								} else
+								{
+									ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.BUY,Integer.parseInt(Qua.getCharacters().toString()), "", limite.getText(),echeance.getText(),Math.PI);
+								
+									resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+								}
 							}
-						}
+						}	
 					}
 				
 				
@@ -512,16 +544,33 @@ public class ActParClient {
 							{
 								if (findClientFromClientId(comboClient.getSelectionModel().getSelectedItem()).hasEnough(findTitre(sortTitre.getSelectionModel().getSelectedIndex(), comboTitres.getSelectionModel().getSelectedItem()).getisin(), Integer.parseInt(Qua.getText())) || specialSell )
 								{
-									if ( comboType.getSelectionModel().getSelectedIndex() != -1)
-									{ 	
-										
-										ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()), comboType.getSelectionModel().getSelectedItem(), limite.getText(),echeance.getText());
-										resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+									
+									if ( isDouble(price.getText()))
+									{
+										if ( comboType.getSelectionModel().getSelectedIndex() != -1)
+											{ 	
+												
+												ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()), comboType.getSelectionModel().getSelectedItem(), limite.getText(),echeance.getText(),Double.parseDouble(price.getText()));
+												resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
 											
+											} else
+											{
+												ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()), "", limite.getText(),echeance.getText(),Double.parseDouble(price.getText()));
+												resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+											}
 									} else
 									{
-										ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()), "", limite.getText(),echeance.getText());
-										resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+										if ( comboType.getSelectionModel().getSelectedIndex() != -1)
+										{ 	
+											
+											ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()), comboType.getSelectionModel().getSelectedItem(), limite.getText(),echeance.getText(),Math.PI);
+											resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+										
+										} else
+										{
+											ordre.addTitre(findTitre(sortTitre.getSelectionModel().getSelectedIndex(),comboTitres.getSelectionModel().getSelectedItem()), Sens.SELL,-Integer.parseInt(Qua.getCharacters().toString()), "", limite.getText(),echeance.getText(),Math.PI);
+											resumeOrdre.setText("ordre : " +ordre.toString(isParClient));
+										}	
 									}
 								}else
 								{
@@ -574,6 +623,33 @@ public class ActParClient {
         		
         		
        );
+        
+        Text errorPrice = new Text("Prix non valide \n(ne sera pas pris en compte)");
+        errorPrice.setFill(Color.WHITE);
+        rootstageActParClientWindow.getChildren().add(errorPrice);
+        errorPrice.setLayoutX(200);
+        errorPrice.setLayoutY(650);
+        
+        
+        rootstageActParClientWindow.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				
+				if ( (!isDouble(price.getText()) && !price.getText().equals("") )  )
+					{
+						
+						errorPrice.setFill(Color.RED);
+					} else
+					{
+						errorPrice.setFill(Color.WHITE);
+					}
+				
+			}
+
+			
+        	
+        } );
         
         
         
@@ -635,6 +711,18 @@ public class ActParClient {
 		try {
 			Integer.parseInt(a);
 		} catch (NumberFormatException e){
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isDouble(String a)
+	{
+		
+		try {
+			Double.parseDouble(a);
+		} catch ( NumberFormatException e)
+		{
 			return false;
 		}
 		return true;
