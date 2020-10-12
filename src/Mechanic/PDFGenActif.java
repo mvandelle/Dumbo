@@ -5,7 +5,10 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -47,7 +50,8 @@ public class PDFGenActif {
 	
 	public void GenPdf() throws IOException
 	{
-		String outputFileName = ordres.getClientDepName()+".pdf";
+		double idR = Math.random();
+		String outputFileName = ordres.getClientDepName()+"----"+idR+".pdf";
 		PDDocument document = new PDDocument();
         PDPage page = new PDPage(PDRectangle.A4);
         PDImageXObject pdImage = PDImageXObject.createFromFile("Dumbo's brain/athenee.png", document);
@@ -375,7 +379,7 @@ public class PDFGenActif {
         Row<PDPage> headerRow6 = table6.createRow(25);
         Cell<PDPage> cell6 = headerRow6.createCell((float) 29,"");
         cell6.setRightBorderStyle(new LineStyle(Color.WHITE, 0));
-        cell6 = headerRow6.createCell(42, "  ATHENEE CAPITAL SA - QUAI DES BERGUES 23 - CH - GENEVE"+ "               TEL : +41 22 702 09 65 - FAX : +41 22 786 04 81"
+        cell6 = headerRow6.createCell(42, "                ATHENEE - QUAI DES BERGUES 23 - CH - GENEVE"+ "                   TEL : +41 22 702 09 65 - FAX : +41 22 786 04 81"
         		);
         cell6.setAlign(HorizontalAlignment.CENTER);
         cell6.setValign(VerticalAlignment.MIDDLE);

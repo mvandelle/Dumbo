@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -47,7 +50,8 @@ public class PDFGenClient {
 	
 	public void GenPdf() throws IOException
 	{
-		String outputFileName = ordres.getClientName()+"-"+ordres.getClientNCompte()+".pdf";
+		double idR = Math.random();
+		String outputFileName = ordres.getClientName()+"-"+ordres.getClientNCompte()+"-----"+idR+".pdf";
 		PDDocument document = new PDDocument();
         PDPage page = new PDPage(PDRectangle.A4);
         PDImageXObject pdImage = PDImageXObject.createFromFile("Dumbo's brain/athenee.png", document);
@@ -295,7 +299,7 @@ public class PDFGenClient {
         Row<PDPage> headerRow4 = table4.createRow(25);
         Cell<PDPage> cell4 = headerRow4.createCell((float) 29,"");
         cell4.setRightBorderStyle(new LineStyle(Color.WHITE, 0));
-        cell4 = headerRow4.createCell(42, "  ATHENEE CAPITAL SA - QUAI DES BERGUES 23 - CH - GENEVE"+ "               TEL : +41 22 702 09 65 - FAX : +41 22 786 04 81"
+        cell4 = headerRow4.createCell(42, "                ATHENEE - QUAI DES BERGUES 23 - CH - GENEVE"+ "                   TEL : +41 22 702 09 65 - FAX : +41 22 786 04 81"
         		);
         cell4.setAlign(HorizontalAlignment.CENTER);
         cell4.setValign(VerticalAlignment.MIDDLE);
